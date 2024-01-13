@@ -1,4 +1,5 @@
 import { PowerSettingsNew } from "@mui/icons-material";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Button, Divider, IconButton, List, Toolbar, Typography } from "@mui/material";
 import MuiDrawer from '@mui/material/Drawer';
@@ -6,10 +7,7 @@ import { styled } from '@mui/material/styles';
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { AppBar } from "../../components/AppBar";
-import { mainListItems } from "./listitems";
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
-
+import ListItems from "./MenuItems";
 
 const drawerWidth = 200;
 
@@ -106,9 +104,7 @@ export default function Header() {
                 </Toolbar>
                 <Divider />
                 <List component="nav">
-                  {mainListItems}
-                  <Divider sx={{ my: 1 }} />
-                  {/* {secondaryListItems} */}
+                  <ListItems />
                 </List>
               </Drawer>
               </>
