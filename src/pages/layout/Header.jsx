@@ -39,74 +39,37 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function Header() {
 
-    const [open, setOpen] = useState(true);
-    const toggleDrawer = () => {
-      setOpen(!open);
-    };
+    // const [open, setOpen] = useState(true);
+    // const toggleDrawer = () => {
+    //   setOpen(!open);
+    // };
   
-    let navigate = useNavigate();
+    // let navigate = useNavigate();
   
-    const logout = () => {
-      navigate('login');
-    }
+    // const logout = () => {
+    //   navigate('login');
+    // }
 
     return (
         <>
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: '20px', // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
+          <Drawer variant="permanent" open={true}>
+            <Toolbar
               sx={{
-                marginRight: '30px',
-                ...(open && { display: 'none' }),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                px: [1],
               }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h3"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard
-            </Typography>
-            {/* <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton> */}
-            <Button variant="contained" color='error' onClick={logout}>
-               <PowerSettingsNew /> &nbsp; Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
-                <Drawer variant="permanent" open={open}>
-                <Toolbar
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    px: [1],
-                  }}
-                >
-                  <IconButton onClick={toggleDrawer}>
-                    <ChevronLeftIcon />
-                  </IconButton>
-                </Toolbar>
-                <Divider />
-                <List component="nav">
-                  <ListItems />
-                </List>
-              </Drawer>
-              </>
+              {/* <IconButton onClick={toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton> */}
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+              <ListItems />
+            </List>
+        </Drawer>
+        </>
     );
 }

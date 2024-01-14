@@ -1,12 +1,12 @@
 
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import * as React from 'react';
 import { Outlet } from 'react-router';
 import Footer from './Footer';
 import Header from './Header';
+
 
 
 
@@ -54,8 +54,10 @@ export default function Layout() {
             overflow: 'auto',
           }}
         >
-          <Toolbar />
-          <Outlet/>
+          {/* <Toolbar>
+            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          </Toolbar>*/
+          <Outlet/>}
         </Box>
 
       </Box>
