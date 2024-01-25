@@ -1,76 +1,17 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ViewListIcon from '@mui/icons-material/ViewList';
-import { AppBar, Box, Button, Container, Grid, Paper, Toolbar, Typography } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
-
-const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.firstName || ''} ${params.row.lastName || ''}`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
+import ClubList from '../clubs/ClubList';
+import ContentPanel from '../layout/ContentPanel';
 
 export default function Clubs() {
     return (
-        <Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
-
-          <AppBar position="static">
-            <Toolbar sx={{ backgroundColor: 'white'}}>
-              <Typography variant="h6" sx={{ color: 'black'}}>CLUBS</Typography>
-              <Box sx={{ flexGrow: 1, display: { marginLeft: 40, xs: 'none', md: 'flex' } }}>
-                <Button variant="contained" startIcon={<ViewListIcon />}>List</Button>
-                <Button variant="contained" startIcon={<AddBoxIcon />} sx={{marginLeft: 2}} >Create</Button>
-              </Box>
-            </Toolbar>
-          </AppBar>          
-          
-          <Grid container spacing={3}>
-
-          {/* <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            </Paper>
-          </Grid> */}
-          <Grid item xs={12} sx={{mt: 2}}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection/>
-            </Paper>
-          </Grid>
-          </Grid>
-        </Container>
+        <ContentPanel
+          entityHeaderText="Clubs"
+          entityButtonPanel={[
+              {text: "List", icon:<ViewListIcon/>},
+              {text:"Create", icon:<AddBoxIcon/>}
+            ]}
+          entityComponent={<ClubList/>}
+        />
     );
 }
