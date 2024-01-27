@@ -1,48 +1,21 @@
 import { Container, Grid, Paper } from "@mui/material";
+import ContentPanel from "../layout/ContentPanel";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import ViewListIcon from '@mui/icons-material/ViewList';
+import PeopleIcon from '@mui/icons-material/People';
+import UserList from "./entity/user/UserList";
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 export default function Profile() {
     return (
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-
-          <Grid container spacing={3}>
-          <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                {/* <Orders /> */}
-              </Paper>
-            </Grid>
-                        {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                {/* <Chart /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: 240,
-                }}
-              >
-                {/* <Deposits /> */}
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                {/* <Orders /> */}
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
+      <ContentPanel
+      // "User" text to be changed to peron's name
+        entityHeaderText="User"
+        entityButtonPanel={[
+            {text: "Profile", icon:<PeopleIcon/>},
+            {text:"Races", icon:<DirectionsRunIcon/>}
+          ]}
+        entityComponent={<UserList/>}
+      />
     );
 }

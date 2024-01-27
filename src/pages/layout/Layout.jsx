@@ -3,9 +3,10 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import * as React from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useOutlet } from 'react-router';
 import Footer from './Footer';
 import Header from './Header';
+import Profile from '../basic/Profile';
 
 
 
@@ -35,6 +36,7 @@ const defaultTheme = createTheme();
 
 export default function Layout() {
 
+  const outlet = useOutlet()
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -57,7 +59,8 @@ export default function Layout() {
           {/* <Toolbar>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           </Toolbar>*/
-          <Outlet/>}
+          <>{outlet || <Profile />}</>
+          }
         </Box>
 
       </Box>
