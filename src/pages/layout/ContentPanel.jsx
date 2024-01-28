@@ -4,7 +4,7 @@ import { AppBar, Box, Button, Container, Grid, Toolbar, Typography } from "@mui/
 export default function ContentPanel(props) {
 
     const buttonItems = props.entityButtonPanel.map(buttonPanel => (
-        <Button key={buttonPanel.text} variant="contained" startIcon={buttonPanel.icon} sx={{marginLeft: 2}}>{buttonPanel.text}</Button>
+        <Button key={buttonPanel.text} variant="contained" startIcon={buttonPanel.icon} sx={{marginLeft: 2}} onClick={buttonPanel.clickHandler}>{buttonPanel.text}</Button>
       ))
 
     return (
