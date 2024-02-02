@@ -8,16 +8,15 @@ export default function Footer() {
       position="fixed"
       color="primary"
       sx={{
-        height: "50px",
+        height: "40px",
         top: "auto",
         bottom: 0,
-        //   backgroundColor: 'green'
       }}
     >
-      <Toolbar>
-        <Copyright sx={{ pt: 1, color: "white" }} />
+      {/* <Toolbar> */}
+      <Copyright sx={{ pt: 1, color: "white" }} />
 
-        {/* <IconButton color="inherit" aria-label="open drawer">
+      {/* <IconButton color="inherit" aria-label="open drawer">
             <MenuIcon />
           </IconButton>
           <StyledFab color="secondary" aria-label="add">
@@ -30,7 +29,7 @@ export default function Footer() {
           <IconButton color="inherit">
             <MoreIcon />
           </IconButton> */}
-      </Toolbar>
+      {/* </Toolbar> */}
     </AppBar>
   );
 }

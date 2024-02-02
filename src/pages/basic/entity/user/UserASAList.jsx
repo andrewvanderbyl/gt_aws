@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
@@ -37,7 +37,13 @@ const rows = [
 export default function UserASAList() {
   return (
     <Grid item xs={12} sx={{ mt: 2 }}>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+      <Paper
+        square={false}
+        elevation={3}
+        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+      >
+        <Typography variant="h6">REGISTRATIONS:</Typography>
+        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
         <DataGrid
           sx={{
             // width: '100%',

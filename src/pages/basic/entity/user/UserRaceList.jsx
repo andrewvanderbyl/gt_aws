@@ -1,4 +1,4 @@
-import { Grid, Paper } from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 
 const columns: GridColDef[] = [
@@ -146,16 +146,20 @@ const rows = [
 export default function UserRaceList() {
   return (
     <Grid item xs={12} sx={{ mt: 2 }}>
-      <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
+      <Paper
+        elevation={3}
+        square={false}
+        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+      >
+        <Typography variant="h6">RACES:</Typography>
+        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
         <DataGrid
           sx={{
-            // width: '100%',
             "& .super-app-theme--header": {
               backgroundColor: "#1976d2",
               color: "white",
             },
           }}
-          // sx={ {backgroundColor: '#1976d2'}}
           rows={rows}
           columns={columns}
           getRowClassName={(params) =>

@@ -46,20 +46,20 @@ export default function Header() {
   return (
     <>
       <Drawer variant="permanent" open={true}>
-        <Toolbar
+        {/* <Toolbar
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
             px: [1],
           }}
-        >
-          {/* <IconButton onClick={toggleDrawer}>
+        > */}
+        {/* <IconButton onClick={toggleDrawer}>
                 <ChevronLeftIcon />
               </IconButton> */}
-        </Toolbar>
-        <Divider />
-        <List component="nav">
+        {/* </Toolbar> */}
+        <Divider sx={{ mt: 8 }} />
+        <List sx={{ height: "90vh" }}>
           <ListItems />
         </List>
       </Drawer>
