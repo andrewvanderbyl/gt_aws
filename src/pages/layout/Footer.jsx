@@ -1,19 +1,23 @@
 import { Toolbar } from "@mui/material";
-import Copyright from "../../components/Copyright";
 import { AppBar } from "../../components/AppBar";
+import Copyright from "../../components/Copyright";
 
 export default function Footer() {
-    return (
-        <AppBar position="fixed" color="primary" 
-        sx={{ height: '50px', 
-              top: 'auto', 
-              bottom: 0,
-            //   backgroundColor: 'green' 
-        }}>
-        <Toolbar>
-          <Copyright sx={{ pt: 1, color: 'white'}} />
-          
-          {/* <IconButton color="inherit" aria-label="open drawer">
+  return (
+    <AppBar
+      position="fixed"
+      color="primary"
+      sx={{
+        height: "50px",
+        top: "auto",
+        bottom: 0,
+        //   backgroundColor: 'green'
+      }}
+    >
+      <Toolbar>
+        <Copyright sx={{ pt: 1, color: "white" }} />
+
+        {/* <IconButton color="inherit" aria-label="open drawer">
             <MenuIcon />
           </IconButton>
           <StyledFab color="secondary" aria-label="add">
@@ -26,7 +30,7 @@ export default function Footer() {
           <IconButton color="inherit">
             <MoreIcon />
           </IconButton> */}
-        </Toolbar>
-      </AppBar>
-    );
+      </Toolbar>
+    </AppBar>
+  );
 }

@@ -1,66 +1,65 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { useNavigate } from 'react-router';
-import Copyright from '../components/Copyright';
-import { useState } from 'react';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
+import Link from "@mui/material/Link";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import Copyright from "../components/Copyright";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function Register() {
-
   let navigate = useNavigate();
 
-  const [formSubmitDisable, setFormSubmitDisable] = useState(true)
+  const [formSubmitDisable, setFormSubmitDisable] = useState(true);
   const [formValues, setFormValues] = useState({
     email: {
-      value: '',
+      value: "",
       error: false,
-      errorMsg: 'Email is required',
+      errorMsg: "Email is required",
       isValid(newVal) {
         return !(!!newVal && /\S+@\S+\.\S+/.test(newVal));
-      }
+      },
     },
     password: {
-      value: '',
+      value: "",
       error: false,
-      errorMsg: 'Password is required',
+      errorMsg: "Password is required",
       isValid(newVal) {
-        return !(!!newVal);
-      }
+        return !!!newVal;
+      },
     },
     firstName: {
-      value: '',
+      value: "",
       error: false,
-      errorMsg: 'First name is required',
+      errorMsg: "First name is required",
       isValid(newVal) {
-        return !(!!newVal);
-      }
+        return !!!newVal;
+      },
     },
     lastName: {
-      value: '',
+      value: "",
       error: false,
-      errorMsg: 'Last name is required',
+      errorMsg: "Last name is required",
       isValid(newVal) {
-        return !(!!newVal);
-      }
-    }
+        return !!!newVal;
+      },
+    },
   });
 
   const handleChange = (event) => {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
 
-    let errors = []
+    let errors = [];
 
     Object.keys(formValues).forEach((item) => {
       if (name === item) {
@@ -70,27 +69,26 @@ export default function Register() {
           [name]: {
             ...formValues[name],
             value,
-            error: tempError
-          }
+            error: tempError,
+          },
         });
-        
-        errors.push(tempError)
+
+        errors.push(tempError);
       } else {
         errors.push(formValues[item].isValid(formValues[item].value));
       }
     });
 
     setFormSubmitDisable(errors.some((item) => item === true));
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: data.get("email"),
+      password: data.get("password"),
     });
-
   };
 
   return (
@@ -102,21 +100,26 @@ export default function Register() {
           autoComplete="off"
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            boxShadow: '0 14px 28px',
-            borderRadius: '10px',
-            padding: '30px 25px'
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            boxShadow: "0 14px 28px",
+            borderRadius: "10px",
+            padding: "30px 25px",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -129,7 +132,9 @@ export default function Register() {
                   autoFocus
                   value={formValues.firstName.value}
                   onChange={handleChange}
-                  helperText={formValues.firstName.error && formValues.firstName.errorMsg}
+                  helperText={
+                    formValues.firstName.error && formValues.firstName.errorMsg
+                  }
                   error={formValues.firstName.error}
                 />
               </Grid>
@@ -143,7 +148,9 @@ export default function Register() {
                   autoComplete="family-name"
                   value={formValues.lastName.value}
                   onChange={handleChange}
-                  helperText={formValues.lastName.error && formValues.lastName.errorMsg}
+                  helperText={
+                    formValues.lastName.error && formValues.lastName.errorMsg
+                  }
                   error={formValues.lastName.error}
                 />
               </Grid>
@@ -157,7 +164,9 @@ export default function Register() {
                   autoComplete="email"
                   value={formValues.email.value}
                   onChange={handleChange}
-                  helperText={formValues.email.error && formValues.email.errorMsg}
+                  helperText={
+                    formValues.email.error && formValues.email.errorMsg
+                  }
                   error={formValues.email.error}
                 />
               </Grid>
@@ -172,7 +181,9 @@ export default function Register() {
                   autoComplete="new-password"
                   value={formValues.password.value}
                   onChange={handleChange}
-                  helperText={formValues.password.error && formValues.password.errorMsg}
+                  helperText={
+                    formValues.password.error && formValues.password.errorMsg
+                  }
                   error={formValues.password.error}
                 />
               </Grid>
