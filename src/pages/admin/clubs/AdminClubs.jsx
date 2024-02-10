@@ -1,11 +1,13 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import ContentPanel from "../layout/ContentPanel";
-import ClubList from "./entity/clubs/ClubList";
-import ClubCreate from "./entity/clubs/ClubCreate";
+import PeopleIcon from "@mui/icons-material/People";
 import { useState } from "react";
+import ClubList from "../../basic/entity/clubs/ClubList";
+import ClubCreate from "../../basic/entity/clubs/ClubCreate";
+import ClubMemberList from "../../basic/entity/clubs/ClubMemberList";
+import ContentPanel from "../../layout/ContentPanel";
 
-export default function Clubs() {
+export default function AdminClubs() {
   const [contentComponent, setContentComponent] = useState(<ClubList />);
 
   const handleViewClubsClick = (event) => {
@@ -13,6 +15,9 @@ export default function Clubs() {
   };
   const handleViewCreateClubClick = (event) => {
     setContentComponent(<ClubCreate />);
+  };
+  const handleViewClubMembersClick = (event) => {
+    setContentComponent(<ClubMemberList />);
   };
 
   return (
@@ -28,6 +33,11 @@ export default function Clubs() {
           text: "Create",
           icon: <AddBoxIcon />,
           clickHandler: handleViewCreateClubClick,
+        },
+        {
+          text: "Members",
+          icon: <PeopleIcon />,
+          clickHandler: handleViewClubMembersClick,
         },
       ]}
       entityComponent={contentComponent}

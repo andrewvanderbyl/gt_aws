@@ -1,7 +1,6 @@
 import { PowerSettingsNew } from "@mui/icons-material";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import BadgeIcon from "@mui/icons-material/Badge";
-import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
+import BusinessIcon from "@mui/icons-material/Business";
 import PeopleIcon from "@mui/icons-material/People";
 import {
   Divider,
@@ -26,12 +25,12 @@ export default function ListItems() {
       <MenuItem
         menuText={"Profile"}
         menuIcon={<PeopleIcon />}
-        menuClickNav={"profile"}
+        menuClickNav={"/profile"}
       />
       <MenuItem
-        menuText={"Clubs"}
-        menuIcon={<DirectionsRunIcon />}
-        menuClickNav={"clubs"}
+        menuText={"Club"}
+        menuIcon={<BusinessIcon />}
+        menuClickNav={"/clubs"}
       />
       <ListItemButton onClick={logout}>
         <ListItemIcon>
@@ -45,15 +44,15 @@ export default function ListItems() {
       <ListSubheader component="div" inset>
         Administration
       </ListSubheader>
-      <MenuItem
+      {/* <MenuItem
         menuText={"Privileges"}
         menuIcon={<BadgeIcon />}
         menuClickNav={"privileges"}
-      />
+      /> */}
       <MenuItem
         menuText={"Clubs"}
-        menuIcon={<ApartmentIcon />}
-        menuClickNav={"clubs"}
+        menuIcon={<BusinessIcon />}
+        menuClickNav={"/admin/clubs"}
       />
     </React.Fragment>
   );

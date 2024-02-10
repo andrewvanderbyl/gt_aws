@@ -27,7 +27,7 @@ export default function UserProfile() {
       alignItems="flex-start"
       spacing={5}
     >
-      <Paper
+      {/* <Paper
         elevation={3}
         square={false}
         sx={{ width: "35vh", height: "74vh" }}
@@ -65,7 +65,7 @@ export default function UserProfile() {
             </CardActions>
           </CardActionArea>
         </Card>
-      </Paper>
+      </Paper> */}
 
       <Paper
         elevation={3}

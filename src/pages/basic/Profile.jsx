@@ -41,7 +41,7 @@ export default function Profile() {
           clickHandler: handleViewRacesClick,
         },
         {
-          text: "ASA",
+          text: "Registrations",
           icon: <ViewListIcon />,
           clickHandler: handleViewASAClick,
         },
