@@ -4,10 +4,13 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import { useState } from "react";
 import ContentPanel from "../layout/ContentPanel";
+import SellIcon from "@mui/icons-material/Sell";
+
 import UserASAList from "./entity/user/UserASAList";
 import UserProfile from "./entity/user/UserProfile";
 import UserRaceList from "./entity/user/UserRaceList";
 import UserClubsList from "./entity/user/UserClubsList";
+import UserRegistrationList from "./entity/user/UserRegistrationList";
 
 export default function Profile() {
   const [contentComponent, setContentComponent] = useState(<UserProfile />);
@@ -19,7 +22,7 @@ export default function Profile() {
     setContentComponent(<UserRaceList />);
   };
   const handleViewASAClick = (event) => {
-    setContentComponent(<UserASAList />);
+    setContentComponent(<UserRegistrationList />);
   };
   const handleViewUserClubsClick = (event) => {
     setContentComponent(<UserClubsList />);
@@ -42,7 +45,7 @@ export default function Profile() {
         },
         {
           text: "Registrations",
-          icon: <ViewListIcon />,
+          icon: <SellIcon />,
           clickHandler: handleViewASAClick,
         },
         {
