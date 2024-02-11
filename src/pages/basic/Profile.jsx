@@ -31,28 +31,28 @@ export default function Profile() {
   return (
     <ContentPanel
       // "User" text to be changed to peron's name
-      entityHeaderText="Mike Lowry"
+      entityHeaderText="Jedi Vikram"
       entityButtonPanel={[
         {
-          text: "Profile",
+          text: "Personal Details",
           icon: <PeopleIcon />,
           clickHandler: handleViewProfileClick,
         },
+        // {
+        //   text: "Races",
+        //   icon: <DirectionsRunIcon />,
+        //   clickHandler: handleViewRacesClick,
+        // },
         {
-          text: "Races",
-          icon: <DirectionsRunIcon />,
-          clickHandler: handleViewRacesClick,
-        },
-        {
-          text: "Registrations",
+          text: "ASA/Tag Registrations",
           icon: <SellIcon />,
           clickHandler: handleViewASAClick,
         },
-        {
-          text: "Clubs",
-          icon: <ApartmentIcon />,
-          clickHandler: handleViewUserClubsClick,
-        },
+        // {
+        //   text: "Club",
+        //   icon: <ApartmentIcon />,
+        //   clickHandler: handleViewUserClubsClick,
+        // },
       ]}
       entityComponent={contentComponent}
     />

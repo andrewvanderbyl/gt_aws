@@ -12,6 +12,9 @@ import ListSubheader from "@mui/material/ListSubheader";
 import * as React from "react";
 import { useNavigate } from "react-router";
 import MenuItem from "../../components/MenuItem";
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 export default function ListItems() {
   let navigate = useNavigate();
@@ -32,6 +35,16 @@ export default function ListItems() {
         menuIcon={<BusinessIcon />}
         menuClickNav={"/clubs"}
       />
+      <MenuItem
+        menuText={"Future Events"}
+        menuIcon={<EventAvailableIcon />}
+        menuClickNav={"/events"}
+      />
+      <MenuItem
+        menuText={"Results"}
+        menuIcon={<EmojiEventsIcon />}
+        menuClickNav={"/results"}
+      />
       <ListItemButton onClick={logout}>
         <ListItemIcon>
           <PowerSettingsNew />
@@ -44,11 +57,11 @@ export default function ListItems() {
       <ListSubheader component="div" inset>
         Administration
       </ListSubheader>
-      {/* <MenuItem
+      <MenuItem
         menuText={"Privileges"}
-        menuIcon={<BadgeIcon />}
+        menuIcon={<VpnKeyIcon />}
         menuClickNav={"privileges"}
-      /> */}
+      />
       <MenuItem
         menuText={"Clubs"}
         menuIcon={<BusinessIcon />}

@@ -21,11 +21,29 @@ import { deepOrange, deepPurple } from "@mui/material/colors";
 
 const columns: GridColDef[] = [
   {
+    field: "year",
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "super-app-theme--header",
+    headerName: "YEAR",
+    width: 250,
+    flex: 1,
+  },
+  {
     field: "asa",
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
-    headerName: "REGISTRATION NUMBER",
+    headerName: "ASA NUMBER",
+    width: 250,
+    flex: 1,
+  },
+  {
+    field: "tagid",
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "super-app-theme--header",
+    headerName: "TAG ID",
     width: 250,
     flex: 1,
   },
@@ -34,22 +52,22 @@ const columns: GridColDef[] = [
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
-    headerName: "DATE",
+    headerName: "DATE OF TAG REGISTRATION",
     width: 150,
     flex: 1,
   },
 ];
 
 const rows = [
-  { id: 1, asa: "123456", asaDate: "01-01-2024" },
-  { id: 1, asa: "654321", asaDate: "01-01-2024" },
-  { id: 1, asa: "987654", asaDate: "01-01-2024" },
-  { id: 1, asa: "456789", asaDate: "01-01-2024" },
-  { id: 1, asa: "111111", asaDate: "01-01-2024" },
-  { id: 1, asa: "222222", asaDate: "01-01-2024" },
-  { id: 1, asa: "333333", asaDate: "01-01-2024" },
-  { id: 1, asa: "444444", asaDate: "01-01-2024" },
-  { id: 1, asa: "555555", asaDate: "01-01-2024" },
+  { id: 1, year: "2016", asa: "123456", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2017", asa: "654321", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2018", asa: "987654", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2019", asa: "456789", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2020", asa: "111111", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2021", asa: "222222", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2022", asa: "333333", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2023", asa: "444444", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
+  { id: 1, year: "2024", asa: "555555", tagid: "AA-BB-CC-DD",asaDate: "01-01-2024" },
 ];
 
 export default function UserRegistrationList() {

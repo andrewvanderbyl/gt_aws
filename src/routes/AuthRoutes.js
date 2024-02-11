@@ -9,6 +9,7 @@ export const AuthRoutes = [
     <Route key="Welcome" path="/" element={<AuthGuard component={<Layout />} />} >
         <Route key="Profile" path="profile" element={<AuthGuard component={<Profile />} />} />
         <Route key="Clubs" path="clubs" element={<AuthGuard component={<Club />} />} />
+        <Route key="Events" path="events" element={<AuthGuard component={<Club />} />} />
         <Route key="Clubs" path="admin/">
             <Route key="Clubs" path="clubs" element={<AuthGuard component={<AdminClubs />} />} />
         </Route>        

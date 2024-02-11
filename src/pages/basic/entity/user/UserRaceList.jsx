@@ -20,16 +20,16 @@ const columns: GridColDef[] = [
     width: 150,
     flex: 1,
   },
-  {
-    field: "cost",
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    headerName: "COST",
-    width: 150,
-    type: "number",
-    flex: 1,
-  },
+  // {
+  //   field: "cost",
+  //   headerAlign: "center",
+  //   align: "center",
+  //   headerClassName: "super-app-theme--header",
+  //   headerName: "COST",
+  //   width: 150,
+  //   type: "number",
+  //   flex: 1,
+  // },
   {
     field: "tagId",
     headerAlign: "center",
@@ -45,6 +45,15 @@ const columns: GridColDef[] = [
     align: "center",
     headerClassName: "super-app-theme--header",
     headerName: "POSITION",
+    width: 130,
+    flex: 1,
+  },
+  {
+    field: "age_category",
+    headerAlign: "center",
+    align: "center",
+    headerClassName: "super-app-theme--header",
+    headerName: "AGE CATEGORY",
     width: 130,
     flex: 1,
   },
@@ -67,6 +76,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -76,6 +86,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -85,6 +96,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -94,6 +106,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -103,6 +116,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -112,6 +126,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -121,6 +136,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -129,7 +145,8 @@ const rows = [
     raceDate: "01-01-2024",
     cost: 100,
     tagId: "AA-BB-CC-DD",
-    position: 200,
+    position: 200,    
+    age_category: "40-50",
     time: "9:45:00",
   },
   {
@@ -139,6 +156,7 @@ const rows = [
     cost: 100,
     tagId: "AA-BB-CC-DD",
     position: 200,
+    age_category: "40-50",
     time: "9:45:00",
   },
 ];

@@ -172,6 +172,35 @@ export default function UserProfile() {
             helperText="Email"
           />
         </Stack>
+        <Stack
+          direction={"column"}
+          spacing={0}
+          marginLeft={10}
+          marginRight={10}
+          marginTop={2}
+        >
+        <Typography variant="h6">Club:</Typography>
+        <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
+        </Stack>
+        <Stack
+          direction={"column"}
+          spacing={0}
+          marginLeft={10}
+          marginRight={10}
+          marginTop={2}
+        >
+          <TextField
+            required
+            id="club"
+            name="lastName"
+            label="Club"
+            fullWidth
+            autoComplete=""
+            variant="standard"
+            disabled
+            helperText="Club Name"
+          />
+        </Stack>
         <ButtonGroup
           sx={{
             display: "flex",
