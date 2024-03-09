@@ -1,7 +1,7 @@
 package za.co.runapp.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import za.co.runapp.entity.User;
 
-public interface UserRepository extends PagingAndSortingRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, String> {
 }
