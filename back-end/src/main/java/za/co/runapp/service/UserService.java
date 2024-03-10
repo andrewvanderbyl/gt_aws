@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.User;
-import za.co.runapp.exception.UserNotFoundException;
+import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.UserDto;
 
@@ -41,11 +41,11 @@ public class UserService {
                 .build();
     }
 
-    public UserDto fetchUserById(final String userId) throws UserNotFoundException {
+    public UserDto fetchUserById(final String userId) throws EntityNotFoundException {
 
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
-            throw new UserNotFoundException(String.format("No user found by id: %s", userId));
+            throw new EntityNotFoundException(String.format("No user found by id: %s", userId));
         }
 
         final User user = userOpt.get();

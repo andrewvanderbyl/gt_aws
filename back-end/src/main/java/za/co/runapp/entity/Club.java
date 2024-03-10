@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import za.co.runapp.rest.dto.ClubDto;
 
 import java.util.Set;
 
@@ -25,4 +26,15 @@ public class Club extends AbstractEntity {
 
     @ManyToMany(mappedBy = "clubs", fetch = FetchType.LAZY)
     private Set<User> users;
+    
+    public ClubDto toClubDto() {
+        return ClubDto.builder()
+                .id(getId())
+                .name(getName())
+                .country(getCountry())
+                .contact(getContact())
+                .email(getEmail())
+                .province(getProvince())
+                .build();
+    }
 }

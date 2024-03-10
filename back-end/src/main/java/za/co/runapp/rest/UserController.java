@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import za.co.runapp.exception.UserNotFoundException;
+import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.service.UserService;
 
@@ -41,7 +41,7 @@ public class UserController {
         try {
             UserDto userDto = userService.fetchUserById(userId);
             return Mono.just(ResponseEntity.ok(userDto));
-        } catch (UserNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             log.error("Error obtaining user", e);
             return Mono.just(ResponseEntity.badRequest().build());
         }
