@@ -2,11 +2,11 @@ package za.co.runapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.reactive.config.EnableWebFlux;
 
 @SpringBootApplication
-//@EnableWebFlux
+@EnableJpaAuditing
 @EnableJpaRepositories(basePackages = "za.co.runapp.repository")
 public class Application {
 
