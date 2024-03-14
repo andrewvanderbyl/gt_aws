@@ -9,9 +9,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import za.co.runapp.rest.dto.EventDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Data
@@ -29,4 +30,13 @@ public class Event extends AbstractEntity {
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private Set<UserEvent> userEvents;
+
+    public EventDto toEventDto() {
+        return EventDto.builder()
+                .id(getId())
+                .name(getName())
+                .detail(getDetail())
+                .date(date.format(DateTimeFormatter.ISO_DATE))
+                .build();
+    }
 }

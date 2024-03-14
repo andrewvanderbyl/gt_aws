@@ -17,7 +17,6 @@ import za.co.runapp.service.RaceService;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@Service
 @RequestMapping("/races")
 public class RaceController {
 

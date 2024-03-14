@@ -1,7 +1,7 @@
 package za.co.runapp.repository;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import za.co.runapp.entity.Event;
 
-public interface EventRepository extends PagingAndSortingRepository<Event, String> {
+public interface EventRepository extends JpaRepository<Event, String> {
 }
