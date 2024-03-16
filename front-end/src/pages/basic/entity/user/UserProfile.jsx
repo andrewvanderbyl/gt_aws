@@ -16,8 +16,26 @@ import {
   Typography,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { getUserById } from "../../../../remote/user/user-service";
+import { useEffect, useState } from "react";
 
 export default function UserProfile() {
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    password: "",
+    email: "",
+    contact: "",
+  });
+  console.log("Showing Profile Page");
+
+  useEffect(() => {
+    getUserById("e3c292b8-e799-4eb7-b7f7-7188584a260c").then((data) =>
+      setUserData(data)
+    );
+  }, []);
+
   return (
     <Stack
       direction={"row"}
@@ -70,7 +88,13 @@ export default function UserProfile() {
       <Paper
         elevation={3}
         square={false}
-        sx={{ width: "100%", height: "74vh" }}
+        sx={{
+          width: "100%",
+          height: "74vh",
+          "& .MuiInputBase-input.Mui-disabled": {
+            WebkitTextFillColor: "black",
+          },
+        }}
       >
         <Stack
           direction={"column"}
@@ -93,22 +117,22 @@ export default function UserProfile() {
             required
             id="firstName"
             name="firstName"
-            label="First name"
             fullWidth
             autoComplete="given-name"
             variant="standard"
             helperText="First Name"
+            value={userData.firstName}
             disabled
           />
           <TextField
             required
             id="lastName"
             name="lastName"
-            label="Last name"
             fullWidth
             autoComplete="family-name"
             variant="standard"
             helperText="Last Name"
+            value={userData.lastName}
             disabled
           />
         </Stack>
@@ -121,24 +145,25 @@ export default function UserProfile() {
         >
           <TextField
             required
-            id="firstName"
-            name="firstName"
-            label="Username"
+            id="userName"
+            name="userName"
             fullWidth
             autoComplete="given-name"
             variant="standard"
+            value={userData.username}
             disabled
             helperText="Username"
           />
           <TextField
             required
-            id="lastName"
-            name="lastName"
-            label="Password"
+            type="password"
+            id="password"
+            name="password"
             fullWidth
             autoComplete="family-name"
             variant="standard"
             helperText="Password"
+            value={userData.password}
             disabled
           />
         </Stack>
@@ -151,24 +176,24 @@ export default function UserProfile() {
         >
           <TextField
             required
-            id="firstName"
-            name="firstName"
-            label="Contact"
+            id="contact"
+            name="contact"
             fullWidth
             autoComplete="given-name"
             variant="standard"
             disabled
+            value={userData.contact}
             helperText="Contact"
           />
           <TextField
             required
-            id="lastName"
-            name="lastName"
-            label="Email"
+            id="email"
+            name="email"
             fullWidth
             autoComplete="family-name"
             variant="standard"
             disabled
+            value={userData.email}
             helperText="Email"
           />
         </Stack>
@@ -179,8 +204,8 @@ export default function UserProfile() {
           marginRight={10}
           marginTop={2}
         >
-        <Typography variant="h6">Club:</Typography>
-        <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
+          <Typography variant="h6">Club:</Typography>
+          <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
         </Stack>
         <Stack
           direction={"column"}
