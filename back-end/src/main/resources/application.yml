@@ -1,4 +1,7 @@
 spring:
+  sql:
+    init:
+      mode: ALWAYS
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33066/runapp?createDatabaseIfNotExist=true
@@ -6,5 +9,6 @@ spring:
     password: root
   jpa:
     show-sql: true
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: 'update'
