@@ -2,6 +2,8 @@ package za.co.runapp.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Asa;
 import za.co.runapp.entity.Tag;
@@ -10,6 +12,8 @@ import za.co.runapp.repository.AsaRepository;
 import za.co.runapp.repository.TagRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.AsaDto;
+import za.co.runapp.rest.dto.ClubDto;
+import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.TagDto;
 
 @Slf4j
@@ -38,5 +42,19 @@ public class RegistrationService {
 
         Tag persistedTag = tagRepository.saveAndFlush(toSave);
         return persistedTag.toTagDto();
+    }
+
+    public PageableDto<TagDto> fetchTagsForAsa(final String asaId, final String userId, final PageableDto pageableDto) {
+
+        Page<TagDto> events = tagRepository.findTagsByAsa(asaId, userId,
+                PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+
+        return PageableDto.<TagDto>builder()
+                .data(events.getContent())
+                .totalElements(events.getTotalElements())
+                .elementsPerPage(events.getPageable().getPageSize())
+                .currentPageNumber(events.getPageable().getPageNumber())
+                .totalPages(events.getTotalPages())
+                .build();
     }
 }

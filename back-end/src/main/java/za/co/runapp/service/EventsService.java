@@ -90,10 +90,6 @@ public class EventsService {
         Page<EventDto> events = userEventRepository.findEventByUser(user,
                 PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
 
-//        List<EventDto> eventDtoList = events.stream()
-//                .map(userEvent -> userEvent.toEventDto())
-//                .toList();
-
         return PageableDto.<EventDto>builder()
                 .data(events.getContent())
                 .totalElements(events.getTotalElements())

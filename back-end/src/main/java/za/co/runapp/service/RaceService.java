@@ -26,10 +26,10 @@ public class RaceService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         Race toSave = Race.builder()
-                .name(raceDto.name())
-                .cost(BigDecimal.valueOf(raceDto.cost()))
-                .distance(raceDto.distance())
-                .date(LocalDateTime.of(LocalDate.parse(raceDto.date(), formatter), LocalTime.of(0,0)))
+                .name(raceDto.getName())
+                .cost(BigDecimal.valueOf(raceDto.getCost()))
+                .distance(raceDto.getDistance())
+                .date(LocalDateTime.of(LocalDate.parse(raceDto.getDate(), formatter), LocalTime.of(0,0)))
                 .build();
 
         Race persistedRace = raceRepository.saveAndFlush(toSave);

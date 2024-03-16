@@ -41,14 +41,6 @@ public class EventsController {
         return Mono.just(ResponseEntity.ok(events));
     }
 
-    @GetMapping("/")
-    public Mono<ResponseEntity<PageableDto<EventDto>>> getEventsForUser(
-            @RequestBody final PageableDto pageableDto, @RequestHeader("userId") final String userId) {
-
-        PageableDto<EventDto> events = eventsService.getEvents(userId, pageableDto);
-        return Mono.just(ResponseEntity.ok(events));
-    }
-
     @PostMapping("/{eventId}/register")
     public Mono<ResponseEntity> registerEventForUser(
             @PathVariable("eventId") final String eventId,

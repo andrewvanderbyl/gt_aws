@@ -7,6 +7,7 @@ import za.co.runapp.entity.Club;
 import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.repository.ClubRepository;
 import za.co.runapp.rest.dto.ClubDto;
+import za.co.runapp.rest.dto.PageableDto;
 
 import java.util.Optional;
 
@@ -48,5 +49,4 @@ public class ClubService {
 
         clubRepository.registerUserWithAClub(userId, clubId);
     }
-
 }
