@@ -1,40 +1,23 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import {
-  Avatar,
   Button,
   ButtonGroup,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardHeader,
   Divider,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { deepPurple } from "@mui/material/colors";
-import { getUserById } from "../../../../remote/user/user-service";
-import { useEffect, useState } from "react";
+import { useGetUserById } from "../../../../remote/user/user-service";
+import { useLocation } from "react-router";
 
 export default function UserProfile() {
-  const [userData, setUserData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    password: "",
-    email: "",
-    contact: "",
-  });
-  console.log("Showing Profile Page");
+  const location = useLocation();
+  const data = location.state;
 
-  useEffect(() => {
-    getUserById("e3c292b8-e799-4eb7-b7f7-7188584a260c").then((data) =>
-      setUserData(data)
-    );
-  }, []);
+  console.log("User Id ", data);
+  const { userData, refreshItems, isLoading } = useGetUserById(data.id);
 
   return (
     <Stack
@@ -232,7 +215,7 @@ export default function UserProfile() {
             boxShadow: "0",
             flexDirection: "row",
             justifyContent: "center",
-            marginTop: 10,
+            marginTop: 3,
           }}
           variant="contained"
           aria-label="outlined primary button group"

@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Copyright from "../components/Copyright";
+import { api } from "../remote/api";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -54,6 +55,14 @@ export default function Register() {
         return !!!newVal;
       },
     },
+    contact: {
+      value: "",
+      error: false,
+      errorMsg: "Contact is required",
+      isValid(newVal) {
+        return !!!newVal;
+      },
+    },
   });
 
   const handleChange = (event) => {
@@ -85,10 +94,20 @@ export default function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const createUserPayload = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
+      contact: data.get("contact"),
+      username: data.get("email"),
+    };
+
+    api
+      .post(process.env.REACT_APP_cREATE_USER, createUserPayload)
+      .then((data) => {
+        navigate("/", { state: data });
+      });
   };
 
   return (
@@ -185,6 +204,21 @@ export default function Register() {
                     formValues.password.error && formValues.password.errorMsg
                   }
                   error={formValues.password.error}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="contact"
+                  label="Contact"
+                  id="contact"
+                  value={formValues.contact.value}
+                  onChange={handleChange}
+                  helperText={
+                    formValues.contact.error && formValues.contact.errorMsg
+                  }
+                  error={formValues.contact.error}
                 />
               </Grid>
             </Grid>

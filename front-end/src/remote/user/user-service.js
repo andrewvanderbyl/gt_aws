@@ -1,22 +1,30 @@
-import axios from "axios";
+import { api } from "../api";
+import { useEffect, useState } from "react";
 
-const baseUrl = process.env.REACT_APP_API_ENDPOINT;
+export const useGetUserById = (userId) => {
+  const [userData, setUserData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    password: "",
+    email: "",
+    contact: "",
+  });
+  const [refresh, setRefresh] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-async function getUserById(userId) {
-  let uri =
-    baseUrl + process.env.REACT_APP_GET_USER_BY_ID.replace("{userId}", userId);
+  useEffect(() => {
+    let uri = process.env.REACT_APP_GET_USER_BY_ID.replace("{userId}", userId);
+    setIsLoading(true);
+    api.get(uri).then((data) => {
+      setUserData(data);
+      setIsLoading(false);
+    });
+  }, [refresh]);
 
-  const config = {
-    method: "get",
-    url: uri,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
-    },
+  const refreshItems = () => {
+    setRefresh(!refresh);
   };
 
-  let userData = await axios.request(config).then((res) => res.data);
-  return userData;
-}
-
-export { getUserById };
+  return { userData, refreshItems, isLoading };
+};
