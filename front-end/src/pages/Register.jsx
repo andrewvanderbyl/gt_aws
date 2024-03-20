@@ -13,14 +13,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import Copyright from "../components/Copyright";
 import { api } from "../remote/api";
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import { useAuth } from "../context/AuthUserContext";
 
 const defaultTheme = createTheme();
 
 export default function Register() {
   let navigate = useNavigate();
 
+  const authUserContext = useAuth();
   const [formSubmitDisable, setFormSubmitDisable] = useState(true);
   const [formValues, setFormValues] = useState({
     email: {
@@ -104,9 +104,10 @@ export default function Register() {
     };
 
     api
-      .post(process.env.REACT_APP_cREATE_USER, createUserPayload)
+      .post(process.env.REACT_APP_CREATE_USER, createUserPayload)
       .then((data) => {
-        navigate("/", { state: data });
+        authUserContext.setStorageValue(data);
+        navigate("/");
       });
   };
 

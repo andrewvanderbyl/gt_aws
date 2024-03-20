@@ -1,16 +1,16 @@
 import PeopleIcon from "@mui/icons-material/People";
+import SellIcon from "@mui/icons-material/Sell";
 import { useState } from "react";
 import ContentPanel from "../layout/ContentPanel";
-import SellIcon from "@mui/icons-material/Sell";
 
+import { useAuth } from "../../context/AuthUserContext";
 import UserProfile from "./entity/user/UserProfile";
 import UserRegistrationList from "./entity/user/UserRegistrationList";
-import { useLocation } from "react-router";
 
 export default function Profile() {
-  const location = useLocation();
-  const data = location.state;
-  const name = `${data.firstName} ${data.lastName}`;
+  const authUserContext = useAuth();
+  const userData = authUserContext.localStorageValue;
+  const name = `${userData.firstName} ${userData.lastName}`;
 
   const [contentComponent, setContentComponent] = useState(<UserProfile />);
 

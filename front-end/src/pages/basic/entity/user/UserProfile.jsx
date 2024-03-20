@@ -9,15 +9,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useGetUserById } from "../../../../remote/user/user-service";
-import { useLocation } from "react-router";
+import { useAuth } from "../../../../context/AuthUserContext";
 
 export default function UserProfile() {
-  const location = useLocation();
-  const data = location.state;
+  const authUserContext = useAuth();
+  const userData = authUserContext.localStorageValue;
 
-  console.log("User Id ", data);
-  const { userData, refreshItems, isLoading } = useGetUserById(data.id);
+  console.log("User Id ", userData.id);
+  // const { userData, refreshItems, isLoading } = useGetUserById(authUser.id);
 
   return (
     <Stack

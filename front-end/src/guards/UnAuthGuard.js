@@ -1,11 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../context/AuthUserContext";
 
-const UnAuthGuard = ({component}) => {
-    useEffect(() => {
-        console.log("UnAuth Guard")
-    }, [component]);
+const UnAuthGuard = ({ component }) => {
+  const [status, setStatus] = useState(false);
+  const navigate = useNavigate();
+  const authUserContext = useAuth();
+  console.log("User", authUserContext.localStorageValue);
 
-    return <React.Fragment>{component}</React.Fragment>
-}
+  useEffect(() => {
+    console.log("UnAuth Guard");
+    checkUser();
+  }, [component]);
 
-export default UnAuthGuard
+  const checkUser = async () => {
+    if (!authUserContext.localStorageValue) {
+      // ToDo: remove user from local storage
+      authUserContext.removeStorageValue();
+    }
+
+    setStatus(true);
+  };
+
+  if (status) {
+    return <React.Fragment>{component}</React.Fragment>;
+  } else {
+    return <React.Fragment></React.Fragment>;
+  }
+};
+
+export default UnAuthGuard;
