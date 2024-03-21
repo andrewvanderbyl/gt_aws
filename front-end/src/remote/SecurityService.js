@@ -1,4 +1,4 @@
-import { api } from "../api";
+import { api } from "./api";
 
 export const SignIn = async (props) => {
   let uri = process.env.REACT_APP_SIGN_IN;

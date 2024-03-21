@@ -6,10 +6,8 @@ export default function UnProtectedRouteGuard({ component }) {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   const authUserContext = useAuth();
-  console.log("User", authUserContext.localStorageValue);
 
   useEffect(() => {
-    console.log("UnAuth Guard");
     checkUser();
   }, [component]);
 

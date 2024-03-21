@@ -1,4 +1,4 @@
-import { SignIn } from "../../remote/security/SecurityService";
+import { SignIn } from "../../remote/SecurityService";
 import { useAuth as useAuthContext } from "../context/AuthUserContext";
 
 export const useUser = () => {

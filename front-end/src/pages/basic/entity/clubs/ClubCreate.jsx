@@ -13,8 +13,35 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
+import { useClub } from "../../../../util/hooks/clubHook";
+import { useLocalStorage } from "../../../../util/hooks/localStorageHook";
 
 export default function ClubCreate() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [contact, setContact] = useState("");
+  const [province, setProvince] = useState("Western Cape");
+  const [country, setCountry] = useState("South Africa");
+
+  const clubHook = useClub();
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const clubData = {
+      name,
+      email,
+      contact,
+      province,
+      country,
+    };
+
+    const storedClub = await clubHook.createClub(clubData);
+
+    console.log(storedClub);
+  }
+
   return (
     <Stack
       direction={"row"}
@@ -88,25 +115,15 @@ export default function ClubCreate() {
         >
           <TextField
             required
-            id="firstName"
-            name="firstName"
+            id="name"
+            name="name"
             label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             fullWidth
-            autoComplete="given-name"
             variant="standard"
             helperText="Name of your club"
           />
-          {/* <TextField
-            required
-            id="lastName"
-            name="lastName"
-            label="Last name"
-            fullWidth
-            autoComplete="family-name"
-            variant="standard"
-            helperText="Last Name"
-            disabled
-          /> */}
         </Stack>
         <Stack
           direction={"row"}
@@ -117,24 +134,25 @@ export default function ClubCreate() {
         >
           <TextField
             required
-            id="firstName"
-            name="firstName"
+            id="contact"
+            name="contact"
             label="Contact"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
             fullWidth
-            autoComplete="given-name"
             variant="standard"
-            disabled
-            helperText="Contact"
+            helperText="Contact Number"
           />
           <TextField
             required
-            id="lastName"
-            name="lastName"
+            id="email"
+            name="email"
             label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             fullWidth
-            autoComplete="family-name"
             variant="standard"
-            disabled
             helperText="Email"
           />
         </Stack>
@@ -146,33 +164,35 @@ export default function ClubCreate() {
           marginTop={3}
         >
           <FormControl fullWidth>
-            <InputLabel id="province-select-label">Province</InputLabel>
+            <InputLabel id="province">Province</InputLabel>
 
             <Select
-              // value={age}
+              value={province}
               // onChange={handleChange}
-              labelId="province-select-label"
+              labelId="province"
               label="Select province"
+              onChange={(e) => setProvince(e.target.value)}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value={10}>Eastern Cape</MenuItem>
-              <MenuItem value={20}>Free State</MenuItem>
-              <MenuItem value={30}>Gauteng</MenuItem>
-              <MenuItem value={40}>KwaZulu-Natal</MenuItem>
-              <MenuItem value={50}>Limpopo</MenuItem>
-              <MenuItem value={60}>Mpumalanga</MenuItem>
-              <MenuItem value={70}>Northern Cape</MenuItem>
-              <MenuItem value={80}>North West</MenuItem>
-              <MenuItem value={90}>Western Cape</MenuItem>
+              <MenuItem value={"Eastern Cape"}>Eastern Cape</MenuItem>
+              <MenuItem value={"Free State"}>Free State</MenuItem>
+              <MenuItem value={"Gauteng"}>Gauteng</MenuItem>
+              <MenuItem value={"KwaZulu-Natal"}>KwaZulu-Natal</MenuItem>
+              <MenuItem value={"Limpopo"}>Limpopo</MenuItem>
+              <MenuItem value={"Mpumalanga"}>Mpumalanga</MenuItem>
+              <MenuItem value={"Northern Cape"}>Northern Cape</MenuItem>
+              <MenuItem value={"North West"}>North West</MenuItem>
+              <MenuItem value={"Western Cape"}>Western Cape</MenuItem>
             </Select>
           </FormControl>
           <TextField
-            id="lastName"
-            name="lastName"
+            id="country"
+            name="country"
             label="South Africa"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
             fullWidth
-            autoComplete="family-name"
             variant="standard"
             helperText="Country"
             disabled
@@ -191,7 +211,12 @@ export default function ClubCreate() {
           aria-label="outlined primary button group"
         >
           <Button startIcon={<CancelIcon />}>Cancel</Button>
-          <Button startIcon={<SaveIcon />} sx={{ marginLeft: 5 }}>
+          <Button
+            type="Submit"
+            startIcon={<SaveIcon />}
+            sx={{ marginLeft: 5 }}
+            onClick={handleSubmit}
+          >
             Save
           </Button>
         </ButtonGroup>

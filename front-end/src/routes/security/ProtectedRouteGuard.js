@@ -6,16 +6,13 @@ export default function ProtectedRouteGuard({ component }) {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   const authUserContext = useAuth();
-  console.log("User", authUserContext.localStorageValue);
 
   useEffect(() => {
-    console.log("Auth Guard");
     checkUser();
   }, [component]);
 
   const checkUser = async () => {
     if (!authUserContext.localStorageValue) {
-      console.log("Invalid user, returning to login");
       navigate("/login");
     }
     setStatus(true);
