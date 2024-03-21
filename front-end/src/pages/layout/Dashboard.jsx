@@ -5,18 +5,18 @@ import * as React from "react";
 import { useOutlet } from "react-router";
 import Profile from "../basic/Profile";
 import Footer from "./Footer";
-import Header from "./Header";
+import LeftMenuPanel from "./LeftMenuPanel";
 
 const defaultTheme = createTheme();
 
-export default function Layout() {
+export default function Dashboard() {
   const outlet = useOutlet();
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Header />
+        <LeftMenuPanel />
         <Box
           component="main"
           sx={{

@@ -2,7 +2,7 @@ import { Route } from "react-router";
 import AdminClubs from "../pages/admin/clubs/AdminClubs";
 import Club from "../pages/basic/Club";
 import Profile from "../pages/basic/Profile";
-import Layout from "../pages/layout/Layout";
+import Dashboard from "../pages/layout/Dashboard";
 import Events from "../pages/basic/Events";
 import Results from "../pages/basic/Results";
 import SignIn from "../pages/security/SignIn";
@@ -15,7 +15,7 @@ export const AppRoutes = [
   <Route
     key="Welcome"
     path="/"
-    element={<ProtectedRouteGuard component={<Layout />} />}
+    element={<ProtectedRouteGuard component={<Dashboard />} />}
   >
     <Route
       key="Profile"
