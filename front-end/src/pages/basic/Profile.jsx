@@ -3,7 +3,7 @@ import SellIcon from "@mui/icons-material/Sell";
 import { useState } from "react";
 import ContentPanel from "../layout/ContentPanel";
 
-import { useAuth } from "../../context/AuthUserContext";
+import { useAuth } from "../../util/context/AuthUserContext";
 import UserProfile from "./entity/user/UserProfile";
 import UserRegistrationList from "./entity/user/UserRegistrationList";
 

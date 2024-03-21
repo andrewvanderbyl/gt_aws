@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import za.co.runapp.rest.dto.UserDto;
 
 import java.util.Set;
 
@@ -56,4 +57,16 @@ public class User extends AbstractEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Asa> asaList;
+
+    public UserDto toUserDto() {
+        return UserDto.builder()
+                .id(getId())
+                .firstName(getFirstName())
+                .lastName(getLastName())
+                .username(getUsername())
+                .password(getPassword())
+                .email(getEmail())
+                .contact(getContact())
+                .build();
+    }
 }

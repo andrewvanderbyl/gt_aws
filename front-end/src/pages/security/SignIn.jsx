@@ -11,13 +11,15 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import Copyright from "../components/Copyright";
+import Copyright from "../../components/Copyright";
+import { useUser } from "../../util/hooks/userHook";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+const SignIn = () => {
   let navigate = useNavigate();
 
+  const { login, logout } = useUser();
   const [formSubmitDisable, setFormSubmitDisable] = useState(true);
   const [formValues, setFormValues] = useState({
     email: {
@@ -64,17 +66,20 @@ export default function SignIn() {
     setFormSubmitDisable(errors.some((item) => item === true));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    console.log(data);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
 
-    if (data.get("email") && data.get("password")) {
-      navigate("/");
-    }
+    await login({
+      username: data.get("email"),
+      password: data.get("password"),
+    });
+    navigate("/");
   };
 
   return (
@@ -162,4 +167,6 @@ export default function SignIn() {
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default SignIn;

@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useAuth } from "../../../../context/AuthUserContext";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 
 export default function UserProfile() {
   const authUserContext = useAuth();

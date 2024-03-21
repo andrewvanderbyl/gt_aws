@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import za.co.runapp.service.RaceService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/races")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RaceController {
 
     private final RaceService raceService;

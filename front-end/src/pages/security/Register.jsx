@@ -11,9 +11,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import Copyright from "../components/Copyright";
-import { api } from "../remote/api";
-import { useAuth } from "../context/AuthUserContext";
+import Copyright from "../../components/Copyright";
+import { api } from "../../remote/api";
+import { useAuth } from "../../util/context/AuthUserContext";
 
 const defaultTheme = createTheme();
 

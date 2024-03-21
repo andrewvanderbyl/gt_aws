@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../context/AuthUserContext";
+import { useAuth } from "../../util/context/AuthUserContext";
 import { useNavigate } from "react-router";
 
-const AuthGuard = ({ component }) => {
+export default function ProtectedRouteGuard({ component }) {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   const authUserContext = useAuth();
@@ -27,6 +27,4 @@ const AuthGuard = ({ component }) => {
   } else {
     return <React.Fragment></React.Fragment>;
   }
-};
-
-export default AuthGuard;
+}
