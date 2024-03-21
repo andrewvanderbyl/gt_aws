@@ -19,7 +19,7 @@ const defaultTheme = createTheme();
 const SignIn = () => {
   let navigate = useNavigate();
 
-  const { login, logout } = useUser();
+  const userHook = useUser();
   const [formSubmitDisable, setFormSubmitDisable] = useState(true);
   const [formValues, setFormValues] = useState({
     email: {
@@ -69,13 +69,8 @@ const SignIn = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
 
-    await login({
+    await userHook.login({
       username: data.get("email"),
       password: data.get("password"),
     });
