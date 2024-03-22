@@ -15,9 +15,6 @@ export default function UserProfile() {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
 
-  console.log("User Id ", userData.id);
-  // const { userData, refreshItems, isLoading } = useGetUserById(authUser.id);
-
   return (
     <Stack
       direction={"row"}

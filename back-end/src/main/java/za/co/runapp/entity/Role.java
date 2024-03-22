@@ -28,7 +28,7 @@ public class Role extends AbstractEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "role_permissions",
-    joinColumns = @JoinColumn(name = "user_id"),
+    joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private Set<Permissions> permissions;

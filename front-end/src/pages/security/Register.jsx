@@ -12,8 +12,8 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import Copyright from "../../components/Copyright";
-import { api } from "../../remote/api";
 import { useAuth } from "../../util/context/AuthUserContext";
+import { useUser } from "../../util/hooks/userHook";
 
 const defaultTheme = createTheme();
 
@@ -21,6 +21,7 @@ export default function Register() {
   let navigate = useNavigate();
 
   const authUserContext = useAuth();
+  const userHook = useUser();
   const [formSubmitDisable, setFormSubmitDisable] = useState(true);
   const [formValues, setFormValues] = useState({
     email: {
@@ -91,7 +92,7 @@ export default function Register() {
     setFormSubmitDisable(errors.some((item) => item === true));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const createUserPayload = {
@@ -103,12 +104,9 @@ export default function Register() {
       username: data.get("email"),
     };
 
-    api
-      .post(process.env.REACT_APP_CREATE_USER, createUserPayload)
-      .then((data) => {
-        authUserContext.setStorageValue(data);
-        navigate("/");
-      });
+    const registeredUserData = await userHook.register(createUserPayload);
+    authUserContext.setStorageValue(registeredUserData);
+    navigate("/");
   };
 
   return (

@@ -1,11 +1,15 @@
-import { CreateClub } from "../../remote/ClubService";
+import ClubService from "../../remote/ClubService";
 
 export const useClub = () => {
   const createClub = async (props) => {
-    return await CreateClub(props).then((clubData) => {
+    return await ClubService.createClub(props).then((clubData) => {
       return clubData;
     });
   };
 
-  return { createClub };
+  const fetchClubList = async (props) => {
+    return await ClubService.fetchClubList(props).then((clubs) => clubs);
+  };
+
+  return { createClub, fetchClubList };
 };

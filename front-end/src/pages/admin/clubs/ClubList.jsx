@@ -1,5 +1,7 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useClub } from "../../../util/hooks/clubHook";
+import { useEffect, useState } from "react";
 
 const columns = [
   {
@@ -49,82 +51,28 @@ const columns = [
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 2,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 3,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 4,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 5,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 6,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 7,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 8,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 9,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-];
-
 export default function ClubList() {
+  const clubHook = useClub();
+  const [clubList, setClubList] = useState([]);
+  const [rows, setRows] = useState(0);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 6,
+  });
+
+  useEffect(() => {
+    (async () => {
+      const newRows = await clubHook.fetchClubList({
+        page: 0,
+        size: 6,
+      });
+      console.log(newRows);
+      setClubList(newRows.data);
+      setRows(newRows.pages);
+      setPaginationModel({ page: newRows.page, pageSize: newRows.size });
+    })();
+  }, []);
+
   return (
     <Grid item xs={12} sx={{ mt: 2 }}>
       <Paper
@@ -143,14 +91,16 @@ export default function ClubList() {
               color: "white",
             },
           }}
-          rows={rows}
+          rows={clubList}
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
+          rowCount={rows}
+          // paginationMode="server"
+          paginationModel={paginationModel}
+          pageSizeOptions={[6]}
+          keepNonExistentRowsSelected
+          getRowId={(row) => row.id}
+          pagination
+          // rowHeight={45}
         />
       </Paper>
     </Grid>

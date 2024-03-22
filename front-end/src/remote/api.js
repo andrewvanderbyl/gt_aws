@@ -21,6 +21,32 @@ export const api = {
 
     return await axios.request(config).then((res) => res.data);
   },
+  getWithBody: async (endpoint, body, userId = null) => {
+    let data = JSON.stringify(body);
+
+    let config = {
+      method: "get",
+      url: `${baseUrl}${endpoint}`,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": true,
+      },
+      data: data,
+    };
+
+    return await axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        return response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // return await axios.request(config).then((res) => res.data);
+  },
   post: async (endpoint, body, userId = null) => {
     let headers = {
       "Access-Control-Allow-Origin": "*",

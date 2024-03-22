@@ -11,7 +11,7 @@ export default function ProtectedRouteGuard({ component }) {
     checkUser();
   }, [component]);
 
-  const checkUser = async () => {
+  const checkUser = () => {
     if (!authUserContext.localStorageValue) {
       navigate("/login");
     }

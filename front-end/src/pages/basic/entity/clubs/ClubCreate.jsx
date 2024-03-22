@@ -38,8 +38,6 @@ export default function ClubCreate() {
     };
 
     const storedClub = await clubHook.createClub(clubData);
-
-    console.log(storedClub);
   }
 
   return (

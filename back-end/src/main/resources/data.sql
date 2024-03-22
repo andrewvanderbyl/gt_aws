@@ -1,9 +1,9 @@
 INSERT IGNORE INTO `role`(id, date_created, date_updated, version, name)
-VALUES('430e083c-e3cf-11ee-b074-0242ac110002', now(), now(), 0, 'ADMIN');
+VALUES('1', now(), now(), 0, 'ADMIN');
 INSERT IGNORE INTO `role`(id, date_created, date_updated, version, name)
-VALUES('430fa4ba-e3cf-11ee-b074-0242ac110002', now(), now(), 0, 'USER');
+VALUES('2', now(), now(), 0, 'USER');
 INSERT IGNORE INTO `role`(id, date_created, date_updated, version, name)
-VALUES('431161fd-e3cf-11ee-b074-0242ac110002', now(), now(), 0, 'MANAGER');
+VALUES('3', now(), now(), 0, 'MANAGER');
 
 -- USER PERMISSIONS
 INSERT IGNORE INTO runapp.permissions (id, date_created, date_updated, version, name)
@@ -76,3 +76,95 @@ INSERT IGNORE INTO runapp.permissions (id, date_created, date_updated, version, 
 VALUES('29', now(), now(), 0, 'EVENT_UPDATE');
 INSERT IGNORE INTO runapp.permissions (id, date_created, date_updated, version, name)
 VALUES('30', now(), now(), 0, 'EVENT_LIST');
+
+-- ADMIN Role Permissions
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '1');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '2');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '3');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '4');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '5');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '6');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '7');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '8');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '9');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '10');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '11');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '12');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '13');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '14');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '15');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '16');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '17');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '18');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '19');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '20');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '21');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '22');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '23');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '24');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '25');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '26');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '27');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '28');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '29');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('1', '30');
+
+-- USER Role Permissions
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '1');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '2');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '3');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '4');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '6');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '10');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '11');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '12');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '13');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '14');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '15');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '16');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '17');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '18');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '19');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '20');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '21');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '25');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '26');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('2', '30');
+
+-- MANAGER Role Permissions
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '1');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '2');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '3');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '4');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '5');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '6');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '7');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '8');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '9');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '11');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '12');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '13');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '14');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '15');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '16');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '17');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '18');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '19');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '20');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '21');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '22');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '23');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '24');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '25');
+
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '26');
+INSERT IGNORE INTO runapp.role_permissions (role_id, permission_id) VALUES('3', '30');

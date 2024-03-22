@@ -1,17 +1,26 @@
 import { api } from "./api";
 
-export const CreateClub = async (props) => {
-  let uri = process.env.REACT_APP_CREATE_CLUB;
+export default {
+  createClub: async (props) => {
+    const payload = {
+      name: props.name,
+      email: props.email,
+      contact: props.contact,
+      province: props.province,
+      country: props.country,
+    };
 
-  const payload = {
-    name: props.name,
-    email: props.email,
-    contact: props.contact,
-    province: props.province,
-    country: props.country,
-  };
-
-  return await api.post(uri, payload).then((data) => {
-    return data;
-  });
+    return await api
+      .post(process.env.REACT_APP_CREATE_CLUB, payload)
+      .then((data) => {
+        return data;
+      });
+  },
+  fetchClubList: async (props) => {
+    return await api
+      .post(process.env.REACT_APP_CLUB_LIST, props)
+      .then((data) => {
+        return data;
+      });
+  },
 };
