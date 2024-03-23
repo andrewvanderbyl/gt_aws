@@ -60,9 +60,14 @@ export default function ListItems() {
         Administration
       </ListSubheader>
       <MenuItem
-        menuText={"Privileges"}
+        menuText={"Security"}
         menuIcon={<VpnKeyIcon />}
         menuClickNav={"privileges"}
+      />
+      <MenuItem
+        menuText={"Events"}
+        menuIcon={<EventAvailableIcon />}
+        menuClickNav={"/admin/events"}
       />
       <MenuItem
         menuText={"Clubs"}

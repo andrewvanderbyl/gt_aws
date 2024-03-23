@@ -3,7 +3,7 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import PeopleIcon from "@mui/icons-material/People";
 import { useState } from "react";
 import ClubList from "./ClubList";
-import ClubCreate from "../../basic/entity/clubs/ClubCreate";
+import ClubCreate from "./ClubCreate";
 import ClubMemberList from "../../basic/entity/clubs/ClubMemberList";
 import ContentPanel from "../../layout/ContentPanel";
 

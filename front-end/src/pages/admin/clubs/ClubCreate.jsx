@@ -14,8 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useClub } from "../../../../util/hooks/clubHook";
-import { useLocalStorage } from "../../../../util/hooks/localStorageHook";
+import { useClub } from "../../../util/hooks/clubHook";
 
 export default function ClubCreate() {
   const [name, setName] = useState("");
@@ -49,46 +48,6 @@ export default function ClubCreate() {
       alignItems="flex-start"
       spacing={5}
     >
-      {/* <Paper
-        elevation={3}
-        square={false}
-        sx={{ width: "35vh", height: "74vh" }}
-      >
-        <Card sx={{ boxShadow: 0 }}>
-          <CardActionArea>
-            <CardHeader
-              avatar={
-                <Avatar
-                  sx={{
-                    bgcolor: deepPurple[500],
-                    width: "30vh",
-                    height: "25vh",
-                  }}
-                  variant="square"
-                >
-                  ML
-                </Avatar>
-              }
-            ></CardHeader>
-            <CardActions
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
-              }}
-            >
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<EditIcon />}
-              >
-                Edit Profile
-              </Button>
-            </CardActions>
-          </CardActionArea>
-        </Card>
-      </Paper> */}
-
       <Paper
         elevation={3}
         square={false}

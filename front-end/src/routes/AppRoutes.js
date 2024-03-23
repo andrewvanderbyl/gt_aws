@@ -9,6 +9,7 @@ import SignIn from "../pages/security/SignIn";
 import Register from "../pages/security/Register";
 import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
 import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
+import AdminEvents from "../pages/admin/events/AdminEvents";
 
 export const AppRoutes = [
   // Protected Routes
@@ -42,6 +43,11 @@ export const AppRoutes = [
         key="Clubs"
         path="clubs"
         element={<ProtectedRouteGuard component={<AdminClubs />} />}
+      />
+      <Route
+        key="AdminEvents"
+        path="events"
+        element={<ProtectedRouteGuard component={<AdminEvents />} />}
       />
     </Route>
   </Route>,
