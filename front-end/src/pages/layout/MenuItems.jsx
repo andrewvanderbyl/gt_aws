@@ -60,9 +60,9 @@ export default function ListItems() {
         Administration
       </ListSubheader>
       <MenuItem
-        menuText={"Security"}
-        menuIcon={<VpnKeyIcon />}
-        menuClickNav={"privileges"}
+        menuText={"Clubs"}
+        menuIcon={<BusinessIcon />}
+        menuClickNav={"/admin/clubs"}
       />
       <MenuItem
         menuText={"Events"}
@@ -70,9 +70,9 @@ export default function ListItems() {
         menuClickNav={"/admin/events"}
       />
       <MenuItem
-        menuText={"Clubs"}
-        menuIcon={<BusinessIcon />}
-        menuClickNav={"/admin/clubs"}
+        menuText={"Security"}
+        menuIcon={<VpnKeyIcon />}
+        menuClickNav={"/admin/security"}
       />
     </React.Fragment>
   );
