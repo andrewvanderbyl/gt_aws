@@ -3,10 +3,7 @@ package za.co.runapp.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Event;
 import za.co.runapp.entity.User;
@@ -18,9 +15,7 @@ import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -35,12 +30,10 @@ public class EventsService {
 
     public EventDto createEvent(final EventDto eventDto) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         Event toPersist = Event.builder()
                 .name(eventDto.getName())
                 .detail(eventDto.getDetail())
-                .date(LocalDateTime.of(LocalDate.parse(eventDto.getDate(), formatter), LocalTime.of(0, 0)))
+                .date(LocalDateTime.parse(eventDto.getDate(), DateTimeFormatter.ISO_DATE_TIME))
                 .build();
 
         Event persisted = eventRepository.saveAndFlush(toPersist);
@@ -66,10 +59,15 @@ public class EventsService {
         userEventRepository.saveAndFlush(userEvent);
     }
 
-    public PageableDto<EventDto> getEvents(final PageableDto pageableDto) {
+    public PageableDto<EventDto> getEvents(final String eventType, final int page, final int size) {
 
-        Page<Event> events = eventRepository.findAll(
-                PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+        Page<Event> events;
+        if (eventType.equals("future")) {
+            events = eventRepository.findByDateGreaterThanEqual(LocalDateTime.now(), PageRequest.of(page, size));
+        } else {
+            events = eventRepository.findByDateLessThan(LocalDateTime.now(), PageRequest.of(page, size));
+
+        }
 
         List<EventDto> eventDtoList = events.stream()
                 .map(Event::toEventDto)

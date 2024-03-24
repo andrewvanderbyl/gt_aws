@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import za.co.runapp.rest.dto.EventDto;
@@ -35,11 +36,13 @@ public class EventsController {
         return Mono.just(ResponseEntity.ok(persistedEventDto));
     }
 
-    @GetMapping
+    @GetMapping("{type}")
     public Mono<ResponseEntity<PageableDto<EventDto>>> getEvents(
-            @RequestBody final PageableDto pageableDto) {
+            @PathVariable("type") final String eventType,
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size) {
 
-        PageableDto<EventDto> events = eventsService.getEvents(pageableDto);
+        PageableDto<EventDto> events = eventsService.getEvents(eventType, page, size);
         return Mono.just(ResponseEntity.ok(events));
     }
 

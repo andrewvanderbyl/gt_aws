@@ -3,16 +3,17 @@ import ViewListIcon from "@mui/icons-material/ViewList";
 import { useState } from "react";
 import ContentPanel from "../../layout/ContentPanel";
 import EventCreate from "./EventCreate";
-import EventList from "./EventList";
+import FutureEventList from "./FutureEventList";
+import PastEventList from "./PastEventList";
 
 export default function AdminEvents() {
   const [contentComponent, setContentComponent] = useState(<EventCreate />);
 
   const handleViewFutureEventsClick = (event) => {
-    setContentComponent(<EventList />);
+    setContentComponent(<FutureEventList />);
   };
   const handleViewPastEventsClick = (event) => {
-    setContentComponent(<EventList />);
+    setContentComponent(<PastEventList />);
   };
   const handleViewCreateEventClick = (event) => {
     setContentComponent(<EventCreate />);

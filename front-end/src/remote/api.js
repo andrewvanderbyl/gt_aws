@@ -21,18 +21,17 @@ export const api = {
 
     return await axios.request(config).then((res) => res.data);
   },
-  getWithBody: async (endpoint, body, userId = null) => {
-    let data = JSON.stringify(body);
-
+  getPaginated: async (endpoint, queryParams, userId = null) => {
     let config = {
       method: "get",
       url: `${baseUrl}${endpoint}`,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Credentials": true,
       },
-      data: data,
+      params: {
+        page: queryParams.page,
+        size: queryParams.size,
+      },
     };
 
     return await axios

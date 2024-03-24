@@ -36,7 +36,7 @@ public class Event extends AbstractEntity {
                 .id(getId())
                 .name(getName())
                 .detail(getDetail())
-                .date(date.format(DateTimeFormatter.ISO_DATE))
+                .date(date.format(DateTimeFormatter.ISO_DATE_TIME))
                 .build();
     }
 }

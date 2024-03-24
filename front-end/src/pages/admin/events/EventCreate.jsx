@@ -4,42 +4,42 @@ import {
   Button,
   ButtonGroup,
   Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { useClub } from "../../../util/hooks/clubHook";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useState } from "react";
+import { useEvent } from "../../../util/hooks/eventHook";
+import dayjs from "dayjs";
+import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 
 export default function EventCreate() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-  const [province, setProvince] = useState("Western Cape");
-  const [country, setCountry] = useState("South Africa");
+  const [detail, setDetail] = useState("");
+  const [date, setDate] = useState(new Date());
 
-  const clubHook = useClub();
+  const eventHook = useEvent();
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const clubData = {
+    let parsedDate = new Date(date);
+    console.log(parsedDate);
+    let adjustedDate = new Date(
+      parsedDate.getTime() - parsedDate.getTimezoneOffset() * 60000
+    );
+
+    const eventData = {
       name,
-      email,
-      contact,
-      province,
-      country,
+      date: adjustedDate,
+      detail,
     };
 
-    const storedClub = await clubHook.createClub(clubData);
+    const storedEvent = await eventHook.createEvent(eventData);
   }
 
   return (
@@ -82,11 +82,18 @@ export default function EventCreate() {
             onChange={(e) => setName(e.target.value)}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
+            <DateTimePicker
               id="date"
               name="date"
+              value={dayjs(date)}
               label="Event Date"
-              disablePast="true"
+              disablePast={true}
+              onChange={(value) => setDate(dayjs(value))}
+              viewRenderers={{
+                hours: renderTimeViewClock,
+                minutes: renderTimeViewClock,
+                seconds: renderTimeViewClock,
+              }}
               // slotProps={{
               //   textField: {
               //     helperText: "Event Date",
@@ -105,9 +112,10 @@ export default function EventCreate() {
           <TextField
             id="standard-multiline-static"
             label="Event Description"
+            value={detail}
+            onChange={(e) => setDetail(e.target.value)}
             multiline
             rows={9}
-            defaultValue=""
             fullWidth
           />
         </Stack>

@@ -2,6 +2,7 @@ import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useClub } from "../../../util/hooks/clubHook";
+import { useEvent } from "../../../util/hooks/eventHook";
 
 const columns = [
   {
@@ -16,7 +17,7 @@ const columns = [
   {
     field: "date",
     headerName: "DATE",
-    width: 120,
+    width: 185,
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
@@ -33,7 +34,7 @@ const columns = [
   },
 ];
 
-export default function EventList() {
+export default function FutureEventList() {
   const [pageState, setPageState] = useState({
     total: 0,
     data: [],
@@ -43,13 +44,15 @@ export default function EventList() {
     page: 0,
     pageSize: 6,
   });
-  const clubHook = useClub();
+
+  const eventHook = useEvent();
 
   useEffect(() => {
     (async () => {
       setPageState((old) => ({ ...old, isLoading: true }));
 
-      const newRows = await clubHook.fetchClubList({
+      const newRows = await eventHook.fetchEventList({
+        eventType: "future",
         page: paginationModel.page,
         size: paginationModel.pageSize,
       });
@@ -69,7 +72,7 @@ export default function EventList() {
         square={false}
         sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
       >
-        <Typography variant="h6">EVENTS:</Typography>
+        <Typography variant="h6">FUTURE EVENTS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
 
         <DataGrid
@@ -93,7 +96,7 @@ export default function EventList() {
           pagination
           localeText={{
             noRowsLabel:
-              "No Event(s) currently exist. Please create Club or contact support",
+              "No Event(s) currently exist. Please create an Event or contact support",
           }}
           // rowHeight={45}
         />
