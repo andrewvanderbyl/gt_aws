@@ -1,18 +1,17 @@
 import { Route } from "react-router";
 import AdminClubs from "../pages/admin/clubs/AdminClubs";
-import Club from "../pages/basic/Club";
-import Profile from "../pages/basic/Profile";
-import Dashboard from "../pages/layout/Dashboard";
-import Events from "../pages/basic/Events";
-import Results from "../pages/basic/Results";
-import SignIn from "../pages/security/SignIn";
-import Register from "../pages/security/Register";
-import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
-import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
 import AdminEvents from "../pages/admin/events/AdminEvents";
 import AdminSecurity from "../pages/admin/security/AdminSecurity";
-import TagList from "../pages/basic/entity/tags/TagList";
+import Club from "../pages/basic/Club";
+import Events from "../pages/basic/Events";
+import Profile from "../pages/basic/Profile";
+import Results from "../pages/basic/Results";
 import Tags from "../pages/basic/Tags";
+import Dashboard from "../pages/layout/Dashboard";
+import Register from "../pages/security/Register";
+import SignIn from "../pages/security/SignIn";
+import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
+import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
 
 export const AppRoutes = [
   // Protected Routes

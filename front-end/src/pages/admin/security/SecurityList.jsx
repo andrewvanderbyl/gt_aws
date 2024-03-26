@@ -80,7 +80,7 @@ export default function SecurityList() {
       <Paper
         elevation={3}
         square={false}
-        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+        sx={{ p: 2, display: "flex", flexDirection: "column", height: "83vh" }}
       >
         {/* <Typography variant="h6">CLUBS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} /> */}

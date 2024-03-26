@@ -81,11 +81,11 @@ export default function ClubList() {
   }, [paginationModel.page, paginationModel.pageSize]);
 
   return (
-    <Grid item xs={12} sx={{ mt: 2 }}>
+    <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
       <Paper
         elevation={3}
         square={false}
-        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+        sx={{ p: 3, display: "flex", flexDirection: "column", height: "83vh" }}
       >
         <Typography variant="h6">CLUBS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />

@@ -19,7 +19,7 @@ export default function UserProfile() {
     <Stack
       direction={"row"}
       maxWidth="xl"
-      sx={{ mt: 3, mb: 3, height: "75vh" }}
+      sx={{ mt: 3, mb: 2 }}
       justifyContent="flex-start"
       alignItems="flex-start"
       spacing={5}
@@ -29,7 +29,7 @@ export default function UserProfile() {
         square={false}
         sx={{
           width: "100%",
-          height: "74vh",
+          height: "82vh",
           "& .MuiInputBase-input.Mui-disabled": {
             WebkitTextFillColor: "black",
           },

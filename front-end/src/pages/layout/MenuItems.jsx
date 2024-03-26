@@ -31,59 +31,70 @@ export default function ListItems() {
     <React.Fragment>
       <MenuItem
         menuText={"Profile"}
-        menuIcon={<PeopleIcon />}
+        menuIcon={<PeopleIcon style={{ color: "white" }} />}
         menuClickNav={"/profile"}
       />
       <MenuItem
         menuText={"Club"}
-        menuIcon={<BusinessIcon />}
+        menuIcon={<BusinessIcon style={{ color: "white" }} />}
         menuClickNav={"/clubs"}
       />
       <MenuItem
         menuText={"Future Events"}
-        menuIcon={<EventAvailableIcon />}
+        menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
         menuClickNav={"/events"}
       />
       <MenuItem
         menuText={"ASA Number"}
-        menuIcon={<SellIcon />}
+        menuIcon={<SellIcon style={{ color: "white" }} />}
         menuClickNav={"/events"}
       />
       <MenuItem
         menuText={"Timing Chip"}
-        menuIcon={<MemoryIcon />}
+        menuIcon={<MemoryIcon style={{ color: "white" }} />}
         menuClickNav={"/tags"}
       />
       <MenuItem
         menuText={"Results"}
-        menuIcon={<EmojiEventsIcon />}
+        menuIcon={<EmojiEventsIcon style={{ color: "white" }} />}
         menuClickNav={"/results"}
       />
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
-          <PowerSettingsNew />
+          <PowerSettingsNew style={{ color: "white" }} />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
 
-      <Divider sx={{ my: 1 }} />
+      <Divider sx={{ color: "white", backgroundColor: "white" }} />
 
-      <ListSubheader component="div" inset>
+      <ListSubheader
+        component="div"
+        // inset
+        sx={{
+          backgroundColor: "#1976d2",
+          color: "white",
+          // border: 2,
+          // borderColor: "black",
+        }}
+      >
         Administration
       </ListSubheader>
+      <Divider sx={{ color: "white", backgroundColor: "white" }} />
+
       <MenuItem
         menuText={"Clubs"}
-        menuIcon={<BusinessIcon />}
+        menuIcon={<BusinessIcon style={{ color: "white" }} />}
         menuClickNav={"/admin/clubs"}
       />
       <MenuItem
         menuText={"Events"}
-        menuIcon={<EventAvailableIcon />}
+        menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
         menuClickNav={"/admin/events"}
       />
       <MenuItem
         menuText={"Security"}
-        menuIcon={<VpnKeyIcon />}
+        menuIcon={<VpnKeyIcon style={{ color: "white" }} />}
         menuClickNav={"/admin/security"}
       />
     </React.Fragment>

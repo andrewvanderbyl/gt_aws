@@ -36,7 +36,9 @@ export default function LeftMenuPanel() {
     <>
       <Drawer variant="permanent" open={true}>
         <Divider sx={{ mt: 8 }} />
-        <List sx={{ height: "90vh" }}>
+        <List
+          sx={{ height: "90vh", backgroundColor: "#1976d2", color: "white" }}
+        >
           <ListItems />
         </List>
       </Drawer>

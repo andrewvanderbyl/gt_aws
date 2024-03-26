@@ -11,9 +11,13 @@ export default function ContentPanel(props) {
   const buttonItems = props.entityButtonPanel.map((buttonPanel) => (
     <Button
       key={buttonPanel.text}
-      variant="contained"
+      variant="outlined"
       startIcon={buttonPanel.icon}
-      sx={{ marginLeft: 2 }}
+      sx={{
+        marginLeft: 2,
+        color: "white",
+        borderColor: "white",
+      }}
       onClick={buttonPanel.clickHandler}
     >
       {buttonPanel.text}
@@ -23,8 +27,10 @@ export default function ContentPanel(props) {
   return (
     <Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
       <AppBar position="static">
-        <Toolbar sx={{ backgroundColor: "white" }}>
-          <Typography variant="h6" sx={{ color: "black" }}>
+        <Toolbar
+        // sx={{ backgroundColor: "white" }}
+        >
+          <Typography variant="h6" sx={{ color: "white" }}>
             {props.entityHeaderText}
           </Typography>
           <Box

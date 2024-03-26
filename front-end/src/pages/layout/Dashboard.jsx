@@ -32,7 +32,7 @@ export default function Dashboard() {
           <>{outlet || <Profile />}</>
         </Box>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </ThemeProvider>
   );
 }

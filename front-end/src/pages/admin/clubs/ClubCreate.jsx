@@ -43,7 +43,7 @@ export default function ClubCreate() {
     <Stack
       direction={"row"}
       maxWidth="xl"
-      sx={{ mt: 3, mb: 3, height: "75vh" }}
+      sx={{ mt: 2, mb: 2 }}
       justifyContent="flex-start"
       alignItems="flex-start"
       spacing={5}
@@ -51,17 +51,19 @@ export default function ClubCreate() {
       <Paper
         elevation={3}
         square={false}
-        sx={{ width: "100%", height: "74vh" }}
+        sx={{ width: "100%", height: "83vh" }}
       >
         <Stack
           direction={"column"}
           //   spacing={20}
-          marginLeft={10}
-          marginRight={10}
+          marginLeft={3}
+          marginRight={3}
           marginTop={3}
         >
           <Typography variant="h6">CLUB:</Typography>
-          <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
+          <Divider
+            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
+          />
         </Stack>
         <Stack
           direction={"row"}
