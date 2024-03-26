@@ -11,6 +11,8 @@ import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
 import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
 import AdminEvents from "../pages/admin/events/AdminEvents";
 import AdminSecurity from "../pages/admin/security/AdminSecurity";
+import TagList from "../pages/basic/entity/tags/TagList";
+import Tags from "../pages/basic/Tags";
 
 export const AppRoutes = [
   // Protected Routes
@@ -38,6 +40,11 @@ export const AppRoutes = [
       key="Events"
       path="events"
       element={<ProtectedRouteGuard component={<Events />} />}
+    />
+    <Route
+      key="TimingChip"
+      path="tags"
+      element={<ProtectedRouteGuard component={<Tags />} />}
     />
     <Route key="Clubs" path="admin/">
       <Route

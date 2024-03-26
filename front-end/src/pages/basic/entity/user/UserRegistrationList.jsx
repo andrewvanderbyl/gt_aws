@@ -59,15 +59,69 @@ const columns: GridColDef[] = [
 ];
 
 const rows = [
-  { id: 1, year: "2016", asa: "123456", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2017", asa: "654321", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2018", asa: "987654", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2019", asa: "456789", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2020", asa: "111111", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2021", asa: "222222", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2022", asa: "333333", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2023", asa: "444444", tagid: "AA-BB-CC-DD", asaDate: "01-01-2024" },
-  { id: 1, year: "2024", asa: "555555", tagid: "AA-BB-CC-DD",asaDate: "01-01-2024" },
+  {
+    id: 1,
+    year: "2016",
+    asa: "123456",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2017",
+    asa: "654321",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2018",
+    asa: "987654",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2019",
+    asa: "456789",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2020",
+    asa: "111111",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2021",
+    asa: "222222",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2022",
+    asa: "333333",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2023",
+    asa: "444444",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
+  {
+    id: 1,
+    year: "2024",
+    asa: "555555",
+    tagid: "AA-BB-CC-DD",
+    asaDate: "01-01-2024",
+  },
 ];
 
 export default function UserRegistrationList() {
@@ -79,7 +133,7 @@ export default function UserRegistrationList() {
       alignItems="flex-start"
       spacing={5}
     >
-      <Paper
+      {/* <Paper
         elevation={3}
         square={false}
         sx={{ width: "30vh", height: "75vh" }}
@@ -120,7 +174,7 @@ export default function UserRegistrationList() {
             </IconButton>
           </CardActions>
         </Card>
-      </Paper>
+      </Paper> */}
 
       <Paper
         elevation={3}

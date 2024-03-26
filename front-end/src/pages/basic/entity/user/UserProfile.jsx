@@ -24,46 +24,6 @@ export default function UserProfile() {
       alignItems="flex-start"
       spacing={5}
     >
-      {/* <Paper
-        elevation={3}
-        square={false}
-        sx={{ width: "35vh", height: "74vh" }}
-      >
-        <Card sx={{ boxShadow: 0 }}>
-          <CardActionArea>
-            <CardHeader
-              avatar={
-                <Avatar
-                  sx={{
-                    bgcolor: deepPurple[500],
-                    width: "30vh",
-                    height: "25vh",
-                  }}
-                  variant="square"
-                >
-                  ML
-                </Avatar>
-              }
-            ></CardHeader>
-            <CardActions
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "flex-start",
-              }}
-            >
-              <Button
-                component="label"
-                variant="contained"
-                startIcon={<EditIcon />}
-              >
-                Edit Profile
-              </Button>
-            </CardActions>
-          </CardActionArea>
-        </Card>
-      </Paper> */}
-
       <Paper
         elevation={3}
         square={false}
@@ -176,42 +136,13 @@ export default function UserProfile() {
             helperText="Email"
           />
         </Stack>
-        <Stack
-          direction={"column"}
-          spacing={0}
-          marginLeft={10}
-          marginRight={10}
-          marginTop={2}
-        >
-          <Typography variant="h6">Club:</Typography>
-          <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
-        </Stack>
-        <Stack
-          direction={"column"}
-          spacing={0}
-          marginLeft={10}
-          marginRight={10}
-          marginTop={2}
-        >
-          <TextField
-            required
-            id="club"
-            name="lastName"
-            label="Club"
-            fullWidth
-            autoComplete=""
-            variant="standard"
-            disabled
-            helperText="Club Name"
-          />
-        </Stack>
         <ButtonGroup
           sx={{
             display: "flex",
             boxShadow: "0",
             flexDirection: "row",
             justifyContent: "center",
-            marginTop: 3,
+            marginTop: 15,
           }}
           variant="contained"
           aria-label="outlined primary button group"

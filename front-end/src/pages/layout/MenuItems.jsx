@@ -4,6 +4,8 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import PeopleIcon from "@mui/icons-material/People";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import SellIcon from "@mui/icons-material/Sell";
+import MemoryIcon from "@mui/icons-material/Memory";
 import {
   Divider,
   ListItemButton,
@@ -41,6 +43,16 @@ export default function ListItems() {
         menuText={"Future Events"}
         menuIcon={<EventAvailableIcon />}
         menuClickNav={"/events"}
+      />
+      <MenuItem
+        menuText={"ASA Number"}
+        menuIcon={<SellIcon />}
+        menuClickNav={"/events"}
+      />
+      <MenuItem
+        menuText={"Timing Chip"}
+        menuIcon={<MemoryIcon />}
+        menuClickNav={"/tags"}
       />
       <MenuItem
         menuText={"Results"}
