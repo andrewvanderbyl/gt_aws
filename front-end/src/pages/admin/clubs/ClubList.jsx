@@ -94,7 +94,7 @@ export default function ClubList() {
           sx={{
             // width: '100%',
             "& .super-app-theme--header": {
-              backgroundColor: "#1976d2",
+              backgroundColor: "#1C4E80",
               color: "white",
             },
           }}

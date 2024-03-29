@@ -28,7 +28,8 @@ export default function ContentPanel(props) {
     <Container maxWidth="xl" sx={{ mt: 2, mb: 2 }}>
       <AppBar position="static">
         <Toolbar
-        // sx={{ backgroundColor: "white" }}
+          sx={{ backgroundColor: "#1C4E80" }}
+          // sx={{ backgroundColor: "white" }}
         >
           <Typography variant="h6" sx={{ color: "white" }}>
             {props.entityHeaderText}

@@ -16,7 +16,7 @@ const Drawer = styled(MuiDrawer, {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    boxSizing: "border-box",
+    // boxSizing: "border-box",
     ...(!open && {
       overflowX: "hidden",
       transition: theme.transitions.create("width", {
@@ -35,9 +35,13 @@ export default function LeftMenuPanel() {
   return (
     <>
       <Drawer variant="permanent" open={true}>
-        <Divider sx={{ mt: 8 }} />
+        <Divider sx={{ mt: 2 }} />
         <List
-          sx={{ height: "90vh", backgroundColor: "#1976d2", color: "white" }}
+          sx={{
+            height: "94vh",
+            backgroundColor: "#1C4E80",
+            color: "white",
+          }}
         >
           <ListItems />
         </List>

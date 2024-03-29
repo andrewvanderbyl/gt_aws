@@ -70,7 +70,7 @@ export default function PastEventList() {
       <Paper
         elevation={3}
         square={false}
-        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+        sx={{ p: 2, display: "flex", flexDirection: "column", height: "83vh" }}
       >
         <Typography variant="h6">PAST EVENTS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
@@ -79,7 +79,7 @@ export default function PastEventList() {
           sx={{
             // width: '100%',
             "& .super-app-theme--header": {
-              backgroundColor: "#1976d2",
+              backgroundColor: "#1C4E80",
               color: "white",
             },
           }}

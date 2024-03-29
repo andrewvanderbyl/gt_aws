@@ -66,13 +66,15 @@ export default function ListItems() {
         <ListItemText primary="Logout" />
       </ListItemButton>
 
-      <Divider sx={{ color: "white", backgroundColor: "white" }} />
+      <Divider
+        sx={{ color: "white", backgroundColor: "white", marginTop: "25px" }}
+      />
 
       <ListSubheader
         component="div"
         // inset
         sx={{
-          backgroundColor: "#1976d2",
+          backgroundColor: "#1C4E80",
           color: "white",
           // border: 2,
           // borderColor: "black",
