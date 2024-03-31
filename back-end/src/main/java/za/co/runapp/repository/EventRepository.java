@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public interface EventRepository extends JpaRepository<Event, String> {
 
     Page<Event> findByDateGreaterThanEqual(LocalDateTime now, Pageable pageable);
+
     Page<Event> findByDateLessThan(LocalDateTime now, Pageable pageable);
 
 }

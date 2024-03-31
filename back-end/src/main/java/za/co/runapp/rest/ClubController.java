@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
+import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.service.ClubService;
 
 import java.util.List;
@@ -76,5 +78,16 @@ public class ClubController {
         } catch (EntityNotFoundException cnfe) {
             return Mono.just(ResponseEntity.badRequest().build());
         }
+    }
+
+    @GetMapping("/{id}/users")
+    public Mono<ResponseEntity<PageableDto<UserDto>>> getUsersForClub(
+            @PathVariable("id") final String clubId,
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
+
+        PageableDto<UserDto> clubUserList = clubService.getUsersForClub(clubId, page, size);
+        return Mono.just(ResponseEntity.ok(clubUserList));
     }
 }

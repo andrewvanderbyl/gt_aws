@@ -19,8 +19,16 @@ export default {
   fetchClubList: async (props) => {
     return await api
       .post(process.env.REACT_APP_CLUB_LIST, props)
-      .then((data) => {
-        return data;
-      });
+      .then((data) => data);
+  },
+  fetchUserClub: async (userId, props) => {
+    return await api
+      .getPaginated(process.env.REACT_APP_USER_CLUB, props, userId)
+      .then((data) => data);
+  },
+  fetchClubMembers: async (clubId, props, userId) => {
+    let uri = process.env.REACT_APP_CLUB_MEMBERS.replace("{clubId}", clubId);
+
+    return await api.getPaginated(uri, props, userId).then((data) => data);
   },
 };

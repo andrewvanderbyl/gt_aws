@@ -11,5 +11,15 @@ export const useClub = () => {
     return await ClubService.fetchClubList(props).then((clubs) => clubs);
   };
 
-  return { createClub, fetchClubList };
+  const fetchUserClub = async (userId, props) => {
+    return await ClubService.fetchUserClub(userId, props).then((data) => data);
+  };
+
+  const fetchClubMembers = async (clubId, props, userId) => {
+    return await ClubService.fetchClubMembers(clubId, props, userId).then(
+      (clubs) => clubs
+    );
+  };
+
+  return { createClub, fetchUserClub, fetchClubList, fetchClubMembers };
 };

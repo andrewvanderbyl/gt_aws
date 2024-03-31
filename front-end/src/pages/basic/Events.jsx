@@ -1,34 +1,51 @@
-import AddBoxIcon from "@mui/icons-material/AddBox";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useState } from "react";
 import ContentPanel from "../layout/ContentPanel";
-import ClubMemberList from "./entity/clubs/ClubMemberList";
-import ClubCreate from "../admin/clubs/ClubCreate";
+import PastUserEventsSubscribed from "./entity/events/PastUserEventsSubscribed";
+import UpcomingUserEventsSubscribed from "./entity/events/UpcomingUserEventsSubscribed";
+import UpcomingUserEventsUnsubscribed from "./entity/events/UpcomingUserEventsUnsubscribed";
+import { useAuth } from "../../util/context/AuthUserContext";
 
 export default function Events() {
-  const [contentComponent, setContentComponent] = useState(<ClubCreate />);
+  const authUserContext = useAuth();
+  const userData = authUserContext.localStorageValue;
 
-  const handleViewEventsClick = (event) => {
-    setContentComponent(<ClubMemberList />);
+  const [contentComponent, setContentComponent] = useState(
+    <UpcomingUserEventsUnsubscribed userId={userData.id} />
+  );
+
+  const handleViewUnsubscribedUpcomingUserEventsClick = (event) => {
+    setContentComponent(
+      <UpcomingUserEventsUnsubscribed userId={userData.id} />
+    );
   };
 
-  const handleViewCreateEventClick = (event) => {
-    setContentComponent(<ClubCreate />);
+  const handleViewSubscribedUpcomingUserEventsClick = (event) => {
+    setContentComponent(<UpcomingUserEventsSubscribed userId={userData.id} />);
+  };
+
+  const handleViewSubscribedPastUserEventsClick = (event) => {
+    setContentComponent(<PastUserEventsSubscribed userId={userData.id} />);
   };
 
   return (
     <ContentPanel
-      entityHeaderText="Future Events"
+      entityHeaderText="Events"
       entityButtonPanel={[
         {
-          text: "List",
+          text: "Upcoming",
           icon: <ViewListIcon />,
-          clickHandler: handleViewEventsClick,
+          clickHandler: handleViewUnsubscribedUpcomingUserEventsClick,
         },
         {
-          text: "Create",
-          icon: <AddBoxIcon />,
-          clickHandler: handleViewCreateEventClick,
+          text: "Subscribed",
+          icon: <ViewListIcon />,
+          clickHandler: handleViewSubscribedUpcomingUserEventsClick,
+        },
+        {
+          text: "Past",
+          icon: <ViewListIcon />,
+          clickHandler: handleViewSubscribedPastUserEventsClick,
         },
       ]}
       entityComponent={contentComponent}

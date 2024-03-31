@@ -7,12 +7,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Club;
 import za.co.runapp.entity.Event;
+import za.co.runapp.entity.User;
 import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.repository.ClubRepository;
+import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
+import za.co.runapp.rest.dto.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +26,7 @@ import java.util.Optional;
 public class ClubService {
 
     private final ClubRepository clubRepository;
+    private final UserRepository userRepository;
 
     public ClubDto createClub(final ClubDto clubDto) {
 
@@ -70,6 +75,24 @@ public class ClubService {
                 .elementsPerPage(clubs.getPageable().getPageSize())
                 .currentPageNumber(clubs.getPageable().getPageNumber())
                 .totalPages(clubs.getTotalPages())
+                .build();
+    }
+
+    public PageableDto<UserDto> getUsersForClub(String clubId, int page, int size) {
+
+        Club club = clubRepository.getReferenceById(clubId);
+        Page<User> users = userRepository.findByClubs(club, PageRequest.of(page, size));
+
+        List<UserDto> userDtoList = users.stream()
+                .map(User::toUserDto)
+                .toList();
+
+        return PageableDto.<UserDto>builder()
+                .data(userDtoList)
+                .totalElements(users.getTotalElements())
+                .elementsPerPage(users.getPageable().getPageSize())
+                .currentPageNumber(users.getPageable().getPageNumber())
+                .totalPages(users.getTotalPages())
                 .build();
     }
 }

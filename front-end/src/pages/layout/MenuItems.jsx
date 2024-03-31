@@ -40,7 +40,7 @@ export default function ListItems() {
         menuClickNav={"/clubs"}
       />
       <MenuItem
-        menuText={"Future Events"}
+        menuText={"Events"}
         menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
         menuClickNav={"/events"}
       />

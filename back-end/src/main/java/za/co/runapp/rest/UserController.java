@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import za.co.runapp.exception.EntityNotFoundException;
@@ -69,9 +70,11 @@ public class UserController {
 
     @GetMapping("/clubs")
     public Mono<ResponseEntity<PageableDto<ClubDto>>> getClubsForUser(
-            @RequestBody final PageableDto pageableDto, @RequestHeader("userId") final String userId) {
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
 
-        PageableDto<ClubDto> clubs = userService.getClubsForUser(userId, pageableDto);
+        PageableDto<ClubDto> clubs = userService.getClubsForUser(userId, page, size);
         return Mono.just(ResponseEntity.ok(clubs));
     }
 

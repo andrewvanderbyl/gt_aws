@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import za.co.runapp.rest.dto.EventDto;
+import za.co.runapp.rest.dto.EventFilterType;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.service.EventsService;
 
@@ -53,5 +54,16 @@ public class EventsController {
 
         eventsService.registerUser(eventId, userId);
         return Mono.just(ResponseEntity.ok().build());
+    }
+
+    @GetMapping("/users/{type}")
+    public Mono<ResponseEntity<PageableDto<EventDto>>> getEvents(
+            @PathVariable("type") final EventFilterType eventType,
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
+
+        PageableDto<EventDto> events = eventsService.getEventsForUser(eventType, userId, page, size);
+        return Mono.just(ResponseEntity.ok(events));
     }
 }

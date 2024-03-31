@@ -1,41 +1,31 @@
-import EditIcon from "@mui/icons-material/Edit";
-import { Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useClub } from "../../../../util/hooks/clubHook";
 import { useEffect, useState } from "react";
+import { useEvent } from "../../../../util/hooks/eventHook";
 
 const columns = [
   {
-    field: "firstName",
-    headerName: "FIRST NAME",
-    width: 70,
+    field: "name",
+    headerName: "NAME",
+    width: 250,
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
-    flex: 1,
+    // flex: 1,
   },
   {
-    field: "lastName",
-    headerName: "SURNAME",
-    width: 70,
+    field: "date",
+    headerName: "DATE",
+    width: 185,
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
-    flex: 1,
+    // flex: 1,
   },
   {
-    field: "email",
-    headerName: "EMAIL",
-    width: 130,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-  {
-    field: "contact",
-    headerName: "CONTACT",
-    width: 100,
+    field: "detail",
+    headerName: "DETAIL",
+    // width: 70,
     headerAlign: "center",
     align: "center",
     headerClassName: "super-app-theme--header",
@@ -43,7 +33,7 @@ const columns = [
   },
 ];
 
-export default function ClubMemberList(props) {
+export default function PastUserEventsSubscribed(props) {
   const [pageState, setPageState] = useState({
     total: 0,
     data: [],
@@ -54,15 +44,16 @@ export default function ClubMemberList(props) {
     pageSize: 6,
   });
 
-  const clubHook = useClub();
+  const eventHook = useEvent();
 
   useEffect(() => {
     (async () => {
       setPageState((old) => ({ ...old, isLoading: true }));
 
-      const newRows = await clubHook.fetchClubMembers(
-        props.clubId,
+      const newRows = await eventHook.fetchUserEvents(
+        "PAST",
         {
+          eventType: "future",
           page: paginationModel.page,
           size: paginationModel.pageSize,
         },
@@ -84,7 +75,7 @@ export default function ClubMemberList(props) {
         square={false}
         sx={{ p: 2, display: "flex", flexDirection: "column", height: "83vh" }}
       >
-        <Typography variant="h6">MEMBERS:</Typography>
+        <Typography variant="h6">PAST EVENTS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
 
         <DataGrid
@@ -107,9 +98,9 @@ export default function ClubMemberList(props) {
           onPaginationModelChange={setPaginationModel}
           pagination
           localeText={{
-            noRowsLabel:
-              "No Card(s) currently exist. Please create Club or contact support",
+            noRowsLabel: "No past subscribed event(s) exist.",
           }}
+          // rowHeight={45}
         />
       </Paper>
     </Grid>

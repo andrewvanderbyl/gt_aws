@@ -24,4 +24,15 @@ export default {
         return data;
       });
   },
+  fetchUserEvents: async (type, props, userId) => {
+    return await api
+      .getPaginated(
+        process.env.REACT_APP_USER_EVENTS + "/" + type,
+        props,
+        userId
+      )
+      .then((data) => {
+        return data;
+      });
+  },
 };

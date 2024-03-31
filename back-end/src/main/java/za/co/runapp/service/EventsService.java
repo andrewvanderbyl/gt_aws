@@ -13,6 +13,7 @@ import za.co.runapp.repository.EventRepository;
 import za.co.runapp.repository.UserEventRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.EventDto;
+import za.co.runapp.rest.dto.EventFilterType;
 import za.co.runapp.rest.dto.PageableDto;
 
 import java.time.LocalDateTime;
@@ -87,6 +88,29 @@ public class EventsService {
         User user = userRepository.getReferenceById(userId);
         Page<EventDto> events = userEventRepository.findEventByUser(user,
                 PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+
+        return PageableDto.<EventDto>builder()
+                .data(events.getContent())
+                .totalElements(events.getTotalElements())
+                .elementsPerPage(events.getPageable().getPageSize())
+                .currentPageNumber(events.getPageable().getPageNumber())
+                .totalPages(events.getTotalPages())
+                .build();
+    }
+
+    public PageableDto<EventDto> getEventsForUser(EventFilterType eventType, String userId, int page, int size) {
+
+        User user = userRepository.getReferenceById(userId);
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<EventDto> events = switch (eventType) {
+            case UPCOMING ->
+                    userEventRepository.findUnsubscribedUpcomingEventsForUser(user, LocalDateTime.now(), pageRequest);
+            case SUBSCRIBED ->
+                    userEventRepository.findSubscribedUpcomingEventsForUser(user, LocalDateTime.now(), pageRequest);
+            case PAST ->
+                    userEventRepository.findPastSubscribedEventsForUser(user, LocalDateTime.now(), pageRequest);
+        };
 
         return PageableDto.<EventDto>builder()
                 .data(events.getContent())

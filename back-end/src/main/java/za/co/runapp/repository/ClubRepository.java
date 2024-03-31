@@ -28,5 +28,4 @@ public interface ClubRepository extends JpaRepository<Club, String> {
             WHERE u = :user 
             """)
     Page<ClubDto> findClubByUser(User user, Pageable pageable);
-
 }

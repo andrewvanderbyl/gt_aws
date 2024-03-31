@@ -14,12 +14,10 @@ import za.co.runapp.repository.RaceRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
-import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.RaceDto;
 import za.co.runapp.rest.dto.UserDto;
 
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -75,12 +73,11 @@ public class UserService {
                 .build();
     }
 
-    public PageableDto<ClubDto> getClubsForUser(final String userId, final PageableDto pageableDto) {
+    public PageableDto<ClubDto> getClubsForUser(final String userId, final int page, final int size) {
 
         User user = userRepository.getReferenceById(userId);
 
-        Page<ClubDto> clubs = clubRepository.findClubByUser(user,
-                PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+        Page<ClubDto> clubs = clubRepository.findClubByUser(user, PageRequest.of(page, size));
 
         return PageableDto.<ClubDto>builder()
                 .data(clubs.getContent())
@@ -93,7 +90,7 @@ public class UserService {
     }
 
     public PageableDto<RaceDto> getRacesForUser(String userId, PageableDto pageableDto) {
-        
+
         Page<RaceDto> races = raceRepository.findRacesByUser(userId,
                 PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
 

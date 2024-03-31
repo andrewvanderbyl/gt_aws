@@ -5,8 +5,7 @@ const baseUrl = process.env.REACT_APP_API_ENDPOINT;
 export const api = {
   get: async (endpoint, userId = null) => {
     let headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
+      "Content-Type": "application/json",
     };
 
     if (userId) {
@@ -22,12 +21,18 @@ export const api = {
     return await axios.request(config).then((res) => res.data);
   },
   getPaginated: async (endpoint, queryParams, userId = null) => {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (userId) {
+      headers["userId"] = userId;
+    }
+
     let config = {
       method: "get",
       url: `${baseUrl}${endpoint}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       params: {
         page: queryParams.page,
         size: queryParams.size,
@@ -43,13 +48,10 @@ export const api = {
       .catch((error) => {
         console.log(error);
       });
-
-    // return await axios.request(config).then((res) => res.data);
   },
   post: async (endpoint, body, userId = null) => {
     let headers = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Credentials": true,
+      "Content-Type": "application/json",
     };
 
     if (userId) {
