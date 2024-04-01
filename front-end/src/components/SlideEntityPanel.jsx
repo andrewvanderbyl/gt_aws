@@ -1,11 +1,18 @@
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { Fragment } from "react";
+import { Fragment, forwardRef, useImperativeHandle, useState } from "react";
 
-export default function SlideEntityPanel({
-  panelContent,
-  openDialog,
-  handleClose,
-}) {
+const SlideEntityPanel = forwardRef((props, ref) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  useImperativeHandle(ref, () => ({
+    openDialog() {
+      setOpenDialog(true);
+    },
+
+    closeDialog() {
+      setOpenDialog(false);
+    },
+  }));
+
   const toggleDrawer = (open) => (event) => {
     if (
       event &&
@@ -15,7 +22,7 @@ export default function SlideEntityPanel({
       return;
     }
 
-    handleClose(event);
+    setOpenDialog(open);
   };
 
   return (
@@ -27,9 +34,11 @@ export default function SlideEntityPanel({
           onClose={toggleDrawer(false)}
           onOpen={toggleDrawer(true)}
         >
-          {panelContent}
+          {props.panelContent}
         </SwipeableDrawer>
       </Fragment>
     </div>
   );
-}
+});
+
+export default SlideEntityPanel;

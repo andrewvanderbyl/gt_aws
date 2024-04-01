@@ -51,7 +51,7 @@ const columns = [
   },
 ];
 
-export default function ClubList() {
+export default function ClubList({ forceRefresh }) {
   const [pageState, setPageState] = useState({
     total: 0,
     data: [],
@@ -59,13 +59,14 @@ export default function ClubList() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 6,
+    pageSize: 8,
   });
   const clubHook = useClub();
 
   useEffect(() => {
     (async () => {
       setPageState((old) => ({ ...old, isLoading: true }));
+      console.log("Loading list");
 
       const newRows = await clubHook.fetchClubList({
         page: paginationModel.page,
@@ -78,7 +79,7 @@ export default function ClubList() {
         total: newRows.count,
       }));
     })();
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [paginationModel.page, paginationModel.pageSize, forceRefresh]);
 
   return (
     <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
@@ -113,7 +114,7 @@ export default function ClubList() {
             noRowsLabel:
               "No Card(s) currently exist. Please create Club or contact support",
           }}
-          // rowHeight={45}
+          rowHeight={43}
         />
       </Paper>
     </Grid>
