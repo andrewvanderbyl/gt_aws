@@ -44,10 +44,7 @@ export default function ContentPanel(props) {
           </Box>
         </Toolbar>
       </AppBar>
-
-      {/* <Grid container spacing={3}> */}
       {props.entityComponent}
-      {/* </Grid> */}
     </Container>
   );
 }

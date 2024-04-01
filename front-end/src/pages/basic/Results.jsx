@@ -1,12 +1,16 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useState } from "react";
+import SlideEntityPanel from "../../components/SlideEntityPanel";
+import ClubCreate from "../admin/clubs/ClubCreate";
 import ContentPanel from "../layout/ContentPanel";
 import UserRaceList from "./entity/user/UserRaceList";
-import ClubCreate from "../admin/clubs/ClubCreate";
 
 export default function Results() {
   const [contentComponent, setContentComponent] = useState(<UserRaceList />);
+  // const [contentComponent, setContentComponent] = useState(
+  //   <SlideEntityPanel />
+  // );
 
   const handleViewResultsClick = (event) => {
     setContentComponent(<UserRaceList />);
@@ -17,21 +21,24 @@ export default function Results() {
   };
 
   return (
-    <ContentPanel
-      entityHeaderText="Results"
-      entityButtonPanel={[
-        {
-          text: "List",
-          icon: <ViewListIcon />,
-          clickHandler: handleViewResultsClick,
-        },
-        {
-          text: "Create",
-          icon: <AddBoxIcon />,
-          clickHandler: handleViewCreateEventClick,
-        },
-      ]}
-      entityComponent={contentComponent}
-    />
+    <>
+      <ContentPanel
+        entityHeaderText="Results"
+        entityButtonPanel={[
+          {
+            text: "List",
+            icon: <ViewListIcon />,
+            clickHandler: handleViewResultsClick,
+          },
+          {
+            text: "Create",
+            icon: <AddBoxIcon />,
+            clickHandler: handleViewCreateEventClick,
+          },
+        ]}
+        entityComponent={contentComponent}
+      />
+      <SlideEntityPanel />
+    </>
   );
 }
