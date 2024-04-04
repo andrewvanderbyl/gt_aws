@@ -1,10 +1,10 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useRef, useState } from "react";
-import SlideEntityPanel from "../../../components/SlideEntityPanel";
-import ContentPanel from "../../layout/ContentPanel";
-import AdminClubCreate from "./AdminClubCreate";
-import ClubList from "./ClubList";
+import SlideEntityPanel from "../../components/SlideEntityPanel";
+import ContentPanel from "../layout/ContentPanel";
+import ClubList from "../basic/entity/clubs/ClubList";
+import AdminClubCreate from "./entity/clubs/AdminClubCreate";
 
 export default function AdminClubs() {
   const [contentComponent, setContentComponent] = useState(<ClubList />);

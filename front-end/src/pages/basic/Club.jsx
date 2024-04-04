@@ -1,11 +1,11 @@
 import BusinessIcon from "@mui/icons-material/Business";
 import PeopleIcon from "@mui/icons-material/People";
 import { useEffect, useState } from "react";
-import ContentPanel from "../layout/ContentPanel";
-import ClubMemberList from "./entity/clubs/ClubMemberList";
-import ClubCreate from "../admin/clubs/ClubCreate";
-import { useClub } from "../../util/hooks/clubHook";
 import { useAuth } from "../../util/context/AuthUserContext";
+import { useClub } from "../../util/hooks/clubHook";
+import ContentPanel from "../layout/ContentPanel";
+import ClubMemberList from "./clubs/ClubMemberList";
+import ClubCreate from "./entity/clubs/ClubCreate";
 
 export default function Club() {
   const authUserContext = useAuth();
@@ -21,7 +21,6 @@ export default function Club() {
         page: 0,
         size: 1,
       });
-      console.log(userClub);
 
       if (userClub.data.length > 0) {
         setClub(userClub.data[0]);

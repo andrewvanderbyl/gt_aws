@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useClub } from "../../../util/hooks/clubHook";
+import { useClub } from "../../../../util/hooks/clubHook";
 
 export default function ClubCreate() {
   const [name, setName] = useState("");

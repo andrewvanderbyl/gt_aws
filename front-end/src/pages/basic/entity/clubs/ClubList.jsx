@@ -1,7 +1,7 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { useClub } from "../../../util/hooks/clubHook";
+import { useClub } from "../../../../util/hooks/clubHook";
 
 const columns = [
   {
@@ -66,7 +66,6 @@ export default function ClubList({ forceRefresh }) {
   useEffect(() => {
     (async () => {
       setPageState((old) => ({ ...old, isLoading: true }));
-      console.log("Loading list");
 
       const newRows = await clubHook.fetchClubList({
         page: paginationModel.page,
@@ -105,14 +104,14 @@ export default function ClubList({ forceRefresh }) {
           rowCount={pageState.total}
           paginationMode="server"
           paginationModel={paginationModel}
-          pageSizeOptions={[6]}
+          pageSizeOptions={[8]}
           keepNonExistentRowsSelected
           getRowId={(row) => row.id}
           onPaginationModelChange={setPaginationModel}
           pagination
           localeText={{
             noRowsLabel:
-              "No Card(s) currently exist. Please create Club or contact support",
+              "No Club(s) currently exist. Please create a Club or contact support",
           }}
           rowHeight={43}
         />

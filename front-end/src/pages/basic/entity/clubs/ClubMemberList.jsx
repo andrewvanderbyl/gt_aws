@@ -1,8 +1,8 @@
 import EditIcon from "@mui/icons-material/Edit";
 import { Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useClub } from "../../../../util/hooks/clubHook";
 import { useEffect, useState } from "react";
+import { useClub } from "../../../util/hooks/clubHook";
 
 const columns = [
   {

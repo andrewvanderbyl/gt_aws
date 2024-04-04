@@ -1,37 +1,10 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
+import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useEvent } from "../../../../util/hooks/eventHook";
-
-const columns = [
-  {
-    field: "name",
-    headerName: "NAME",
-    width: 250,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    // flex: 1,
-  },
-  {
-    field: "date",
-    headerName: "DATE",
-    width: 185,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    // flex: 1,
-  },
-  {
-    field: "detail",
-    headerName: "DETAIL",
-    // width: 70,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-];
+import SlideEntityPanel from "../../../../components/SlideEntityPanel";
+import ViewEvent from "./ViewEvent";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
 export default function UpcomingUserEventsSubscribed(props) {
   const [pageState, setPageState] = useState({
@@ -41,9 +14,58 @@ export default function UpcomingUserEventsSubscribed(props) {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 6,
+    pageSize: 8,
   });
+  const [event, setEvent] = useState({});
+  const slidePanelRef = useRef();
 
+  const columns = [
+    {
+      field: "name",
+      headerName: "NAME",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
+    },
+    {
+      field: "date",
+      headerName: "DATE",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
+    },
+    {
+      field: "id",
+      width: 300,
+      headerName: "ACTIONS",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      // flex: 1,
+      renderCell: (params) => {
+        const handleClick = (event) => {
+          console.log("Params", params.row);
+          setEvent(params.row);
+          slidePanelRef.current.openDialog();
+        };
+
+        return (
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<LibraryBooksIcon />}
+              onClick={handleClick}
+            >
+              View
+            </Button>
+          </Stack>
+        );
+      },
+    },
+  ];
   const eventHook = useEvent();
 
   useEffect(() => {
@@ -68,42 +90,63 @@ export default function UpcomingUserEventsSubscribed(props) {
     })();
   }, [paginationModel.page, paginationModel.pageSize]);
 
-  return (
-    <Grid item xs={12} sx={{ mt: 2 }}>
-      <Paper
-        elevation={3}
-        square={false}
-        sx={{ p: 2, display: "flex", flexDirection: "column", height: "83vh" }}
-      >
-        <Typography variant="h6">SUBSCRIBED EVENTS:</Typography>
-        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
+  const handleSlidePanelClose = (event) => {
+    event.preventDefault();
+    slidePanelRef.current.closeDialog();
+  };
 
-        <DataGrid
+  return (
+    <>
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <Paper
+          elevation={3}
+          square={false}
           sx={{
-            // width: '100%',
-            "& .super-app-theme--header": {
-              backgroundColor: "#1C4E80",
-              color: "white",
-            },
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            height: "83vh",
           }}
-          loading={pageState.isLoading}
-          rows={pageState.data}
-          columns={columns}
-          rowCount={pageState.total}
-          paginationMode="server"
-          paginationModel={paginationModel}
-          pageSizeOptions={[6]}
-          keepNonExistentRowsSelected
-          getRowId={(row) => row.id}
-          onPaginationModelChange={setPaginationModel}
-          pagination
-          localeText={{
-            noRowsLabel:
-              "No upcoming subscribed event(s) currently exist. Please subscribe to an 'Upcoming' event to participate.",
-          }}
-          // rowHeight={45}
-        />
-      </Paper>
-    </Grid>
+        >
+          <Typography variant="h6">SUBSCRIBED EVENTS:</Typography>
+          <Divider
+            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
+          />
+
+          <DataGrid
+            sx={{
+              // width: '100%',
+              "& .super-app-theme--header": {
+                backgroundColor: "#1C4E80",
+                color: "white",
+              },
+            }}
+            loading={pageState.isLoading}
+            rows={pageState.data}
+            columns={columns}
+            rowCount={pageState.total}
+            disableRowSelectionOnClick
+            paginationMode="server"
+            paginationModel={paginationModel}
+            pageSizeOptions={[8]}
+            keepNonExistentRowsSelected
+            getRowId={(row) => row.id}
+            onPaginationModelChange={setPaginationModel}
+            pagination
+            localeText={{
+              noRowsLabel:
+                "No upcoming subscribed event(s) currently exist. Please subscribe to an 'Upcoming' event to participate.",
+            }}
+            rowHeight={43}
+          />
+        </Paper>
+      </Grid>
+      <SlideEntityPanel
+        panelContent={
+          <ViewEvent handleCancel={handleSlidePanelClose} event={event} />
+        }
+        ref={slidePanelRef}
+      />
+    </>
   );
 }

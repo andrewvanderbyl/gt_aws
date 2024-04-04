@@ -1,8 +1,7 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { useClub } from "../../../util/hooks/clubHook";
-import { useEvent } from "../../../util/hooks/eventHook";
+import { useEvent } from "../../../../util/hooks/eventHook";
 
 const columns = [
   {
@@ -34,7 +33,7 @@ const columns = [
   },
 ];
 
-export default function FutureEventList() {
+export default function PastEventList() {
   const [pageState, setPageState] = useState({
     total: 0,
     data: [],
@@ -42,7 +41,7 @@ export default function FutureEventList() {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 6,
+    pageSize: 8,
   });
 
   const eventHook = useEvent();
@@ -52,7 +51,7 @@ export default function FutureEventList() {
       setPageState((old) => ({ ...old, isLoading: true }));
 
       const newRows = await eventHook.fetchEventList({
-        eventType: "future",
+        eventType: "past",
         page: paginationModel.page,
         size: paginationModel.pageSize,
       });
@@ -72,7 +71,7 @@ export default function FutureEventList() {
         square={false}
         sx={{ p: 2, display: "flex", flexDirection: "column", height: "83vh" }}
       >
-        <Typography variant="h6">FUTURE EVENTS:</Typography>
+        <Typography variant="h6">PAST EVENTS:</Typography>
         <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
 
         <DataGrid
@@ -89,7 +88,7 @@ export default function FutureEventList() {
           rowCount={pageState.total}
           paginationMode="server"
           paginationModel={paginationModel}
-          pageSizeOptions={[6]}
+          pageSizeOptions={[8]}
           keepNonExistentRowsSelected
           getRowId={(row) => row.id}
           onPaginationModelChange={setPaginationModel}
@@ -98,7 +97,7 @@ export default function FutureEventList() {
             noRowsLabel:
               "No Event(s) currently exist. Please create an Event or contact support",
           }}
-          // rowHeight={45}
+          rowHeight={43}
         />
       </Paper>
     </Grid>
