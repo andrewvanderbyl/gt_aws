@@ -5,6 +5,7 @@ import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function FutureEventList({ forceRefresh }) {
   const [pageState, setPageState] = useState({
@@ -18,6 +19,7 @@ export default function FutureEventList({ forceRefresh }) {
   });
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
+  const loader = useLoader();
 
   const columns = [
     {
@@ -71,6 +73,7 @@ export default function FutureEventList({ forceRefresh }) {
 
   useEffect(() => {
     (async () => {
+      loader.showLoader();
       setPageState((old) => ({ ...old, isLoading: true }));
 
       const newRows = await eventHook.fetchEventList({
@@ -84,6 +87,7 @@ export default function FutureEventList({ forceRefresh }) {
         data: newRows.data,
         total: newRows.count,
       }));
+      loader.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationModel.page, paginationModel.pageSize, forceRefresh]);
@@ -95,6 +99,8 @@ export default function FutureEventList({ forceRefresh }) {
 
   return (
     <>
+      <loader.LoadingPanel />
+
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -119,7 +125,7 @@ export default function FutureEventList({ forceRefresh }) {
                 color: "white",
               },
             }}
-            loading={pageState.isLoading}
+            // loading={pageState.isLoading}
             rows={pageState.data}
             columns={columns}
             rowCount={pageState.total}

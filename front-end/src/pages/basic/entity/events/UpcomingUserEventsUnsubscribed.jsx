@@ -7,6 +7,7 @@ import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
 import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function UpcomingUserEventsUnsubscribed(props) {
   const [pageState, setPageState] = useState({
@@ -24,6 +25,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const eventHook = useEvent();
+  const loader = useLoader();
 
   const columns = [
     {
@@ -88,6 +90,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
 
   useEffect(() => {
     (async () => {
+      loader.showLoader();
       setPageState((old) => ({ ...old, isLoading: true }));
 
       const newRows = await eventHook.fetchUserEvents(
@@ -104,6 +107,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
         data: newRows.data,
         total: newRows.count,
       }));
+      loader.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationModel.page, paginationModel.pageSize, refresh]);
@@ -115,6 +119,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
 
   return (
     <>
+      <loader.LoadingPanel />
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -139,7 +144,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
                 color: "white",
               },
             }}
-            loading={pageState.isLoading}
+            // loading={pageState.isLoading}
             rows={pageState.data}
             columns={columns}
             rowCount={pageState.total}

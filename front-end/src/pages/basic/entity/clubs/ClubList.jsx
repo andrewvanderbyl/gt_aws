@@ -2,6 +2,7 @@ import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { useClub } from "../../../../util/hooks/clubHook";
+import { useLoader } from "../../../../util/hooks/loaderHook";
 
 const columns = [
   {
@@ -62,9 +63,11 @@ export default function ClubList({ forceRefresh }) {
     pageSize: 8,
   });
   const clubHook = useClub();
+  const loader = useLoader();
 
   useEffect(() => {
     (async () => {
+      loader.showLoader();
       setPageState((old) => ({ ...old, isLoading: true }));
 
       const newRows = await clubHook.fetchClubList({
@@ -77,45 +80,56 @@ export default function ClubList({ forceRefresh }) {
         data: newRows.data,
         total: newRows.count,
       }));
+      loader.closeLoader();
     })();
   }, [paginationModel.page, paginationModel.pageSize, forceRefresh]);
 
   return (
-    <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
-      <Paper
-        elevation={3}
-        square={false}
-        sx={{ p: 3, display: "flex", flexDirection: "column", height: "83vh" }}
-      >
-        <Typography variant="h6">CLUBS:</Typography>
-        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
-
-        <DataGrid
+    <>
+      <loader.LoadingPanel />
+      <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
+        <Paper
+          elevation={3}
+          square={false}
           sx={{
-            // width: '100%',
-            "& .super-app-theme--header": {
-              backgroundColor: "#1C4E80",
-              color: "white",
-            },
+            p: 3,
+            display: "flex",
+            flexDirection: "column",
+            height: "83vh",
           }}
-          loading={pageState.isLoading}
-          rows={pageState.data}
-          columns={columns}
-          rowCount={pageState.total}
-          paginationMode="server"
-          paginationModel={paginationModel}
-          pageSizeOptions={[8]}
-          keepNonExistentRowsSelected
-          getRowId={(row) => row.id}
-          onPaginationModelChange={setPaginationModel}
-          pagination
-          localeText={{
-            noRowsLabel:
-              "No Club(s) currently exist. Please create a Club or contact support",
-          }}
-          rowHeight={43}
-        />
-      </Paper>
-    </Grid>
+        >
+          <Typography variant="h6">CLUBS:</Typography>
+          <Divider
+            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
+          />
+
+          <DataGrid
+            sx={{
+              // width: '100%',
+              "& .super-app-theme--header": {
+                backgroundColor: "#1C4E80",
+                color: "white",
+              },
+            }}
+            // loading={pageState.isLoading}
+            rows={pageState.data}
+            columns={columns}
+            rowCount={pageState.total}
+            paginationMode="server"
+            paginationModel={paginationModel}
+            pageSizeOptions={[8]}
+            keepNonExistentRowsSelected
+            getRowId={(row) => row.id}
+            onPaginationModelChange={setPaginationModel}
+            pagination
+            localeText={{
+              noRowsLabel:
+                "No Club(s) currently exist. Please create a Club or contact support",
+            }}
+            rowHeight={43}
+          />
+        </Paper>
+      </Grid>
+    </>
   );
 }
