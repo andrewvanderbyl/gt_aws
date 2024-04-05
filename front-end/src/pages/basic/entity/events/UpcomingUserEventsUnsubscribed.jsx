@@ -1,10 +1,12 @@
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useRef, useState } from "react";
-import SlideEntityPanel from "../../../../components/SlideEntityPanel";
+import { useEffect, useState } from "react";
 import { useEvent } from "../../../../util/hooks/eventHook";
+import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 
 export default function UpcomingUserEventsUnsubscribed(props) {
   const [pageState, setPageState] = useState({
@@ -12,12 +14,16 @@ export default function UpcomingUserEventsUnsubscribed(props) {
     data: [],
     isLoading: false,
   });
+  const [refresh, setRefresh] = useState();
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 8,
   });
   const [event, setEvent] = useState({});
-  const slidePanelRef = useRef();
+  const sliderPanel = useSliderPanel();
+  const authUserContext = useAuth();
+  const userData = authUserContext.localStorageValue;
+  const eventHook = useEvent();
 
   const columns = [
     {
@@ -38,15 +44,6 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       headerClassName: "super-app-theme--header",
       flex: 1,
     },
-    // {
-    //   field: "detail",
-    //   headerName: "DETAIL",
-    //   // width: 70,
-    //   headerAlign: "center",
-    //   align: "center",
-    //   headerClassName: "super-app-theme--header",
-    //   flex: 1,
-    // },
     {
       field: "id",
       width: 300,
@@ -58,24 +55,28 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       // flex: 1,
       renderCell: (params) => {
         const handleClick = (event) => {
-          console.log("Params", params.row);
           setEvent(params.row);
-          slidePanelRef.current.openDialog();
+          sliderPanel.openPanel();
+        };
+
+        const handleSubscribeClick = async (event) => {
+          await eventHook.subscribeUserToEvent(params.row.id, userData.id);
+          setRefresh(new Date());
         };
 
         return (
           <Stack direction="row" spacing={2}>
             <Button
               variant="outlined"
-              startIcon={<LibraryBooksIcon />}
+              startIcon={<AssignmentIcon />}
               onClick={handleClick}
             >
               View
             </Button>
             <Button
               variant="outlined"
-              startIcon={<LibraryBooksIcon />}
-              onClick={handleClick}
+              startIcon={<AssignmentTurnedInIcon />}
+              onClick={handleSubscribeClick}
             >
               Subscribe
             </Button>
@@ -84,7 +85,6 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       },
     },
   ];
-  const eventHook = useEvent();
 
   useEffect(() => {
     (async () => {
@@ -105,11 +105,12 @@ export default function UpcomingUserEventsUnsubscribed(props) {
         total: newRows.count,
       }));
     })();
-  }, [paginationModel.page, paginationModel.pageSize]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationModel.page, paginationModel.pageSize, refresh]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
-    slidePanelRef.current.closeDialog();
+    sliderPanel.closePanel();
   };
 
   return (
@@ -158,11 +159,10 @@ export default function UpcomingUserEventsUnsubscribed(props) {
           />
         </Paper>
       </Grid>
-      <SlideEntityPanel
+      <sliderPanel.SliderPanel
         panelContent={
           <ViewEvent handleCancel={handleSlidePanelClose} event={event} />
         }
-        ref={slidePanelRef}
       />
     </>
   );

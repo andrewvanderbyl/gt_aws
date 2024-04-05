@@ -1,14 +1,14 @@
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import ViewListIcon from "@mui/icons-material/ViewList";
-import { useRef, useState } from "react";
-import SlideEntityPanel from "../../components/SlideEntityPanel";
-import ContentPanel from "../layout/ContentPanel";
+import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
 import ClubList from "../basic/entity/clubs/ClubList";
+import ContentPanel from "../layout/ContentPanel";
 import AdminClubCreate from "./entity/clubs/AdminClubCreate";
+import { useState } from "react";
 
 export default function AdminClubs() {
   const [contentComponent, setContentComponent] = useState(<ClubList />);
-  const slidePanelRef = useRef();
+  const slidePanel = useSliderPanel();
 
   const handleViewClubsClick = (event) => {
     event.preventDefault();
@@ -16,16 +16,16 @@ export default function AdminClubs() {
   };
   const handleViewCreateClubClick = (event) => {
     event.preventDefault();
-    slidePanelRef.current.openDialog();
+    slidePanel.openPanel();
   };
 
   const handleCreateFormCancelClick = (event) => {
     event.preventDefault();
-    slidePanelRef.current.closeDialog();
+    slidePanel.closePanel();
   };
 
   const handleClubCreatedEvent = () => {
-    slidePanelRef.current.closeDialog();
+    slidePanel.closePanel();
     setContentComponent(<ClubList forceRefresh={new Date()} />);
   };
 
@@ -47,14 +47,13 @@ export default function AdminClubs() {
         ]}
         entityComponent={contentComponent}
       />
-      <SlideEntityPanel
+      <slidePanel.SliderPanel
         panelContent={
           <AdminClubCreate
             handleCancel={handleCreateFormCancelClick}
             handleClubCreate={handleClubCreatedEvent}
           />
         }
-        ref={slidePanelRef}
       />
     </>
   );

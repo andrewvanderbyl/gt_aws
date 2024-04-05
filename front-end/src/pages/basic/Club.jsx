@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../util/context/AuthUserContext";
 import { useClub } from "../../util/hooks/clubHook";
 import ContentPanel from "../layout/ContentPanel";
-import ClubMemberList from "./clubs/ClubMemberList";
 import ClubCreate from "./entity/clubs/ClubCreate";
+import ClubMemberList from "./entity/clubs/ClubMemberList";
 
 export default function Club() {
   const authUserContext = useAuth();
@@ -26,6 +26,7 @@ export default function Club() {
         setClub(userClub.data[0]);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [contentComponent, setContentComponent] = useState(<ClubCreate />);

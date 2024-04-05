@@ -35,4 +35,11 @@ export default {
         return data;
       });
   },
+  subscribeUserToEvent: async (eventId, userId) => {
+    let uri = process.env.REACT_APP_USER_EVENTS_SUBSCRIBE.replace(
+      "{eventId}",
+      eventId
+    );
+    await api.postWithoutBody(uri, userId);
+  },
 };

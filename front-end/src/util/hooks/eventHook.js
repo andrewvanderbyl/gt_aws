@@ -17,5 +17,9 @@ export const useEvent = () => {
     );
   };
 
-  return { createEvent, fetchEventList, fetchUserEvents };
+  const subscribeUserToEvent = async (eventId, userId) => {
+    await EventService.subscribeUserToEvent(eventId, userId);
+  };
+
+  return { createEvent, fetchEventList, fetchUserEvents, subscribeUserToEvent };
 };

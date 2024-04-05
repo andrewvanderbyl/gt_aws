@@ -1,10 +1,10 @@
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEvent } from "../../../../util/hooks/eventHook";
-import SlideEntityPanel from "../../../../components/SlideEntityPanel";
+import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
-import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 
 export default function PastUserEventsSubscribed(props) {
   const [pageState, setPageState] = useState({
@@ -17,7 +17,7 @@ export default function PastUserEventsSubscribed(props) {
     pageSize: 8,
   });
   const [event, setEvent] = useState({});
-  const slidePanelRef = useRef();
+  const sliderPanel = useSliderPanel();
   const columns = [
     {
       field: "name",
@@ -48,14 +48,14 @@ export default function PastUserEventsSubscribed(props) {
         const handleClick = (event) => {
           console.log("Params", params.row);
           setEvent(params.row);
-          slidePanelRef.current.openDialog();
+          sliderPanel.openPanel();
         };
 
         return (
           <Stack direction="row" spacing={2}>
             <Button
               variant="outlined"
-              startIcon={<LibraryBooksIcon />}
+              startIcon={<AssignmentIcon />}
               onClick={handleClick}
             >
               View
@@ -87,11 +87,12 @@ export default function PastUserEventsSubscribed(props) {
         total: newRows.count,
       }));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationModel.page, paginationModel.pageSize]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
-    slidePanelRef.current.closeDialog();
+    sliderPanel.closePanel();
   };
 
   return (
@@ -139,11 +140,10 @@ export default function PastUserEventsSubscribed(props) {
           />
         </Paper>
       </Grid>
-      <SlideEntityPanel
+      <sliderPanel.SliderPanel
         panelContent={
           <ViewEvent handleCancel={handleSlidePanelClose} event={event} />
         }
-        ref={slidePanelRef}
       />
     </>
   );

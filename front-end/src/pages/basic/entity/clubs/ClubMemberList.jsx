@@ -1,8 +1,7 @@
-import EditIcon from "@mui/icons-material/Edit";
-import { Divider, Grid, IconButton, Paper, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { useClub } from "../../../util/hooks/clubHook";
+import { useClub } from "../../../../util/hooks/clubHook";
 
 const columns = [
   {
@@ -75,6 +74,7 @@ export default function ClubMemberList(props) {
         total: newRows.count,
       }));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paginationModel.page, paginationModel.pageSize]);
 
   return (

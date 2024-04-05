@@ -67,4 +67,21 @@ export const api = {
 
     return await axios.request(config).then((res) => res.data);
   },
+  postWithoutBody: async (endpoint, userId = null) => {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (userId) {
+      headers["userId"] = userId;
+    }
+
+    const config = {
+      method: "post",
+      url: `${baseUrl}${endpoint}`,
+      headers,
+    };
+
+    return await axios.request(config).then((res) => res.data);
+  },
 };

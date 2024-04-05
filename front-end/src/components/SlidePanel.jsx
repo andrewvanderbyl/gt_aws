@@ -1,7 +1,7 @@
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { Fragment, forwardRef, useImperativeHandle, useState } from "react";
 
-const SlideEntityPanel = forwardRef((props, ref) => {
+const SlidePanel = forwardRef((props, ref) => {
   const [openDialog, setOpenDialog] = useState(false);
   useImperativeHandle(ref, () => ({
     openDialog() {
@@ -41,4 +41,4 @@ const SlideEntityPanel = forwardRef((props, ref) => {
   );
 });
 
-export default SlideEntityPanel;
+export default SlidePanel;
