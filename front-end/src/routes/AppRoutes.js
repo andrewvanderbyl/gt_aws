@@ -12,6 +12,7 @@ import SignIn from "../pages/security/SignIn";
 import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
 import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
 import AdminClubs from "../pages/basic/AdminClubs";
+import Asa from "../pages/basic/Asa";
 
 export const AppRoutes = [
   // Protected Routes
@@ -39,6 +40,11 @@ export const AppRoutes = [
       key="Events"
       path="events"
       element={<ProtectedRouteGuard component={<Events />} />}
+    />
+    <Route
+      key="Asas"
+      path="asa"
+      element={<ProtectedRouteGuard component={<Asa />} />}
     />
     <Route
       key="TimingChip"

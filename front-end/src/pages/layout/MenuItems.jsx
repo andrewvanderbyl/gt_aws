@@ -47,7 +47,7 @@ export default function ListItems() {
       <MenuItem
         menuText={"ASA Number"}
         menuIcon={<SellIcon style={{ color: "white" }} />}
-        menuClickNav={"/events"}
+        menuClickNav={"/asa"}
       />
       <MenuItem
         menuText={"Timing Chip"}
