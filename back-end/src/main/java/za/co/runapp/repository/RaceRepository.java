@@ -19,13 +19,4 @@ public interface RaceRepository extends JpaRepository<Race, String> {
             nativeQuery = true
     )
     void registerUserForRace(final String userId, final String raceId);
-
-    @Query("""
-            SELECT 
-                new za.co.runapp.rest.dto.RaceDto(r.id, r.name, r.cost, r.distance, r.date) 
-            FROM Race AS r 
-            JOIN r.users AS u 
-            WHERE u.id = :userId
-            """)
-    Page<RaceDto> findRacesByUser(String userId, PageRequest of);
 }

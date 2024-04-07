@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,8 +32,8 @@ public class Race extends AbstractEntity {
     private BigDecimal cost;
     private LocalDateTime date;
 
-    @ManyToMany(mappedBy = "races", fetch = FetchType.LAZY)
-    private Set<User> users;
+    @OneToMany(mappedBy = "race", fetch = FetchType.LAZY)
+    private Set<UserRace> userRaces;
 
     public RaceDto toRaceDto() {
         return RaceDto.builder()

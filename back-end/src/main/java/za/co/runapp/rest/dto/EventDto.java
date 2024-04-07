@@ -23,6 +23,6 @@ public class EventDto {
     String date;
 
     public EventDto(String id, String name, String detail, LocalDateTime dateTime) {
-        this(id, name, detail, dateTime.format(DateTimeFormatter.ISO_DATE));
+        this(id, name, detail, dateTime.format(DateTimeFormatter.ISO_DATE_TIME));
     }
 }

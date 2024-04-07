@@ -20,8 +20,11 @@ import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.RaceDto;
 import za.co.runapp.rest.dto.UserDto;
+import za.co.runapp.rest.dto.UserRaceDto;
+import za.co.runapp.rest.dto.UserTagDto;
 import za.co.runapp.service.ClubService;
 import za.co.runapp.service.EventsService;
+import za.co.runapp.service.RegistrationService;
 import za.co.runapp.service.UserService;
 
 @Slf4j
@@ -34,6 +37,7 @@ public class UserController {
     private final UserService userService;
     private final EventsService eventsService;
     private final ClubService clubService;
+    private final RegistrationService registrationService;
 
     @PostMapping
     public Mono<ResponseEntity> createUser(
@@ -79,17 +83,32 @@ public class UserController {
     }
 
     @GetMapping("/races")
-    public Mono<ResponseEntity<PageableDto<RaceDto>>> getRacesForUser(
-            @RequestBody final PageableDto pageableDto, @RequestHeader("userId") final String userId) {
+    public Mono<ResponseEntity<PageableDto<UserRaceDto>>> getRacesForUser(
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
 
-        PageableDto<RaceDto> races = userService.getRacesForUser(userId, pageableDto);
-        return Mono.just(ResponseEntity.ok(races));
+        PageableDto<UserRaceDto> userRaces = userService.getRacesForUser(userId, page, size);
+        return Mono.just(ResponseEntity.ok(userRaces));
     }
 
-    @GetMapping("/asa")
-    public Mono<ResponseEntity<AsaDto>> getAsaForUser(@RequestHeader("userId") final String userId) {
+    @GetMapping("/asas")
+    public Mono<ResponseEntity<PageableDto<AsaDto>>> getAsaForUser(
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
 
-        AsaDto asa = userService.getAsaForUser(userId);
-        return Mono.just(ResponseEntity.ok(asa));
+        PageableDto<AsaDto> userAsas = userService.getAsaForUser(userId, page, size);
+        return Mono.just(ResponseEntity.ok(userAsas));
+    }
+
+    @GetMapping("/tags")
+    public Mono<ResponseEntity<PageableDto<UserTagDto>>> getTagsForUser(
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
+
+        PageableDto<UserTagDto> tags = registrationService.fetchTagsForUser(userId, page, size);
+        return Mono.just(ResponseEntity.ok(tags));
     }
 }

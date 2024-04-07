@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.TagDto;
+import za.co.runapp.rest.dto.UserTagDto;
 import za.co.runapp.service.RegistrationService;
 
 @Slf4j
@@ -45,7 +47,7 @@ public class RegistrationController {
         return Mono.just(ResponseEntity.ok(saved));
     }
 
-    @GetMapping("/asa/{asaId}/tags")
+    @GetMapping("/asa/{user}/tags")
     public Mono<ResponseEntity<PageableDto<TagDto>>> getTagsForAsa(
             @RequestBody final PageableDto pageableDto,
             @PathVariable("asaId") final String asaId,

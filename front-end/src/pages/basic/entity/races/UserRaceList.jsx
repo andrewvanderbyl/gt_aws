@@ -1,6 +1,9 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useResult } from "../../../../util/hooks/resultsHook";
+import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function UserRaceList() {
   const [pageState, setPageState] = useState({
@@ -12,6 +15,7 @@ export default function UserRaceList() {
     page: 0,
     pageSize: 8,
   });
+  const loader = useLoader();
 
   const columns = [
     {
@@ -48,7 +52,7 @@ export default function UserRaceList() {
       flex: 1,
     },
     {
-      field: "time",
+      field: "timing",
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -57,39 +61,78 @@ export default function UserRaceList() {
     },
   ];
 
+  const authHook = useAuth();
+  const loggedInUser = authHook.localStorageValue;
+
+  const raceHook = useResult();
+  useEffect(() => {
+    (async () => {
+      loader.showLoader();
+      setPageState((old) => ({ ...old, isLoading: true }));
+
+      const newRows = await raceHook.fetchRacesList(
+        {
+          page: paginationModel.page,
+          size: paginationModel.pageSize,
+        },
+        loggedInUser.id
+      );
+      setPageState((old) => ({
+        ...old,
+        isLoading: false,
+        data: newRows.data,
+        total: newRows.count,
+      }));
+      loader.closeLoader();
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paginationModel.page, paginationModel.pageSize]);
+
   return (
-    <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
-      <Paper
-        elevation={3}
-        square={false}
-        sx={{ p: 3, display: "flex", flexDirection: "column", height: "83vh" }}
-      >
-        <Typography variant="h6">RACES:</Typography>
-        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
-        <DataGrid
+    <>
+      <loader.LoadingPanel />
+
+      <Grid item xs={12} sx={{ mt: 2 }}>
+        <Paper
+          elevation={3}
+          square={false}
           sx={{
-            "& .super-app-theme--header": {
-              backgroundColor: "#1C4E80",
-              color: "white",
-            },
+            p: 2,
+            display: "flex",
+            flexDirection: "column",
+            height: "83vh",
           }}
-          rows={pageState.data}
-          columns={columns}
-          rowCount={pageState.total}
-          paginationMode="server"
-          paginationModel={paginationModel}
-          pageSizeOptions={[8]}
-          keepNonExistentRowsSelected
-          getRowId={(row) => row.id}
-          onPaginationModelChange={setPaginationModel}
-          pagination
-          localeText={{
-            noRowsLabel:
-              "You haven't participated in any race(s) yet. Get active",
-          }}
-          rowHeight={43}
-        />
-      </Paper>
-    </Grid>
+        >
+          <Typography variant="h6">RACES:</Typography>
+          <Divider
+            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
+          />
+          <DataGrid
+            sx={{
+              "& .super-app-theme--header": {
+                backgroundColor: "#1C4E80",
+                color: "white",
+              },
+            }}
+            rows={pageState.data}
+            columns={columns}
+            rowCount={pageState.total}
+            disableRowSelectionOnClick
+            paginationMode="server"
+            paginationModel={paginationModel}
+            pageSizeOptions={[8]}
+            keepNonExistentRowsSelected
+            getRowId={(row) => row.raceId}
+            onPaginationModelChange={setPaginationModel}
+            pagination
+            localeText={{
+              noRowsLabel:
+                "You haven't participated in any race(s) yet. Get active",
+            }}
+            rowHeight={43}
+          />
+        </Paper>
+      </Grid>
+    </>
   );
 }

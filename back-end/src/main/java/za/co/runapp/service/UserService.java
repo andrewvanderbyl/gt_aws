@@ -11,13 +11,16 @@ import za.co.runapp.exception.EntityNotFoundException;
 import za.co.runapp.repository.AsaRepository;
 import za.co.runapp.repository.ClubRepository;
 import za.co.runapp.repository.RaceRepository;
+import za.co.runapp.repository.UserRaceRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.RaceDto;
 import za.co.runapp.rest.dto.UserDto;
+import za.co.runapp.rest.dto.UserRaceDto;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -29,6 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RaceRepository raceRepository;
+    private final UserRaceRepository userRaceRepository;
 
     public UserDto createUser(final UserDto userDto) {
 
@@ -89,12 +93,12 @@ public class UserService {
 
     }
 
-    public PageableDto<RaceDto> getRacesForUser(String userId, PageableDto pageableDto) {
+    public PageableDto<UserRaceDto> getRacesForUser(String userId, int page, int size) {
 
-        Page<RaceDto> races = raceRepository.findRacesByUser(userId,
-                PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+        User user = userRepository.getReferenceById(userId);
+        Page<UserRaceDto> races = userRaceRepository.findRacesByUser(user, PageRequest.of(page, size));
 
-        return PageableDto.<RaceDto>builder()
+        return PageableDto.<UserRaceDto>builder()
                 .data(races.getContent())
                 .totalElements(races.getTotalElements())
                 .elementsPerPage(races.getPageable().getPageSize())
@@ -103,10 +107,19 @@ public class UserService {
                 .build();
     }
 
-    public AsaDto getAsaForUser(String userId) {
+    public PageableDto<AsaDto> getAsaForUser(String userId, int page, int size) {
         User user = userRepository.getReferenceById(userId);
 
-        Asa asa = asaRepository.findByUser(user);
-        return asa.toAsaDto();
+        Page<Asa> asa = asaRepository.findByUser(user, PageRequest.of(page, size));
+
+        List<AsaDto> list = asa.getContent().stream().map(Asa::toAsaDto).toList();
+
+        return PageableDto.<AsaDto>builder()
+                .data(list)
+                .totalElements(asa.getTotalElements())
+                .elementsPerPage(asa.getPageable().getPageSize())
+                .currentPageNumber(asa.getPageable().getPageNumber())
+                .totalPages(asa.getTotalPages())
+                .build();
     }
 }

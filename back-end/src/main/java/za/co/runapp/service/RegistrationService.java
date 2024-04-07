@@ -15,6 +15,7 @@ import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.TagDto;
+import za.co.runapp.rest.dto.UserTagDto;
 
 @Slf4j
 @AllArgsConstructor
@@ -50,6 +51,21 @@ public class RegistrationService {
                 PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
 
         return PageableDto.<TagDto>builder()
+                .data(events.getContent())
+                .totalElements(events.getTotalElements())
+                .elementsPerPage(events.getPageable().getPageSize())
+                .currentPageNumber(events.getPageable().getPageNumber())
+                .totalPages(events.getTotalPages())
+                .build();
+    }
+
+    public PageableDto<UserTagDto> fetchTagsForUser(String userId, int page, int size) {
+
+        User user = userRepository.getReferenceById(userId);
+
+        Page<UserTagDto> events = tagRepository.findTagsByUser(user, PageRequest.of(page, size));
+
+        return PageableDto.<UserTagDto>builder()
                 .data(events.getContent())
                 .totalElements(events.getTotalElements())
                 .elementsPerPage(events.getPageable().getPageSize())

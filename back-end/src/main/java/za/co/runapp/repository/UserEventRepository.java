@@ -17,18 +17,20 @@ public interface UserEventRepository extends JpaRepository<UserEvent, String> {
         SELECT new za.co.runapp.rest.dto.EventDto(ue.event.id, ue.event.name, ue.event.detail, ue.event.date) 
         from UserEvent ue 
         where ue.user = :user
+        ORDER BY ue.event.date DESC
     """)
     Page<EventDto> findEventByUser(User user, Pageable pageable);
 
     @Query("""
-                SELECT new za.co.runapp.rest.dto.EventDto(e.id, e.name, e.detail, e.date)
-                FROM Event e
-                WHERE e NOT IN (
-                    SELECT ue.event
-                    FROM UserEvent ue where ue.user = :user
-                )
-                AND e.date >= :date
-            """)
+        SELECT new za.co.runapp.rest.dto.EventDto(e.id, e.name, e.detail, e.date)
+        FROM Event e
+        WHERE e NOT IN (
+            SELECT ue.event
+            FROM UserEvent ue where ue.user = :user
+        )
+        AND e.date >= :date
+        ORDER BY e.date DESC
+    """)
     Page<EventDto> findUnsubscribedUpcomingEventsForUser(User user, LocalDateTime date, Pageable pageable);
 
     @Query("""
@@ -36,6 +38,7 @@ public interface UserEventRepository extends JpaRepository<UserEvent, String> {
         from UserEvent ue 
         where ue.user = :user
         and ue.event.date >= :date
+        ORDER BY ue.event.date DESC
     """)
     Page<EventDto> findSubscribedUpcomingEventsForUser(User user, LocalDateTime date, Pageable pageable);
 
@@ -44,6 +47,7 @@ public interface UserEventRepository extends JpaRepository<UserEvent, String> {
         from UserEvent ue 
         where ue.user = :user
         and ue.event.date < :date
+        ORDER BY ue.event.date DESC
     """)
     Page<EventDto> findPastSubscribedEventsForUser(User user, LocalDateTime date, Pageable pageable);
 }

@@ -41,12 +41,15 @@ public class User extends AbstractEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserEvent> userEvents;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_races",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "race_id")
-    )
-    private Set<Race> races;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserRace> userRaces;
+
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "user_races",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "race_id")
+//    )
+//    private Set<Race> races;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
