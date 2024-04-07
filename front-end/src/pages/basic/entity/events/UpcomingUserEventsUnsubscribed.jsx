@@ -1,37 +1,26 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
-import { useAuth } from "../../../../util/context/AuthUserContext";
-import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function UpcomingUserEventsUnsubscribed(props) {
-  const [pageState, setPageState] = useState({
-    total: 0,
-    data: [],
-    isLoading: false,
-  });
   const [refresh, setRefresh] = useState();
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 8,
-  });
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const eventHook = useEvent();
-  const loader = useLoader();
+  const dataGrid = useDataGrid();
 
   const columns = [
     {
       field: "name",
       headerName: "NAME",
-      // width: 250,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -40,7 +29,6 @@ export default function UpcomingUserEventsUnsubscribed(props) {
     {
       field: "date",
       headerName: "DATE",
-      // width: 185,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -90,27 +78,20 @@ export default function UpcomingUserEventsUnsubscribed(props) {
 
   useEffect(() => {
     (async () => {
-      loader.showLoader();
-      setPageState((old) => ({ ...old, isLoading: true }));
-
+      dataGrid.showLoader();
       const newRows = await eventHook.fetchUserEvents(
         "UPCOMING",
         {
-          page: paginationModel.page,
-          size: paginationModel.pageSize,
+          page: dataGrid.getPageNumber(),
+          size: dataGrid.getPageSize(),
         },
         props.userId
       );
-      setPageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: newRows.data,
-        total: newRows.count,
-      }));
-      loader.closeLoader();
+      dataGrid.updatePageState(newRows);
+      dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel.page, paginationModel.pageSize, refresh]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), refresh]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -119,7 +100,6 @@ export default function UpcomingUserEventsUnsubscribed(props) {
 
   return (
     <>
-      <loader.LoadingPanel />
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -136,31 +116,11 @@ export default function UpcomingUserEventsUnsubscribed(props) {
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
 
-          <DataGrid
-            sx={{
-              // width: '100%',
-              "& .super-app-theme--header": {
-                backgroundColor: "#1C4E80",
-                color: "white",
-              },
-            }}
-            // loading={pageState.isLoading}
-            rows={pageState.data}
+          <dataGrid.DataGridPanel
             columns={columns}
-            rowCount={pageState.total}
-            disableRowSelectionOnClick
-            paginationMode="server"
-            paginationModel={paginationModel}
-            pageSizeOptions={[8]}
-            keepNonExistentRowsSelected
-            getRowId={(row) => row.id}
-            onPaginationModelChange={setPaginationModel}
-            pagination
-            localeText={{
-              noRowsLabel:
-                "No new upcoming event(s) currently exist. Please check again later for new event(s)",
-            }}
-            rowHeight={43}
+            emptyText={
+              "No new upcoming event(s) currently exist. Please check again later for new event(s)"
+            }
           />
         </Paper>
       </Grid>

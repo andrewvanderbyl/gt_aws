@@ -8,7 +8,6 @@ export const useLoader = () => {
     setOpen(false);
   };
   const showLoader = () => {
-    console.log("Showing loader");
     setOpen(true);
   };
 
