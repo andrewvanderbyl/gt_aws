@@ -1,25 +1,15 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
-import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function UpcomingUserEventsSubscribed(props) {
-  const [pageState, setPageState] = useState({
-    total: 0,
-    data: [],
-    isLoading: false,
-  });
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 8,
-  });
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
-  const loader = useLoader();
+  const dataGrid = useDataGrid();
 
   const columns = [
     {
@@ -72,28 +62,21 @@ export default function UpcomingUserEventsSubscribed(props) {
 
   useEffect(() => {
     (async () => {
-      loader.showLoader();
-      setPageState((old) => ({ ...old, isLoading: true }));
-
+      dataGrid.showLoader();
       const newRows = await eventHook.fetchUserEvents(
         "SUBSCRIBED",
         {
           eventType: "future",
-          page: paginationModel.page,
-          size: paginationModel.pageSize,
+          page: dataGrid.getPageNumber(),
+          size: dataGrid.getPageSize(),
         },
         props.userId
       );
-      setPageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: newRows.data,
-        total: newRows.count,
-      }));
-      loader.closeLoader();
+      dataGrid.updatePageState(newRows);
+      dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize()]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -102,8 +85,6 @@ export default function UpcomingUserEventsSubscribed(props) {
 
   return (
     <>
-      <loader.LoadingPanel />
-
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -120,31 +101,11 @@ export default function UpcomingUserEventsSubscribed(props) {
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
 
-          <DataGrid
-            sx={{
-              // width: '100%',
-              "& .super-app-theme--header": {
-                backgroundColor: "#1C4E80",
-                color: "white",
-              },
-            }}
-            // loading={pageState.isLoading}
-            rows={pageState.data}
+          <dataGrid.DataGridPanel
             columns={columns}
-            rowCount={pageState.total}
-            disableRowSelectionOnClick
-            paginationMode="server"
-            paginationModel={paginationModel}
-            pageSizeOptions={[8]}
-            keepNonExistentRowsSelected
-            getRowId={(row) => row.id}
-            onPaginationModelChange={setPaginationModel}
-            pagination
-            localeText={{
-              noRowsLabel:
-                "No upcoming subscribed event(s) currently exist. Please subscribe to an 'Upcoming' event to participate.",
-            }}
-            rowHeight={43}
+            emptyText={
+              "No upcoming subscribed event(s) currently exist. Please subscribe to an 'Upcoming' event to participate."
+            }
           />
         </Paper>
       </Grid>

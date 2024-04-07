@@ -1,25 +1,15 @@
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function FutureEventList({ forceRefresh }) {
-  const [pageState, setPageState] = useState({
-    total: 0,
-    data: [],
-    isLoading: false,
-  });
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 8,
-  });
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
-  const loader = useLoader();
+  const dataGrid = useDataGrid();
 
   const columns = [
     {
@@ -73,24 +63,18 @@ export default function FutureEventList({ forceRefresh }) {
 
   useEffect(() => {
     (async () => {
-      loader.showLoader();
-      setPageState((old) => ({ ...old, isLoading: true }));
+      dataGrid.showLoader();
 
       const newRows = await eventHook.fetchEventList({
         eventType: "future",
-        page: paginationModel.page,
-        size: paginationModel.pageSize,
+        page: dataGrid.getPageNumber(),
+        size: dataGrid.getPageSize(),
       });
-      setPageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: newRows.data,
-        total: newRows.count,
-      }));
-      loader.closeLoader();
+      dataGrid.updatePageState(newRows);
+      dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel.page, paginationModel.pageSize, forceRefresh]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -99,8 +83,6 @@ export default function FutureEventList({ forceRefresh }) {
 
   return (
     <>
-      <loader.LoadingPanel />
-
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -117,31 +99,11 @@ export default function FutureEventList({ forceRefresh }) {
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
 
-          <DataGrid
-            sx={{
-              // width: '100%',
-              "& .super-app-theme--header": {
-                backgroundColor: "#1C4E80",
-                color: "white",
-              },
-            }}
-            // loading={pageState.isLoading}
-            rows={pageState.data}
+          <dataGrid.DataGridPanel
             columns={columns}
-            rowCount={pageState.total}
-            disableRowSelectionOnClick
-            paginationMode="server"
-            paginationModel={paginationModel}
-            pageSizeOptions={[8]}
-            keepNonExistentRowsSelected
-            getRowId={(row) => row.id}
-            onPaginationModelChange={setPaginationModel}
-            pagination
-            localeText={{
-              noRowsLabel:
-                "No Event(s) currently exist. Please create an Event or contact support",
-            }}
-            rowHeight={43}
+            emptyText={
+              "No Event(s) currently exist. Please create an Event or contact support"
+            }
           />
         </Paper>
       </Grid>

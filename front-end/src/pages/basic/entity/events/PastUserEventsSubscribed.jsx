@@ -1,25 +1,15 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
-import { useLoader } from "../../../../util/hooks/loaderHook";
 
 export default function PastUserEventsSubscribed(props) {
-  const [pageState, setPageState] = useState({
-    total: 0,
-    data: [],
-    isLoading: false,
-  });
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 8,
-  });
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
-  const loader = useLoader();
+  const datagrid = useDataGrid();
 
   const columns = [
     {
@@ -71,28 +61,22 @@ export default function PastUserEventsSubscribed(props) {
 
   useEffect(() => {
     (async () => {
-      loader.showLoader();
-      setPageState((old) => ({ ...old, isLoading: true }));
+      datagrid.showLoader();
 
       const newRows = await eventHook.fetchUserEvents(
         "PAST",
         {
           eventType: "future",
-          page: paginationModel.page,
-          size: paginationModel.pageSize,
+          page: datagrid.getPageNumber(),
+          size: datagrid.getPageSize(),
         },
         props.userId
       );
-      setPageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: newRows.data,
-        total: newRows.count,
-      }));
-      loader.closeLoader();
+      datagrid.updatePageState(newRows);
+      datagrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [datagrid.getPageNumber(), datagrid.getPageSize()]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -101,8 +85,6 @@ export default function PastUserEventsSubscribed(props) {
 
   return (
     <>
-      <loader.LoadingPanel />
-
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
           elevation={3}
@@ -119,30 +101,9 @@ export default function PastUserEventsSubscribed(props) {
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
 
-          <DataGrid
-            sx={{
-              // width: '100%',
-              "& .super-app-theme--header": {
-                backgroundColor: "#1C4E80",
-                color: "white",
-              },
-            }}
-            // loading={pageState.isLoading}
-            rows={pageState.data}
+          <datagrid.DataGridPanel
             columns={columns}
-            rowCount={pageState.total}
-            disableRowSelectionOnClick
-            paginationMode="server"
-            paginationModel={paginationModel}
-            pageSizeOptions={[8]}
-            keepNonExistentRowsSelected
-            getRowId={(row) => row.id}
-            onPaginationModelChange={setPaginationModel}
-            pagination
-            localeText={{
-              noRowsLabel: "No past subscribed event(s) exist.",
-            }}
-            rowHeight={43}
+            emptyText={"No past subscribed event(s) exist."}
           />
         </Paper>
       </Grid>

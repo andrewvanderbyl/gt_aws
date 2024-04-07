@@ -49,11 +49,11 @@ export default function ListItems() {
         menuIcon={<SellIcon style={{ color: "white" }} />}
         menuClickNav={"/asa"}
       />
-      <MenuItem
+      {/* <MenuItem
         menuText={"Timing Chip"}
         menuIcon={<MemoryIcon style={{ color: "white" }} />}
         menuClickNav={"/tags"}
-      />
+      /> */}
       <MenuItem
         menuText={"Results"}
         menuIcon={<EmojiEventsIcon style={{ color: "white" }} />}
