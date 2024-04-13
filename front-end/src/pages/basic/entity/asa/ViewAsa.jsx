@@ -2,17 +2,51 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Button,
   ButtonGroup,
+  Paper,
   Stack,
-  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs from "dayjs";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
+import { useEffect } from "react";
+import { useAsa } from "../../../../util/hooks/asaHook";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 
 export default function ViewAsa({ handleCancel, asa }) {
+  const dataGrid = useDataGrid();
+  const asaHook = useAsa();
+  const authUserContext = useAuth();
+  const userData = authUserContext.localStorageValue;
+  const columns = [
+    {
+      field: "tag",
+      headerName: "TIMING CHIP(s)",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
+    },
+  ];
+
+  useEffect(() => {
+    if (asa["id"]) {
+      (async () => {
+        dataGrid.showLoader();
+        const newRows = await asaHook.fetchTimingListForAsa(
+          {
+            page: dataGrid.getPageNumber(),
+            size: dataGrid.getPageSize(),
+          },
+          asa["id"],
+          userData.id
+        );
+        dataGrid.updatePageState(newRows);
+        dataGrid.closeLoader();
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), asa]);
+
   return (
     <Stack
       sx={{
@@ -31,6 +65,22 @@ export default function ViewAsa({ handleCancel, asa }) {
           {asa["asa"]}
         </Typography>
       </Toolbar>
+
+      <Paper
+        // elevation={3}
+        square={false}
+        sx={{
+          // p: 2,
+          display: "flex",
+          flexDirection: "column",
+          height: "68vh",
+        }}
+      >
+        <dataGrid.DataGridPanel
+          columns={columns}
+          emptyText={"No chip entries currently exist."}
+        />
+      </Paper>
 
       <ButtonGroup
         sx={{

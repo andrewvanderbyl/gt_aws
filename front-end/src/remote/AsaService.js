@@ -20,4 +20,27 @@ export default {
         return data;
       });
   },
+
+  fetchTimingListForAsa: async (props, asaId, userId) => {
+    let uri = process.env.REACT_APP_ASA_TIMING_CHIPS.replace("{asaId}", asaId);
+
+    return await api.getPaginated(uri, props, userId).then((data) => {
+      return data;
+    });
+  },
+
+  createTimingForAsa: async (props, asaId, userId) => {
+    let uri = process.env.REACT_APP_ASA_CREATE_TIMING_CHIP.replace(
+      "{asaId}",
+      asaId
+    );
+
+    const payload = {
+      tag: props.tag,
+    };
+
+    return await api.post(uri, payload, userId).then((data) => {
+      return data;
+    });
+  },
 };

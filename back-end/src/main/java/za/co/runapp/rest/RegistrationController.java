@@ -47,13 +47,24 @@ public class RegistrationController {
         return Mono.just(ResponseEntity.ok(saved));
     }
 
-    @GetMapping("/asa/{user}/tags")
+    @GetMapping("/asa/{asaId}/tags")
     public Mono<ResponseEntity<PageableDto<TagDto>>> getTagsForAsa(
-            @RequestBody final PageableDto pageableDto,
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
             @PathVariable("asaId") final String asaId,
             @RequestHeader("userId") final String userId) {
 
-        PageableDto<TagDto> tags = registrationService.fetchTagsForAsa(asaId, userId, pageableDto);
+        PageableDto<TagDto> tags = registrationService.fetchTagsForAsa(asaId, userId, page, size);
+        return Mono.just(ResponseEntity.ok(tags));
+    }
+
+    @GetMapping("/asa/tags")
+    public Mono<ResponseEntity<PageableDto<UserTagDto>>> getTagsForUser(
+            @RequestParam("page") final int page,
+            @RequestParam("size") final int size,
+            @RequestHeader("userId") final String userId) {
+
+        PageableDto<UserTagDto> tags = registrationService.fetchTagsForUser(userId, page, size);
         return Mono.just(ResponseEntity.ok(tags));
     }
 }

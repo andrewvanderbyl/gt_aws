@@ -13,5 +13,19 @@ export const useAsa = () => {
     });
   };
 
-  return { fetchAsaList, createAsa };
+  const fetchTimingListForAsa = async (props, asaId, userId) => {
+    return await AsaService.fetchTimingListForAsa(props, asaId, userId).then(
+      (events) => events
+    );
+  };
+
+  const createTimingForAsa = async (props, asaId, userId) => {
+    return await AsaService.createTimingForAsa(props, asaId, userId).then(
+      (eventData) => {
+        return eventData;
+      }
+    );
+  };
+
+  return { fetchAsaList, createAsa, fetchTimingListForAsa, createTimingForAsa };
 };

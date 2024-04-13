@@ -1,14 +1,17 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import MemoryIcon from "@mui/icons-material/Memory";
 import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
+import TimingChipCreate from "./TimingChipCreate";
 import ViewAsa from "./ViewAsa";
 
 export default function AsaList({ forceRefresh }) {
   const [asa, setAsa] = useState({});
+  const [showAsaView, setShowAsaView] = useState(true);
   const dataGrid = useDataGrid();
   const sliderPanel = useSliderPanel();
 
@@ -36,6 +39,13 @@ export default function AsaList({ forceRefresh }) {
       renderCell: (params) => {
         const handleClick = (event) => {
           setAsa(params.row);
+          setShowAsaView(true);
+          sliderPanel.openPanel();
+        };
+
+        const handleCreateChipEntryClick = (event) => {
+          setAsa(params.row);
+          setShowAsaView(false);
           sliderPanel.openPanel();
         };
 
@@ -47,6 +57,13 @@ export default function AsaList({ forceRefresh }) {
               onClick={handleClick}
             >
               View
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<MemoryIcon />}
+              onClick={handleCreateChipEntryClick}
+            >
+              Chip Entry
             </Button>
           </Stack>
         );
@@ -68,10 +85,20 @@ export default function AsaList({ forceRefresh }) {
       dataGrid.updatePageState(newRows);
       dataGrid.closeLoader();
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
+    sliderPanel.closePanel();
+  };
+
+  const handleCreateChipFormCancelClick = (event) => {
+    event.preventDefault();
+    sliderPanel.closePanel();
+  };
+
+  const handleCreateChipCreatedEvent = () => {
     sliderPanel.closePanel();
   };
 
@@ -103,7 +130,15 @@ export default function AsaList({ forceRefresh }) {
       </Grid>
       <sliderPanel.SliderPanel
         panelContent={
-          <ViewAsa handleCancel={handleSlidePanelClose} asa={asa} />
+          showAsaView ? (
+            <ViewAsa handleCancel={handleSlidePanelClose} asa={asa} />
+          ) : (
+            <TimingChipCreate
+              asa={asa}
+              handleCancel={handleCreateChipFormCancelClick}
+              handleCreated={handleCreateChipCreatedEvent}
+            />
+          )
         }
       />
     </>

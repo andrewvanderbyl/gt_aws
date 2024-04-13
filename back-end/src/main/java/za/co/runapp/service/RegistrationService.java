@@ -45,10 +45,9 @@ public class RegistrationService {
         return persistedTag.toTagDto();
     }
 
-    public PageableDto<TagDto> fetchTagsForAsa(final String asaId, final String userId, final PageableDto pageableDto) {
+    public PageableDto<TagDto> fetchTagsForAsa(final String asaId, final String userId, final int page, final int size) {
 
-        Page<TagDto> events = tagRepository.findTagsByAsa(asaId, userId,
-                PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
+        Page<TagDto> events = tagRepository.findTagsByAsa(asaId, userId, PageRequest.of(page, size));
 
         return PageableDto.<TagDto>builder()
                 .data(events.getContent())
