@@ -2,15 +2,16 @@ import PeopleIcon from "@mui/icons-material/People";
 import { useState } from "react";
 import ContentPanel from "../layout/ContentPanel";
 
-import { useAuth } from "../../util/context/AuthUserContext";
 import UserProfile from "./entity/user/UserProfile";
+import Home from "./entity/Home";
+import { useAuth } from "../../util/context/AuthUserContext";
 
 export default function Profile() {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const name = `${userData.firstName} ${userData.lastName}`;
 
-  const [contentComponent, setContentComponent] = useState(<UserProfile />);
+  const [contentComponent, setContentComponent] = useState(<Home />);
 
   const handleViewProfileClick = (event) => {
     setContentComponent(<UserProfile />);
@@ -21,7 +22,7 @@ export default function Profile() {
       entityHeaderText={name}
       entityButtonPanel={[
         {
-          text: "Personal Details",
+          text: "Profile",
           icon: <PeopleIcon />,
           clickHandler: handleViewProfileClick,
         },
