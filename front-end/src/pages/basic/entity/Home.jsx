@@ -17,7 +17,7 @@ export default function Home() {
       alignItems="flex-start"
       spacing={5}
     >
-      <Paper
+      {/* <Paper
         elevation={5}
         square={false}
         sx={{
@@ -29,7 +29,7 @@ export default function Home() {
         }}
       >
         <ClubPanel />
-      </Paper>
+      </Paper> */}
 
       <Paper
         elevation={5}

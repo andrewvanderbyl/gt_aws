@@ -3,9 +3,8 @@ import BusinessIcon from "@mui/icons-material/Business";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import PeopleIcon from "@mui/icons-material/People";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import SellIcon from "@mui/icons-material/Sell";
-import MemoryIcon from "@mui/icons-material/Memory";
+import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import {
   Divider,
   ListItemButton,
@@ -30,15 +29,15 @@ export default function ListItems() {
   return (
     <React.Fragment>
       <MenuItem
-        menuText={"Profile"}
+        menuText={"Home"}
         menuIcon={<PeopleIcon style={{ color: "white" }} />}
         menuClickNav={"/profile"}
       />
-      <MenuItem
+      {/* <MenuItem
         menuText={"Club"}
         menuIcon={<BusinessIcon style={{ color: "white" }} />}
         menuClickNav={"/clubs"}
-      />
+      /> */}
       <MenuItem
         menuText={"Events"}
         menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
@@ -49,11 +48,6 @@ export default function ListItems() {
         menuIcon={<SellIcon style={{ color: "white" }} />}
         menuClickNav={"/asa"}
       />
-      {/* <MenuItem
-        menuText={"Timing Chip"}
-        menuIcon={<MemoryIcon style={{ color: "white" }} />}
-        menuClickNav={"/tags"}
-      /> */}
       <MenuItem
         menuText={"Results"}
         menuIcon={<EmojiEventsIcon style={{ color: "white" }} />}

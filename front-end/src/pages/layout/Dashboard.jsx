@@ -14,7 +14,7 @@ export default function Dashboard() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
+      <Box component="main" sx={{ display: "flex" }}>
         <CssBaseline />
         <LeftMenuPanel />
         <Box

@@ -31,7 +31,7 @@ export default function EventPanel() {
       <Stack sx={{ width: "100%" }}>
         <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
       </Stack>
-      <ButtonGroup
+      {/* <ButtonGroup
         sx={{
           display: "flex",
           boxShadow: "0",
@@ -46,7 +46,7 @@ export default function EventPanel() {
         <Button startIcon={<SaveIcon />} sx={{ marginLeft: 5 }}>
           Save
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
     </Stack>
   );
 }
