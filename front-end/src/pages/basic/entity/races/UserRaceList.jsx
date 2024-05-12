@@ -1,9 +1,9 @@
 import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { useResult } from "../../../../util/hooks/resultsHook";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useLoader } from "../../../../util/hooks/loaderHook";
+import { useResult } from "../../../../util/hooks/resultsHook";
 
 export default function UserRaceList() {
   const [pageState, setPageState] = useState({

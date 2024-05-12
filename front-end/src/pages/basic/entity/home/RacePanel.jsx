@@ -1,15 +1,97 @@
-import BusinessIcon from "@mui/icons-material/Business";
-import CancelIcon from "@mui/icons-material/Cancel";
-import SaveIcon from "@mui/icons-material/Save";
-import { Button, ButtonGroup, Divider, Stack, Typography } from "@mui/material";
-import { useAuth } from "../../../../util/context/AuthUserContext";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import { yellow } from "@mui/material/colors";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import InfoIcon from "@mui/icons-material/Info";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { amber } from "@mui/material/colors";
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useResult } from "../../../../util/hooks/resultsHook";
 
 export default function RacePanel() {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
+  const raceHook = useResult();
+
+  const [races, setRaces] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const newRows = await raceHook.fetchRacesList(
+        {
+          page: 0,
+          size: 5,
+        },
+        userData.id
+      );
+
+      setRaces(newRows.data);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function conditionalRender() {
+    if (races.length === 0) {
+      return (
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <InfoIcon style={{ fontSize: 50 }} color="primary" />
+          </ListItemAvatar>
+          <ListItemText
+            primary="You haven't participated in any Race(s) yet"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body2"
+                  color="text.primary"
+                >
+                  Participate in an event
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+      );
+    }
+    const eventPanels = races.map((race) => {
+      const raceName = `${race.name} (${race.details})`;
+      const detail = `Position: ${race.position}, Timing: ${race.timing}`;
+      return (
+        <ListItem alignItems="flex-start" key={race.id}>
+          <ListItemAvatar>
+            <DirectionsRunIcon style={{ fontSize: 50, color: amber[500] }} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={raceName}
+            secondary={
+              <React.Fragment>
+                <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="body2"
+                  color="text.primary"
+                >
+                  {detail}
+                </Typography>
+                `: {race.date}`
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+      );
+    });
+    return eventPanels;
+  }
 
   return (
     <Stack
@@ -21,37 +103,19 @@ export default function RacePanel() {
       spacing={1}
       padding={5}
     >
-      <Stack
-        alignItems="center"
-        direction="column"
-        // gap={2}
-        sx={{ width: "100%" }}
-      >
-        <EmojiEventsIcon style={{ fontSize: 70 }} sx={{ color: amber[500] }} />
+      <Stack alignItems="center" direction="row" sx={{ width: "100%" }}>
+        <EmojiEventsIcon
+          style={{ fontSize: 60 }}
+          sx={{ color: amber[500], marginRight: 15 }}
+        />
         <Typography variant="h4">RESULTS</Typography>
       </Stack>
       <Stack sx={{ width: "100%" }}>
         <Divider sx={{ borderColor: "black", borderWidth: 2 }} />
+        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+          {conditionalRender()}
+        </List>
       </Stack>
-      {/* <Stack sx={{ width: "100%" }}>
-        <Typography variant="h6">ASA</Typography>
-      </Stack> */}
-      {/* <ButtonGroup
-        sx={{
-          display: "flex",
-          boxShadow: "0",
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 15,
-        }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Button startIcon={<CancelIcon />}>Cancel</Button>
-        <Button startIcon={<SaveIcon />} sx={{ marginLeft: 5 }}>
-          Save
-        </Button>
-      </ButtonGroup> */}
     </Stack>
   );
 }
