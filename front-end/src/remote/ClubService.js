@@ -31,4 +31,9 @@ export default {
 
     return await api.getPaginated(uri, props, userId).then((data) => data);
   },
+  joinClub: async (clubId, userId) => {
+    let uri = process.env.REACT_APP_CLUB_JOIN.replace("{clubId}", clubId);
+
+    await api.postWithoutBody(uri, userId);
+  },
 };

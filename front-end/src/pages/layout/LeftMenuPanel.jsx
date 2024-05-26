@@ -18,7 +18,7 @@ export default function LeftMenuPanel() {
         <Divider sx={{ mt: 2 }} />
 
         <Icon style={{ fontSize: 20, height: "10%", width: "100%" }}>
-          <img src={logo} width={"100%"} height={50} />
+          <img src={logo} width={"100%"} height={50} alt="" />
         </Icon>
         <Divider sx={{ mt: 1 }} />
         <List

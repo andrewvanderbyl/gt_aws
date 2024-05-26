@@ -1,6 +1,5 @@
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import InfoIcon from "@mui/icons-material/Info";
 import {
   Divider,

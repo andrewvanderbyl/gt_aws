@@ -21,5 +21,15 @@ export const useClub = () => {
     );
   };
 
-  return { createClub, fetchUserClub, fetchClubList, fetchClubMembers };
+  const joinClub = async (clubId, userId) => {
+    await ClubService.joinClub(clubId, userId);
+  };
+
+  return {
+    createClub,
+    fetchUserClub,
+    fetchClubList,
+    fetchClubMembers,
+    joinClub,
+  };
 };

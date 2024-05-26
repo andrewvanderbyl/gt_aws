@@ -1,6 +1,5 @@
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 import InfoIcon from "@mui/icons-material/Info";
 import {
   Divider,
@@ -43,7 +42,6 @@ export default function EventPanel() {
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
             <InfoIcon style={{ fontSize: 50 }} color="primary" />
-            {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
           </ListItemAvatar>
           <ListItemText
             primary="New Event(s) will be published soon."
@@ -57,7 +55,6 @@ export default function EventPanel() {
                 >
                   Watch the space for new events.
                 </Typography>
-                {/* {" — Watch the space..."} */}
               </React.Fragment>
             }
           />

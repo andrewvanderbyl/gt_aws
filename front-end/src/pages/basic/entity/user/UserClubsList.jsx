@@ -1,157 +1,113 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import CancelIcon from "@mui/icons-material/Cancel";
+import {
+  Button,
+  ButtonGroup,
+  Paper,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { useEffect } from "react";
+import { useClub } from "../../../../util/hooks/clubHook";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 
-const columns = [
-  {
-    field: "name",
-    headerName: "NAME",
-    width: 70,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-  {
-    field: "email",
-    headerName: "EMAIL",
-    width: 70,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-  {
-    field: "contact",
-    headerName: "CONTACT",
-    width: 70,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-  {
-    field: "province",
-    headerName: "PROVINCE",
-    width: 130,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-  {
-    field: "country",
-    headerName: "COUNTRY",
-    width: 130,
-    headerAlign: "center",
-    align: "center",
-    headerClassName: "super-app-theme--header",
-    flex: 1,
-  },
-];
+export default function UserClubsList({ handleCancel }) {
+  const dataGrid = useDataGrid();
+  const clubHook = useClub();
+  const columns = [
+    {
+      field: "name",
+      headerName: "CLUB",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      width: 200,
+      flex: 1,
+    },
+    {
+      field: "id",
+      headerName: "ACTIONS",
+      width: 110,
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      // flex: 1,
+      renderCell: (params) => {
+        const handleCreateChipEntryClick = (event) => {};
 
-const rows = [
-  {
-    id: 1,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 2,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 3,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 4,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 5,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 6,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 7,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 8,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-  {
-    id: 9,
-    name: "Snow",
-    email: "snow@club.com",
-    contact: 242424242,
-    province: "Western Cape",
-    country: "South Africa",
-  },
-];
+        return (
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" onClick={handleCreateChipEntryClick}>
+              Join
+            </Button>
+          </Stack>
+        );
+      },
+    },
+  ];
 
-export default function UserClubsList() {
+  useEffect(() => {
+    (async () => {
+      dataGrid.showLoader();
+      const newRows = await clubHook.fetchClubList({
+        page: dataGrid.getPageNumber(),
+        size: dataGrid.getPageSize(),
+      });
+      dataGrid.updatePageState(newRows);
+      dataGrid.closeLoader();
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize()]);
+
   return (
-    <Grid item xs={12} sx={{ mt: 2 }}>
+    <Stack
+      sx={{
+        mt: 2,
+        ml: 5,
+        mr: 5,
+        width: 420,
+        "& .MuiInputBase-input.Mui-disabled": {
+          WebkitTextFillColor: "black",
+        },
+      }}
+      spacing={5}
+    >
+      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
+        <Typography variant="h6" sx={{ color: "white" }}>
+          CLUB MEMBERSHIP
+        </Typography>
+      </Toolbar>
+
       <Paper
         square={false}
-        elevation={3}
-        sx={{ p: 2, display: "flex", flexDirection: "column", height: "75vh" }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "68vh",
+        }}
       >
-        <Typography variant="h6">CLUBS:</Typography>
-        <Divider sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }} />
-        <DataGrid
-          sx={{
-            // width: '100%',
-            "& .super-app-theme--header": {
-              backgroundColor: "#1976d2",
-              color: "white",
-            },
-          }}
-          rows={rows}
+        <dataGrid.DataGridPanel
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
-          }}
-          pageSizeOptions={[5, 10]}
+          emptyText={"No Club(s) currently exist."}
         />
       </Paper>
-    </Grid>
+
+      <ButtonGroup
+        sx={{
+          display: "flex",
+          boxShadow: "0",
+          flexDirection: "row",
+          justifyContent: "center",
+          marginTop: 10,
+        }}
+        variant="contained"
+        aria-label="outlined primary button group"
+      >
+        <Button startIcon={<CancelIcon />} onClick={handleCancel}>
+          Close
+        </Button>
+      </ButtonGroup>
+    </Stack>
   );
 }
