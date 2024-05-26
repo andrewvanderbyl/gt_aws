@@ -31,7 +31,6 @@ export default function Profile() {
   };
 
   const handleJoinFormCancelClick = (event) => {
-    event.preventDefault();
     slideClubPanel.closePanel();
   };
 

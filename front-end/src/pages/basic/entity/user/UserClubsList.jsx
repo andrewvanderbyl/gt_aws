@@ -10,10 +10,14 @@ import {
 import { useEffect } from "react";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 
 export default function UserClubsList({ handleCancel }) {
   const dataGrid = useDataGrid();
   const clubHook = useClub();
+  const authHook = useAuth();
+  const loggedInUser = authHook.localStorageValue;
+
   const columns = [
     {
       field: "name",
@@ -34,7 +38,10 @@ export default function UserClubsList({ handleCancel }) {
       disableClickEventBubbling: true,
       // flex: 1,
       renderCell: (params) => {
-        const handleCreateChipEntryClick = (event) => {};
+        const handleCreateChipEntryClick = async (event) => {
+          await clubHook.joinClub(params.row.id, loggedInUser.id);
+          handleCancel();
+        };
 
         return (
           <Stack direction="row" spacing={2}>

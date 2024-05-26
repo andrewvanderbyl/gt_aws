@@ -40,53 +40,57 @@ export default function RacePanel() {
   function conditionalRender() {
     if (races.length === 0) {
       return (
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <InfoIcon style={{ fontSize: 50 }} color="primary" />
-          </ListItemAvatar>
-          <ListItemText
-            primary="You haven't participated in any Race(s) yet"
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: "inline" }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
-                  Participate in an event
-                </Typography>
-              </React.Fragment>
-            }
-          />
-        </ListItem>
+        <React.Fragment key={1}>
+          <ListItem alignItems="flex-start" key={1}>
+            <ListItemAvatar>
+              <InfoIcon style={{ fontSize: 50 }} color="primary" />
+            </ListItemAvatar>
+            <ListItemText
+              primary="You haven't participated in any Race(s) yet"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    Participate in an event
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        </React.Fragment>
       );
     }
     const eventPanels = races.map((race) => {
       const raceName = `${race.name} (${race.details})`;
       const detail = `Position: ${race.position}, Timing: ${race.timing}`;
       return (
-        <ListItem alignItems="flex-start" key={race.id}>
-          <ListItemAvatar>
-            <DirectionsRunIcon style={{ fontSize: 50, color: amber[500] }} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={raceName}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: "inline" }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
-                  {detail}
-                </Typography>
-                `: {race.date}`
-              </React.Fragment>
-            }
-          />
-        </ListItem>
+        <React.Fragment key={race.id}>
+          <ListItem alignItems="flex-start" key={race.id}>
+            <ListItemAvatar>
+              <DirectionsRunIcon style={{ fontSize: 50, color: amber[500] }} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={raceName}
+              secondary={
+                <React.Fragment key={race.id}>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {detail}
+                  </Typography>
+                  `: {race.date}`
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        </React.Fragment>
       );
     });
     return eventPanels;

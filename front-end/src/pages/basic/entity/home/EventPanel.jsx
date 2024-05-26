@@ -63,27 +63,29 @@ export default function EventPanel() {
     }
     const eventPanels = events.map((event) => {
       return (
-        <ListItem alignItems="flex-start" key={event.id}>
-          <ListItemAvatar>
-            <FiberNewIcon style={{ fontSize: 50 }} color="success" />
-          </ListItemAvatar>
-          <ListItemText
-            primary={event.name}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  sx={{ display: "inline" }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
-                >
-                  {event.date}
-                </Typography>
-                `: {event.detail.slice(0, 30)} ...`
-              </React.Fragment>
-            }
-          />
-        </ListItem>
+        <React.Fragment key={event.id}>
+          <ListItem alignItems="flex-start" key={event.id}>
+            <ListItemAvatar>
+              <FiberNewIcon style={{ fontSize: 50 }} color="success" />
+            </ListItemAvatar>
+            <ListItemText
+              primary={event.name}
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: "inline" }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                  >
+                    {event.date}
+                  </Typography>
+                  `: {event.detail.slice(0, 30)} ...`
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        </React.Fragment>
       );
     });
     return eventPanels;
