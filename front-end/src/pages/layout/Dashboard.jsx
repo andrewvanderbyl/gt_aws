@@ -4,7 +4,6 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { useOutlet } from "react-router";
 import Profile from "../basic/Profile";
-import Footer from "./Footer";
 import LeftMenuPanel from "./LeftMenuPanel";
 
 const defaultTheme = createTheme();
@@ -32,7 +31,6 @@ export default function Dashboard() {
           <>{outlet || <Profile />}</>
         </Box>
       </Box>
-      {/* <Footer /> */}
     </ThemeProvider>
   );
 }

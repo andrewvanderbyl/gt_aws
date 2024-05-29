@@ -13,7 +13,6 @@ export default function UnProtectedRouteGuard({ component }) {
 
   const checkUser = async () => {
     if (!authUserContext.localStorageValue) {
-      // ToDo: remove user from local storage
       authUserContext.removeStorageValue();
     } else {
       navigate("/");

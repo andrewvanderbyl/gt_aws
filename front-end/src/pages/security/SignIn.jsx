@@ -1,5 +1,4 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Avatar from "@mui/material/Avatar";
+import { Icon } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -8,10 +7,9 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import Copyright from "../../components/Copyright";
+import logo from "../../assets/AppLogo.jpg";
 import { useUser } from "../../util/hooks/userHook";
 
 const defaultTheme = createTheme();
@@ -92,13 +90,9 @@ const SignIn = () => {
             padding: "30px 25px",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-
+          <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
+            <img src={logo} width={"100%"} height={80} alt="" />
+          </Icon>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -158,7 +152,6 @@ const SignIn = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
