@@ -6,7 +6,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import { Field, Form, Formik } from "formik";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import { object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
@@ -29,13 +29,18 @@ const SignIn = () => {
   });
 
   const handleSubmit = async (values, formikHelpers) => {
-    console.log(values);
     await userHook.login({
       username: values.email,
       password: values.password,
     });
     navigate("/");
   };
+
+  const formik = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
     <Container component="main" maxWidth="xs">
@@ -54,47 +59,52 @@ const SignIn = () => {
         <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
           <img src={logo} width={"100%"} height={80} alt="" />
         </Icon>
-        <Formik
-          initialValues={initial}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          {({ errors, isValid, touched, dirty }) => (
-            <Form>
-              <Field
-                name="email"
-                type="email"
-                as={TextField}
-                label="Email Address"
-                required
-                fullWidth
-                margin="normal"
-                error={Boolean(errors.email) && Boolean(touched.email)}
-                helperText={Boolean(touched.email) && errors.email}
-              />
-              <Field
-                name="password"
-                type="password"
-                as={TextField}
-                label="Password"
-                required
-                fullWidth
-                margin="normal"
-                error={Boolean(errors.password) && Boolean(touched.password)}
-                helperText={Boolean(touched.password) && errors.password}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                disabled={!dirty || !isValid}
-              >
-                Sign In
-              </Button>
-            </Form>
-          )}
-        </Formik>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            required
+            fullWidth
+            id="email"
+            type="email"
+            label="Email Address"
+            name="email"
+            margin="normal"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              Boolean(formik.errors.email) && Boolean(formik.touched.email)
+            }
+            helperText={Boolean(formik.touched.email) && formik.errors.email}
+          />
+          <TextField
+            required
+            fullWidth
+            id="password"
+            type="password"
+            label="Password"
+            name="password"
+            margin="normal"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              Boolean(formik.errors.password) &&
+              Boolean(formik.touched.password)
+            }
+            helperText={
+              Boolean(formik.touched.password) && formik.errors.password
+            }
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={!formik.dirty || !formik.isValid}
+          >
+            Sign In
+          </Button>
+        </form>
 
         <Grid container>
           <Grid item xs>
