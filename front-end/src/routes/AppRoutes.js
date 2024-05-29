@@ -1,6 +1,8 @@
 import { Route } from "react-router";
-import AdminEvents from "../pages/basic/AdminEvents";
 import AdminSecurity from "../pages/admin/security/AdminSecurity";
+import AdminClubs from "../pages/basic/AdminClubs";
+import AdminEvents from "../pages/basic/AdminEvents";
+import Asa from "../pages/basic/Asa";
 import Club from "../pages/basic/Club";
 import Events from "../pages/basic/Events";
 import Profile from "../pages/basic/Profile";
@@ -11,8 +13,6 @@ import Register from "../pages/security/Register";
 import SignIn from "../pages/security/SignIn";
 import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
 import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
-import AdminClubs from "../pages/basic/AdminClubs";
-import Asa from "../pages/basic/Asa";
 
 export const AppRoutes = [
   // Protected Routes

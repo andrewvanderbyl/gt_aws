@@ -5,155 +5,111 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router";
+import { object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
 import { useUser } from "../../util/hooks/userHook";
-
-const defaultTheme = createTheme();
 
 const SignIn = () => {
   let navigate = useNavigate();
 
   const userHook = useUser();
-  const [formSubmitDisable, setFormSubmitDisable] = useState(true);
-  const [formValues, setFormValues] = useState({
-    email: {
-      value: "",
-      error: false,
-      errorMsg: "Email is required",
-      isValid(newVal) {
-        return !(!!newVal && /\S+@\S+\.\S+/.test(newVal));
-      },
-    },
-    password: {
-      value: "",
-      error: false,
-      errorMsg: "Password is required",
-      isValid(newVal) {
-        return !!!newVal;
-      },
-    },
+  const initial = {
+    email: "",
+    password: "",
+  };
+  const validationSchema = object({
+    email: string().required("Email is required").email("Invalid email"),
+    password: string()
+      .required("Password is required")
+      .min(7, "Minimum 7 characters")
+      .max(10, "Maximum 10 characters"),
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    let errors = [];
-
-    Object.keys(formValues).forEach((item) => {
-      if (name === item) {
-        let tempError = formValues[name].isValid(value);
-        setFormValues({
-          ...formValues,
-          [name]: {
-            ...formValues[name],
-            value,
-            error: tempError,
-          },
-        });
-
-        errors.push(tempError);
-      } else {
-        errors.push(formValues[item].isValid(formValues[item].value));
-      }
-    });
-
-    setFormSubmitDisable(errors.some((item) => item === true));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+  const handleSubmit = async (values, formikHelpers) => {
+    console.log(values);
     await userHook.login({
-      username: data.get("email"),
-      password: data.get("password"),
+      username: values.email,
+      password: values.password,
     });
     navigate("/");
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            boxShadow: "0 14px 28px",
-            borderRadius: "10px",
-            padding: "30px 25px",
-          }}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 15,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          boxShadow: "0 14px 28px",
+          borderRadius: "10px",
+          padding: "30px 25px",
+        }}
+      >
+        <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
+          <img src={logo} width={"100%"} height={80} alt="" />
+        </Icon>
+        <Formik
+          initialValues={initial}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
         >
-          <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
-            <img src={logo} width={"100%"} height={80} alt="" />
-          </Icon>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={formValues.email.value}
-              onChange={handleChange}
-              helperText={formValues.email.error && formValues.email.errorMsg}
-              error={formValues.email.error}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={formValues.password.value}
-              onChange={handleChange}
-              helperText={
-                formValues.password.error && formValues.password.errorMsg
-              }
-              error={formValues.password.error}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              disabled={formSubmitDisable}
-            >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="register" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+          {({ errors, isValid, touched, dirty }) => (
+            <Form>
+              <Field
+                name="email"
+                type="email"
+                as={TextField}
+                label="Email Address"
+                required
+                fullWidth
+                margin="normal"
+                error={Boolean(errors.email) && Boolean(touched.email)}
+                helperText={Boolean(touched.email) && errors.email}
+              />
+              <Field
+                name="password"
+                type="password"
+                as={TextField}
+                label="Password"
+                required
+                fullWidth
+                margin="normal"
+                error={Boolean(errors.password) && Boolean(touched.password)}
+                helperText={Boolean(touched.password) && errors.password}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={!dirty || !isValid}
+              >
+                Sign In
+              </Button>
+            </Form>
+          )}
+        </Formik>
+
+        <Grid container>
+          <Grid item xs>
+            <Link href="#" variant="body2">
+              Forgot password?
+            </Link>
+          </Grid>
+          <Grid item>
+            <Link href="register" variant="body2">
+              {"Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
