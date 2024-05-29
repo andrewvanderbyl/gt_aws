@@ -1,14 +1,21 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 
 function MenuItem(props) {
   return (
-    <ListItemButton href={props.menuClickNav}>
-      <ListItemIcon>{props.menuIcon}</ListItemIcon>
-      <ListItemText
-        primary={props.menuText}
-        primaryTypographyProps={{ fontSize: "12pt" }}
-      />
-    </ListItemButton>
+    <ListItem disablePadding>
+      <ListItemButton href={props.menuClickNav}>
+        <ListItemIcon>{props.menuIcon}</ListItemIcon>
+        <ListItemText
+          primary={props.menuText}
+          primaryTypographyProps={{ fontSize: "12pt" }}
+        />
+      </ListItemButton>
+    </ListItem>
   );
 }
 

@@ -1,6 +1,6 @@
-import { Divider, Icon, List, Paper } from "@mui/material";
-import ListItems from "./MenuItems";
+import { Box, Divider, Icon, List, Paper } from "@mui/material";
 import logo from "../../assets/AppLogo.jpg";
+import ListItems from "./MenuItems";
 
 export default function LeftMenuPanel() {
   return (
@@ -15,21 +15,26 @@ export default function LeftMenuPanel() {
           },
         }}
       >
-        <Divider sx={{ mt: 2 }} />
-
+        <Divider sx={{ mt: 3 }} />
         <Icon style={{ fontSize: 20, height: "10%", width: "100%" }}>
           <img src={logo} width={"100%"} height={50} alt="" />
         </Icon>
-        <Divider sx={{ mt: 1 }} />
-        <List
+        <Box
           sx={{
-            height: "84vh",
-            backgroundColor: "#1C4E80",
-            color: "white",
+            height: "82vh",
+            marginTop: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "left",
+            boxShadow: "0px 5px 5px",
+            borderRadius: "10px",
+            // padding: "30px 25px",
           }}
         >
-          <ListItems />
-        </List>
+          <List>
+            <ListItems />
+          </List>
+        </Box>
       </Paper>
     </>
   );

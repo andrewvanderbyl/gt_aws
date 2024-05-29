@@ -16,6 +16,7 @@ import * as React from "react";
 import { useNavigate } from "react-router";
 import MenuItem from "../../components/MenuItem";
 import { useUser } from "../../util/hooks/userHook";
+import { amber } from "@mui/material/colors";
 
 export default function ListItems() {
   let navigate = useNavigate();
@@ -30,32 +31,27 @@ export default function ListItems() {
     <React.Fragment>
       <MenuItem
         menuText={"Home"}
-        menuIcon={<PeopleIcon style={{ color: "white" }} />}
+        menuIcon={<PeopleIcon sx={{ fontSize: 35 }} color="primary" />}
         menuClickNav={"/profile"}
       />
-      {/* <MenuItem
-        menuText={"Club"}
-        menuIcon={<BusinessIcon style={{ color: "white" }} />}
-        menuClickNav={"/clubs"}
-      /> */}
       <MenuItem
         menuText={"Events"}
-        menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
+        menuIcon={<EventAvailableIcon sx={{ fontSize: 35 }} color="success" />}
         menuClickNav={"/events"}
       />
       <MenuItem
         menuText={"ASA Number"}
-        menuIcon={<SellIcon style={{ color: "white" }} />}
+        menuIcon={<SellIcon sx={{ fontSize: 35 }} color="warning" />}
         menuClickNav={"/asa"}
       />
       <MenuItem
         menuText={"Results"}
-        menuIcon={<EmojiEventsIcon style={{ color: "white" }} />}
+        menuIcon={<EmojiEventsIcon sx={{ fontSize: 35, color: amber[500] }} />}
         menuClickNav={"/results"}
       />
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
-          <PowerSettingsNew style={{ color: "white" }} />
+          <PowerSettingsNew sx={{ fontSize: 35 }} color="error" />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
@@ -67,12 +63,14 @@ export default function ListItems() {
       <ListSubheader
         component="div"
         // inset
-        sx={{
-          backgroundColor: "#1C4E80",
-          color: "white",
-          // border: 2,
-          // borderColor: "black",
-        }}
+        sx={
+          {
+            // backgroundColor: "#1C4E80",
+            // color: "white",
+            // border: 2,
+            // borderColor: "black",
+          }
+        }
       >
         Administration
       </ListSubheader>
@@ -80,17 +78,17 @@ export default function ListItems() {
 
       <MenuItem
         menuText={"Clubs"}
-        menuIcon={<BusinessIcon style={{ color: "white" }} />}
+        menuIcon={<BusinessIcon sx={{ fontSize: 35 }} color="disabled" />}
         menuClickNav={"/admin/clubs"}
       />
       <MenuItem
         menuText={"Events"}
-        menuIcon={<EventAvailableIcon style={{ color: "white" }} />}
+        menuIcon={<EventAvailableIcon sx={{ fontSize: 35 }} color="success" />}
         menuClickNav={"/admin/events"}
       />
       <MenuItem
         menuText={"Security"}
-        menuIcon={<VpnKeyIcon style={{ color: "white" }} />}
+        menuIcon={<VpnKeyIcon sx={{ fontSize: 35 }} color="error" />}
         menuClickNav={"/admin/security"}
       />
     </React.Fragment>
