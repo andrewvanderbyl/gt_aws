@@ -7,8 +7,9 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router";
+import { number, object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
 import { useAuth } from "../../util/context/AuthUserContext";
 import { useUser } from "../../util/hooks/userHook";
@@ -20,86 +21,32 @@ export default function Register() {
 
   const authUserContext = useAuth();
   const userHook = useUser();
-  const [formSubmitDisable, setFormSubmitDisable] = useState(true);
-  const [formValues, setFormValues] = useState({
-    email: {
-      value: "",
-      error: false,
-      errorMsg: "Email is required",
-      isValid(newVal) {
-        return !(!!newVal && /\S+@\S+\.\S+/.test(newVal));
-      },
-    },
-    password: {
-      value: "",
-      error: false,
-      errorMsg: "Password is required",
-      isValid(newVal) {
-        return !!!newVal;
-      },
-    },
-    firstName: {
-      value: "",
-      error: false,
-      errorMsg: "First name is required",
-      isValid(newVal) {
-        return !!!newVal;
-      },
-    },
-    lastName: {
-      value: "",
-      error: false,
-      errorMsg: "Last name is required",
-      isValid(newVal) {
-        return !!!newVal;
-      },
-    },
-    contact: {
-      value: "",
-      error: false,
-      errorMsg: "Contact is required",
-      isValid(newVal) {
-        return !!!newVal;
-      },
-    },
+  const initial = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    contact: "",
+  };
+  const validationSchema = object({
+    firstName: string().required("First Name is required"),
+    lastName: string().required("Last Name is required"),
+    email: string().required("Email is required").email("Invalid email"),
+    password: string()
+      .required("Password is required")
+      .min(7, "Minimum 7 characters")
+      .max(10, "Maximum 10 characters"),
+    contact: number().required("Contact is required"),
   });
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    let errors = [];
-
-    Object.keys(formValues).forEach((item) => {
-      if (name === item) {
-        let tempError = formValues[name].isValid(value);
-        setFormValues({
-          ...formValues,
-          [name]: {
-            ...formValues[name],
-            value,
-            error: tempError,
-          },
-        });
-
-        errors.push(tempError);
-      } else {
-        errors.push(formValues[item].isValid(formValues[item].value));
-      }
-    });
-
-    setFormSubmitDisable(errors.some((item) => item === true));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const handleSubmit = async (values, formikHelpers) => {
     const createUserPayload = {
-      email: data.get("email"),
-      password: data.get("password"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      contact: data.get("contact"),
-      username: data.get("email"),
+      email: values.email,
+      password: values.password,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      contact: values.contact,
+      username: values.email,
     };
 
     const registeredUserData = await userHook.register(createUserPayload);
@@ -107,12 +54,17 @@ export default function Register() {
     navigate("/");
   };
 
+  const formik = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
-          noValidate
           autoComplete="off"
           sx={{
             marginTop: 8,
@@ -127,12 +79,7 @@ export default function Register() {
           <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
             <img src={logo} width={"100%"} height={80} alt="" />
           </Icon>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -143,12 +90,16 @@ export default function Register() {
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  value={formValues.firstName.value}
-                  onChange={handleChange}
-                  helperText={
-                    formValues.firstName.error && formValues.firstName.errorMsg
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    Boolean(formik.errors.firstName) &&
+                    Boolean(formik.touched.firstName)
                   }
-                  error={formValues.firstName.error}
+                  helperText={
+                    Boolean(formik.touched.firstName) && formik.errors.firstName
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -159,12 +110,16 @@ export default function Register() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  value={formValues.lastName.value}
-                  onChange={handleChange}
-                  helperText={
-                    formValues.lastName.error && formValues.lastName.errorMsg
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    Boolean(formik.errors.lastName) &&
+                    Boolean(formik.touched.lastName)
                   }
-                  error={formValues.lastName.error}
+                  helperText={
+                    Boolean(formik.touched.lastName) && formik.errors.lastName
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -174,13 +129,16 @@ export default function Register() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
-                  value={formValues.email.value}
-                  onChange={handleChange}
-                  helperText={
-                    formValues.email.error && formValues.email.errorMsg
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    Boolean(formik.errors.email) &&
+                    Boolean(formik.touched.email)
                   }
-                  error={formValues.email.error}
+                  helperText={
+                    Boolean(formik.touched.email) && formik.errors.email
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -191,28 +149,36 @@ export default function Register() {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
-                  value={formValues.password.value}
-                  onChange={handleChange}
-                  helperText={
-                    formValues.password.error && formValues.password.errorMsg
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    Boolean(formik.errors.password) &&
+                    Boolean(formik.touched.password)
                   }
-                  error={formValues.password.error}
+                  helperText={
+                    Boolean(formik.touched.password) && formik.errors.password
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="contact"
                   label="Contact"
                   id="contact"
-                  value={formValues.contact.value}
-                  onChange={handleChange}
-                  helperText={
-                    formValues.contact.error && formValues.contact.errorMsg
+                  value={formik.values.contact}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={
+                    Boolean(formik.errors.contact) &&
+                    Boolean(formik.touched.contact)
                   }
-                  error={formValues.contact.error}
+                  helperText={
+                    Boolean(formik.touched.contact) && formik.errors.contact
+                  }
                 />
               </Grid>
             </Grid>
@@ -221,7 +187,7 @@ export default function Register() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              disabled={formSubmitDisable}
+              disabled={!formik.dirty || !formik.isValid}
             >
               Sign Up
             </Button>
@@ -232,7 +198,7 @@ export default function Register() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
+          </form>
         </Box>
       </Container>
     </ThemeProvider>
