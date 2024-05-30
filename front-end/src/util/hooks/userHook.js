@@ -6,12 +6,7 @@ export const useUser = () => {
   const authUserContext = useAuthContext();
 
   const login = async (username, password) => {
-    return await SecurityService.signIn(username, password).then((userData) => {
-      if (userData.status === 200) {
-        authUserContext.setStorageValue(userData.payload);
-      }
-      return userData;
-    });
+    return await SecurityService.signIn(username, password);
   };
 
   const logout = () => {

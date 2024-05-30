@@ -12,7 +12,7 @@ function MenuItem(props) {
         <ListItemIcon>{props.menuIcon}</ListItemIcon>
         <ListItemText
           primary={props.menuText}
-          primaryTypographyProps={{ fontSize: "12pt" }}
+          primaryTypographyProps={{ fontSize: "11pt" }}
         />
       </ListItemButton>
     </ListItem>

@@ -13,25 +13,26 @@ import { number, object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
 import { useAuth } from "../../util/context/AuthUserContext";
 import { useUser } from "../../util/hooks/userHook";
+import { useNotificationPanel } from "../../util/hooks/notificationPanelHook";
 
 const defaultTheme = createTheme();
 
 export default function Register() {
   let navigate = useNavigate();
-
+  const notificationPanel = useNotificationPanel();
   const authUserContext = useAuth();
   const userHook = useUser();
   const initial = {
     firstName: "",
     lastName: "",
-    email: "",
+    username: "",
     password: "",
     contact: "",
   };
   const validationSchema = object({
     firstName: string().required("First Name is required"),
     lastName: string().required("Last Name is required"),
-    email: string().required("Email is required").email("Invalid email"),
+    username: string().required("Email is required").email("Invalid email"),
     password: string()
       .required("Password is required")
       .min(7, "Minimum 7 characters")
@@ -41,17 +42,20 @@ export default function Register() {
 
   const handleSubmit = async (values, formikHelpers) => {
     const createUserPayload = {
-      email: values.email,
       password: values.password,
       firstName: values.firstName,
       lastName: values.lastName,
       contact: values.contact,
-      username: values.email,
+      username: values.username,
     };
 
-    const registeredUserData = await userHook.register(createUserPayload);
-    authUserContext.setStorageValue(registeredUserData);
-    navigate("/");
+    const createdUserResponse = await userHook.register(createUserPayload);
+    if (createdUserResponse.error) {
+      notificationPanel.showPanel(createdUserResponse.error);
+    } else {
+      authUserContext.setStorageValue(createdUserResponse.data);
+      navigate("/");
+    }
   };
 
   const formik = useFormik({
@@ -65,7 +69,6 @@ export default function Register() {
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
-          autoComplete="off"
           sx={{
             marginTop: 8,
             display: "flex",
@@ -79,6 +82,7 @@ export default function Register() {
           <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
             <img src={logo} width={"100%"} height={80} alt="" />
           </Icon>
+          <notificationPanel.NotificationPanel />
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -89,6 +93,7 @@ export default function Register() {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  margin="normal"
                   autoFocus
                   value={formik.values.firstName}
                   onChange={formik.handleChange}
@@ -109,7 +114,7 @@ export default function Register() {
                   id="lastName"
                   label="Last Name"
                   name="lastName"
-                  autoComplete="family-name"
+                  margin="normal"
                   value={formik.values.lastName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -122,66 +127,63 @@ export default function Register() {
                   }
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    Boolean(formik.errors.email) &&
-                    Boolean(formik.touched.email)
-                  }
-                  helperText={
-                    Boolean(formik.touched.email) && formik.errors.email
-                  }
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    Boolean(formik.errors.password) &&
-                    Boolean(formik.touched.password)
-                  }
-                  helperText={
-                    Boolean(formik.touched.password) && formik.errors.password
-                  }
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  type="number"
-                  name="contact"
-                  label="Contact"
-                  id="contact"
-                  value={formik.values.contact}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={
-                    Boolean(formik.errors.contact) &&
-                    Boolean(formik.touched.contact)
-                  }
-                  helperText={
-                    Boolean(formik.touched.contact) && formik.errors.contact
-                  }
-                />
-              </Grid>
             </Grid>
+            <TextField
+              required
+              fullWidth
+              id="username"
+              label="Username (Email Address)"
+              name="username"
+              margin="normal"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                Boolean(formik.errors.username) &&
+                Boolean(formik.touched.username)
+              }
+              helperText={
+                Boolean(formik.touched.username) && formik.errors.username
+              }
+            />
+            <TextField
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              margin="normal"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                Boolean(formik.errors.password) &&
+                Boolean(formik.touched.password)
+              }
+              helperText={
+                Boolean(formik.touched.password) && formik.errors.password
+              }
+            />
+            <TextField
+              required
+              fullWidth
+              type="number"
+              name="contact"
+              label="Contact"
+              id="contact"
+              margin="normal"
+              value={formik.values.contact}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                Boolean(formik.errors.contact) &&
+                Boolean(formik.touched.contact)
+              }
+              helperText={
+                Boolean(formik.touched.contact) && formik.errors.contact
+              }
+            />
             <Button
               type="submit"
               fullWidth

@@ -15,44 +15,30 @@ export default function Home() {
       sx={{ mt: 3, mb: 2 }}
       justifyContent="flex-start"
       alignItems="flex-start"
-      spacing={5}
+      spacing={3}
     >
-      {/* <Paper
-        elevation={5}
-        square={false}
-        sx={{
-          width: "100%",
-          height: "82vh",
-          "& .MuiInputBase-input.Mui-disabled": {
-            WebkitTextFillColor: "black",
-          },
-        }}
-      >
-        <ClubPanel />
-      </Paper> */}
-
       <Paper
-        elevation={5}
+        elevation={10}
         square={false}
         sx={{
           width: "100%",
           height: "82vh",
-          "& .MuiInputBase-input.Mui-disabled": {
-            WebkitTextFillColor: "black",
-          },
+          // "& .MuiInputBase-input.Mui-disabled": {
+          //   WebkitTextFillColor: "black",
+          // },
         }}
       >
         <EventPanel />
       </Paper>
       <Paper
-        elevation={5}
+        elevation={10}
         square={false}
         sx={{
           width: "100%",
           height: "82vh",
-          "& .MuiInputBase-input.Mui-disabled": {
-            WebkitTextFillColor: "black",
-          },
+          // "& .MuiInputBase-input.Mui-disabled": {
+          //   WebkitTextFillColor: "black",
+          // },
         }}
       >
         <RacePanel />

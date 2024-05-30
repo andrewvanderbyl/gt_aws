@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,14 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import za.co.runapp.exception.EntityNotFoundException;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.ClubDto;
-import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.service.ClubService;
-
-import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -62,7 +58,7 @@ public class ClubController {
         try {
             ClubDto club = clubService.fetchClubById(clubId);
             return Mono.just(ResponseEntity.ok(club));
-        } catch (EntityNotFoundException cnfe) {
+        } catch (BusinessException cnfe) {
             return Mono.just(ResponseEntity.badRequest().build());
         }
     }
@@ -75,7 +71,7 @@ public class ClubController {
         try {
             clubService.storeUserForClub(clubId, userId);
             return Mono.just(ResponseEntity.ok().build());
-        } catch (EntityNotFoundException cnfe) {
+        } catch (BusinessException cnfe) {
             return Mono.just(ResponseEntity.badRequest().build());
         }
     }

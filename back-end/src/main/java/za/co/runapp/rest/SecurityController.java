@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import za.co.runapp.exception.EntityNotFoundException;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.service.SecurityService;
 
@@ -23,7 +23,7 @@ public class SecurityController {
     private final SecurityService securityService;
 
     @PostMapping("/authenticate")
-    public Mono<ResponseEntity<UserDto>> authenticateUser(@RequestBody final UserDto userDto) throws EntityNotFoundException {
+    public Mono<ResponseEntity<UserDto>> authenticateUser(@RequestBody final UserDto userDto) throws BusinessException {
 
         UserDto authenticatedUser = securityService.authenticate(userDto);
         return Mono.just(ResponseEntity.ok(authenticatedUser));

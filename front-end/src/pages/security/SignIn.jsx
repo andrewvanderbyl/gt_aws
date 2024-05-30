@@ -12,10 +12,12 @@ import { object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
 import { useNotificationPanel } from "../../util/hooks/notificationPanelHook";
 import { useUser } from "../../util/hooks/userHook";
+import { useAuth } from "../../util/context/AuthUserContext";
 
 const SignIn = () => {
   let navigate = useNavigate();
   const notificationPanel = useNotificationPanel();
+  const authHook = useAuth();
 
   const userHook = useUser();
   const initial = {
@@ -35,11 +37,12 @@ const SignIn = () => {
       username: values.email,
       password: values.password,
     });
-    if (response.status === 200) {
-      navigate("/");
+
+    if (response.error) {
+      notificationPanel.showPanel(response.error);
     } else {
-      console.log(response);
-      notificationPanel.showPanel(response.payload);
+      authHook.setStorageValue(response.data);
+      navigate("/");
     }
   };
 

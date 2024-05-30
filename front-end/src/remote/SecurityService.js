@@ -9,20 +9,6 @@ export default {
       password: props.password,
     };
 
-    return await api
-      .post(uri, payload)
-      .then((data) => {
-        return {
-          status: 200,
-          payload: data,
-        };
-      })
-      .catch((error) => {
-        console.log("Failed ", error);
-        return {
-          payload: error.response.data,
-          status: error.response.status,
-        };
-      });
+    return await api.post(uri, payload).then((data) => data);
   },
 };

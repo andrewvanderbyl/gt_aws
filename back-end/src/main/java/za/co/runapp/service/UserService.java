@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Asa;
 import za.co.runapp.entity.User;
-import za.co.runapp.exception.EntityNotFoundException;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.repository.AsaRepository;
 import za.co.runapp.repository.ClubRepository;
 import za.co.runapp.repository.RaceRepository;
@@ -16,7 +16,6 @@ import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.PageableDto;
-import za.co.runapp.rest.dto.RaceDto;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.rest.dto.UserRaceDto;
 
@@ -34,47 +33,34 @@ public class UserService {
     private final RaceRepository raceRepository;
     private final UserRaceRepository userRaceRepository;
 
-    public UserDto createUser(final UserDto userDto) {
+    public UserDto createUser(final UserDto userDto) throws BusinessException {
 
         User user = User.builder()
                 .firstName(userDto.firstName())
                 .lastName(userDto.lastName())
                 .password(userDto.password())
                 .username(userDto.username())
-                .email(userDto.email())
                 .contact(userDto.contact())
                 .build();
 
+        if (userRepository.existsByUsername(userDto.username())) {
+            throw new BusinessException("Username already exist");
+        }
+
         User createdUser = userRepository.saveAndFlush(user);
 
-        return UserDto.builder()
-                .id(createdUser.getId())
-                .firstName(createdUser.getFirstName())
-                .lastName(createdUser.getLastName())
-                .contact(createdUser.getContact())
-                .username(createdUser.getUsername())
-                .password(createdUser.getPassword())
-                .email(createdUser.getEmail())
-                .build();
+        return createdUser.toUserDto();
     }
 
-    public UserDto fetchUserById(final String userId) throws EntityNotFoundException {
+    public UserDto fetchUserById(final String userId) throws BusinessException {
 
         Optional<User> userOpt = userRepository.findById(userId);
         if (userOpt.isEmpty()) {
-            throw new EntityNotFoundException(String.format("No user found by id: %s", userId));
+            throw new BusinessException(String.format("No user found by id: %s", userId));
         }
 
         final User user = userOpt.get();
-        return UserDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .contact(user.getContact())
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .build();
+        return user.toUserDto();
     }
 
     public PageableDto<ClubDto> getClubsForUser(final String userId, final int page, final int size) {

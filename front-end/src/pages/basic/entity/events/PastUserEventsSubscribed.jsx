@@ -87,7 +87,7 @@ export default function PastUserEventsSubscribed(props) {
     <>
       <Grid item xs={12} sx={{ mt: 2 }}>
         <Paper
-          elevation={3}
+          elevation={10}
           square={false}
           sx={{
             p: 2,

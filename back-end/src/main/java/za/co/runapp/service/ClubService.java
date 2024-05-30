@@ -6,17 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Club;
-import za.co.runapp.entity.Event;
 import za.co.runapp.entity.User;
-import za.co.runapp.exception.EntityNotFoundException;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.repository.ClubRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.ClubDto;
-import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.UserDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,19 +40,19 @@ public class ClubService {
         return persistedClub.toClubDto();
     }
 
-    public ClubDto fetchClubById(final String clubId) throws EntityNotFoundException {
+    public ClubDto fetchClubById(final String clubId) throws BusinessException {
 
         Optional<Club> clubOptional = clubRepository.findById(clubId);
 
         if (clubOptional.isEmpty()) {
-            throw new EntityNotFoundException("No club exists for id " + clubId);
+            throw new BusinessException("No club exists for id " + clubId);
         }
 
         return clubOptional.get().toClubDto();
 
     }
 
-    public void storeUserForClub(final String clubId, final String userId) throws EntityNotFoundException {
+    public void storeUserForClub(final String clubId, final String userId) throws BusinessException {
 
         clubRepository.registerUserWithAClub(userId, clubId);
     }

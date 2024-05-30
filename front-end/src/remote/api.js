@@ -65,7 +65,20 @@ export const api = {
       data: body,
     };
 
-    return await axios.request(config).then((res) => res.data);
+    return await axios
+      .request(config)
+      .then((res) => {
+        return {
+          status: 200,
+          data: res.data,
+        };
+      })
+      .catch((error) => {
+        return {
+          status: error.response.status,
+          error: error.response.data,
+        };
+      });
   },
   postWithoutBody: async (endpoint, userId = null) => {
     let headers = {

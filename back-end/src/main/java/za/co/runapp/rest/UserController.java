@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import za.co.runapp.exception.EntityNotFoundException;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.EventDto;
 import za.co.runapp.rest.dto.PageableDto;
-import za.co.runapp.rest.dto.RaceDto;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.rest.dto.UserRaceDto;
 import za.co.runapp.rest.dto.UserTagDto;
@@ -42,7 +41,8 @@ public class UserController {
     @PostMapping
     public Mono<ResponseEntity> createUser(
             @RequestBody final UserDto userDto
-    ) {
+    ) throws BusinessException {
+
         log.info("Received {}", userDto);
 
         UserDto user = userService.createUser(userDto);
@@ -58,7 +58,7 @@ public class UserController {
         try {
             UserDto userDto = userService.fetchUserById(userId);
             return Mono.just(ResponseEntity.ok(userDto));
-        } catch (EntityNotFoundException e) {
+        } catch (BusinessException e) {
             log.error("Error obtaining user", e);
             return Mono.just(ResponseEntity.badRequest().build());
         }
