@@ -38,7 +38,7 @@ export const useDataGrid = () => {
       <DataGrid
         sx={{
           "& .super-app-theme--header": {
-            backgroundColor: "#1C4E80",
+            backgroundColor: "#1565c0",
             color: "white",
           },
         }}

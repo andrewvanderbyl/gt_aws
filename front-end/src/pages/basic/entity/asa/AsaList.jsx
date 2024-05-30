@@ -1,6 +1,6 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MemoryIcon from "@mui/icons-material/Memory";
-import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Button, Grid, Paper, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
@@ -106,20 +106,16 @@ export default function AsaList({ forceRefresh }) {
     <>
       <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
         <Paper
-          elevation={3}
+          elevation={10}
           square={false}
           sx={{
-            p: 3,
+            p: 2,
             display: "flex",
             flexDirection: "column",
             height: "83vh",
+            borderRadius: "20px",
           }}
         >
-          <Typography variant="h6">ASA:</Typography>
-          <Divider
-            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
-          />
-
           <dataGrid.DataGridPanel
             columns={columns}
             emptyText={

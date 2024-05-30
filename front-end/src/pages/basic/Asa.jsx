@@ -10,9 +10,9 @@ export default function Asa() {
   const [contentComponent, setContentComponent] = useState(<AsaList />);
   const slidePanel = useSliderPanel();
 
-  const handleViewAsasClick = (event) => {
-    setContentComponent(<AsaList />);
-  };
+  // const handleViewAsasClick = (event) => {
+  //   setContentComponent(<AsaList />);
+  // };
 
   const handleViewCreateAsaClick = (event) => {
     event.preventDefault();
@@ -34,11 +34,11 @@ export default function Asa() {
       <ContentPanel
         entityHeaderText="ASA"
         entityButtonPanel={[
-          {
-            text: "List",
-            icon: <ViewListIcon />,
-            clickHandler: handleViewAsasClick,
-          },
+          // {
+          //   text: "List",
+          //   icon: <ViewListIcon />,
+          //   clickHandler: handleViewAsasClick,
+          // },
           {
             text: "Create",
             icon: <AddBoxIcon />,

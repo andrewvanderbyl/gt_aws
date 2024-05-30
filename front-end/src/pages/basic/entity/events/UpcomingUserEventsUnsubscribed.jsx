@@ -109,6 +109,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
             display: "flex",
             flexDirection: "column",
             height: "83vh",
+            borderRadius: "20px",
           }}
         >
           <Typography variant="h6">UPCOMING EVENTS:</Typography>

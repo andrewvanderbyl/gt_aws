@@ -94,6 +94,7 @@ export default function PastUserEventsSubscribed(props) {
             display: "flex",
             flexDirection: "column",
             height: "83vh",
+            borderRadius: "20px",
           }}
         >
           <Typography variant="h6">PAST EVENTS:</Typography>
