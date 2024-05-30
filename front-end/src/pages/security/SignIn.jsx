@@ -10,10 +10,12 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import { object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
+import { useNotificationPanel } from "../../util/hooks/notificationPanelHook";
 import { useUser } from "../../util/hooks/userHook";
 
 const SignIn = () => {
   let navigate = useNavigate();
+  const notificationPanel = useNotificationPanel();
 
   const userHook = useUser();
   const initial = {
@@ -29,11 +31,16 @@ const SignIn = () => {
   });
 
   const handleSubmit = async (values, formikHelpers) => {
-    await userHook.login({
+    const response = await userHook.login({
       username: values.email,
       password: values.password,
     });
-    navigate("/");
+    if (response.status === 200) {
+      navigate("/");
+    } else {
+      console.log(response);
+      notificationPanel.showPanel(response.payload);
+    }
   };
 
   const formik = useFormik({
@@ -59,6 +66,7 @@ const SignIn = () => {
         <Icon style={{ fontSize: 20, height: "20%", width: "100%" }}>
           <img src={logo} width={"100%"} height={80} alt="" />
         </Icon>
+        <notificationPanel.NotificationPanel />
         <form onSubmit={formik.handleSubmit}>
           <TextField
             required

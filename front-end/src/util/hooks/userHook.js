@@ -6,8 +6,11 @@ export const useUser = () => {
   const authUserContext = useAuthContext();
 
   const login = async (username, password) => {
-    await SecurityService.signIn(username, password).then((userData) => {
-      authUserContext.setStorageValue(userData);
+    return await SecurityService.signIn(username, password).then((userData) => {
+      if (userData.status === 200) {
+        authUserContext.setStorageValue(userData.payload);
+      }
+      return userData;
     });
   };
 
