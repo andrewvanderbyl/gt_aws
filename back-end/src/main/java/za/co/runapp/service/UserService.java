@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.co.runapp.entity.Asa;
 import za.co.runapp.entity.User;
 import za.co.runapp.exception.BusinessException;
@@ -33,6 +34,7 @@ public class UserService {
     private final RaceRepository raceRepository;
     private final UserRaceRepository userRaceRepository;
 
+    @Transactional
     public UserDto createUser(final UserDto userDto) throws BusinessException {
 
         User user = User.builder()
@@ -50,6 +52,26 @@ public class UserService {
         User createdUser = userRepository.saveAndFlush(user);
 
         return createdUser.toUserDto();
+    }
+
+    public UserDto updateUser(final String userId, final UserDto userDto) throws BusinessException {
+
+        User user = User.builder()
+                .firstName(userDto.firstName())
+                .lastName(userDto.lastName())
+                .password(userDto.password())
+                .username(userDto.username())
+                .contact(userDto.contact())
+                .id(userId)
+                .build();
+
+        if (userRepository.existsByUsernameAndIdNot(userDto.username(), userId)) {
+            throw new BusinessException("Username already exist");
+        }
+
+        User updatedUser = userRepository.save(user);
+
+        return updatedUser.toUserDto();
     }
 
     public UserDto fetchUserById(final String userId) throws BusinessException {

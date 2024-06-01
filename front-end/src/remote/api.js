@@ -49,6 +49,37 @@ export const api = {
         console.log(error);
       });
   },
+  put: async (endpoint, body, userId = null) => {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (userId) {
+      headers["userId"] = userId;
+    }
+
+    const config = {
+      method: "put",
+      url: `${baseUrl}${endpoint}`,
+      headers,
+      data: body,
+    };
+
+    return await axios
+      .request(config)
+      .then((res) => {
+        return {
+          status: 200,
+          data: res.data,
+        };
+      })
+      .catch((error) => {
+        return {
+          status: error.response.status,
+          error: error.response.data,
+        };
+      });
+  },
   post: async (endpoint, body, userId = null) => {
     let headers = {
       "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 import CancelIcon from "@mui/icons-material/Cancel";
+import SaveIcon from "@mui/icons-material/Save";
 import {
   Button,
   ButtonGroup,
@@ -9,126 +10,188 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useFormik } from "formik";
+import { number, object, string } from "yup";
+import useStyles from "../../../../util/hooks/useStyles";
+import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useUser } from "../../../../util/hooks/userHook";
 
 export default function UserProfile({ handleCancel, handleProfileViewed }) {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const [user, setUser] = useState(userData);
+  const notificationPanel = useNotificationPanel();
+  const classes = useStyles();
+  const userHook = useUser();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  const initial = userData;
+  const validationSchema = object({
+    firstName: string().required("First Name is required"),
+    lastName: string().required("Last Name is required"),
+    username: string().required("Email is required").email("Invalid email"),
+    password: string()
+      .required("Password is required")
+      .min(7, "Minimum 7 characters")
+      .max(10, "Maximum 10 characters"),
+    contact: number().required("Contact is required"),
+  });
 
-    // await asaHook.createAsa({ asa }, loggedInUser.id);
-    handleProfileViewed();
-  }
+  const handleSubmit = async (values, formikHelpers) => {
+    console.log(values);
+    const updatedUserProfilePayload = {
+      password: values.password,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      contact: values.contact,
+      username: values.username,
+    };
+
+    const updatedUserProfileResponse = await userHook.update(
+      updatedUserProfilePayload,
+      userData.id
+    );
+    if (updatedUserProfileResponse.error) {
+      notificationPanel.showPanel(updatedUserProfileResponse.error);
+    } else {
+      authUserContext.setStorageValue(updatedUserProfileResponse.data);
+      handleProfileViewed();
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
-    <Stack sx={{ mt: 2, ml: 5, mr: 5, width: 420 }} spacing={5}>
-      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
+    <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={1}>
+      <Toolbar sx={{ backgroundColor: "#1976d2", borderRadius: "20px" }}>
         <Typography variant="h6" sx={{ color: "white" }}>
-          {user.username}
+          View / Edit Profile
         </Typography>
       </Toolbar>
+      <notificationPanel.NotificationPanel />
+      <form onSubmit={formik.handleSubmit}>
+        <TextField
+          className={classes.root}
+          name="firstName"
+          required
+          fullWidth
+          id="firstName"
+          label="First Name"
+          margin="normal"
+          autoFocus
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            Boolean(formik.errors.firstName) &&
+            Boolean(formik.touched.firstName)
+          }
+          helperText={
+            Boolean(formik.touched.firstName) && formik.errors.firstName
+          }
+        />
 
-      <TextField
-        required
-        id="firstName"
-        name="firstName"
-        fullWidth
-        autoComplete="given-name"
-        variant="standard"
-        helperText="First Name"
-        value={user.firstName}
-        // onChange={(e) => setAsa(e.target.value)}
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
+        <TextField
+          className={classes.root}
+          required
+          fullWidth
+          id="lastName"
+          label="Last Name"
+          name="lastName"
+          margin="normal"
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            Boolean(formik.errors.lastName) && Boolean(formik.touched.lastName)
+          }
+          helperText={
+            Boolean(formik.touched.lastName) && formik.errors.lastName
+          }
+        />
+        <TextField
+          className={classes.root}
+          required
+          fullWidth
+          id="username"
+          label="Username (Email Address)"
+          name="username"
+          margin="normal"
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            Boolean(formik.errors.username) && Boolean(formik.touched.username)
+          }
+          helperText={
+            Boolean(formik.touched.username) && formik.errors.username
+          }
+        />
+        <TextField
+          className={classes.root}
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          type="password"
+          id="password"
+          margin="normal"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            Boolean(formik.errors.password) && Boolean(formik.touched.password)
+          }
+          helperText={
+            Boolean(formik.touched.password) && formik.errors.password
+          }
+        />
 
-      <TextField
-        required
-        id="lastName"
-        name="lastName"
-        fullWidth
-        autoComplete="family-name"
-        variant="standard"
-        helperText="Last Name"
-        value={user.lastName}
-        // onChange={(e) => setAsa(e.target.value)}
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
+        <TextField
+          className={classes.root}
+          required
+          fullWidth
+          type="number"
+          name="contact"
+          label="Contact"
+          id="contact"
+          margin="normal"
+          value={formik.values.contact}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={
+            Boolean(formik.errors.contact) && Boolean(formik.touched.contact)
+          }
+          helperText={Boolean(formik.touched.contact) && formik.errors.contact}
+        />
 
-      <TextField
-        required
-        id="password"
-        type="password"
-        name="password"
-        fullWidth
-        autoComplete="family-name"
-        variant="standard"
-        helperText="Password"
-        value={user.password}
-        // onChange={(e) => setAsa(e.target.value)}
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-
-      <TextField
-        required
-        id="contact"
-        name="contact"
-        fullWidth
-        autoComplete="family-name"
-        variant="standard"
-        helperText="Contact"
-        value={user.contact}
-        // onChange={(e) => setAsa(e.target.value)}
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-
-      <TextField
-        required
-        id="email"
-        name="email"
-        fullWidth
-        autoComplete="family-name"
-        variant="standard"
-        helperText="Email"
-        value={user.email}
-        // onChange={(e) => setAsa(e.target.value)}
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-
-      <ButtonGroup
-        sx={{
-          display: "flex",
-          boxShadow: "0",
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
-        }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Button startIcon={<CancelIcon />} onClick={handleCancel}>
-          Cancel
-        </Button>
-        {/* <Button
-          type="Submit"
-          startIcon={<SaveIcon />}
-          sx={{ marginLeft: 5 }}
-          onClick={handleSubmit}
+        <ButtonGroup
+          sx={{
+            display: "flex",
+            boxShadow: "0",
+            flexDirection: "row",
+            justifyContent: "center",
+            marginTop: 8,
+          }}
+          variant="contained"
+          aria-label="outlined primary button group"
         >
-          Save
-        </Button> */}
-      </ButtonGroup>
+          <Button startIcon={<CancelIcon />} onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            startIcon={<SaveIcon />}
+            sx={{ marginLeft: 5 }}
+            disabled={!formik.dirty || !formik.isValid}
+          >
+            Save
+          </Button>
+        </ButtonGroup>
+      </form>
     </Stack>
   );
 }
