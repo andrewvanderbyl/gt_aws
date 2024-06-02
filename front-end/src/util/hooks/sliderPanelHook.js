@@ -16,7 +16,7 @@ export const useSliderPanel = () => {
     (props) => (
       <SlidePanel panelContent={props.panelContent} ref={slidePanelRef} />
     ),
-    []
+    [slidePanelRef]
   );
 
   return { SliderPanel, closePanel, openPanel };

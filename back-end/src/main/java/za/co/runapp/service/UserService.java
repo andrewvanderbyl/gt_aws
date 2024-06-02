@@ -20,6 +20,7 @@ import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.rest.dto.UserRaceDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,22 +57,37 @@ public class UserService {
 
     public UserDto updateUser(final String userId, final UserDto userDto) throws BusinessException {
 
-        User user = User.builder()
-                .firstName(userDto.firstName())
-                .lastName(userDto.lastName())
-                .password(userDto.password())
-                .username(userDto.username())
-                .contact(userDto.contact())
-                .id(userId)
-                .build();
+//        Optional<User> userOptional = userRepository.findById(userId);
+//        if (userOptional.isEmpty()) {
+//            throw new BusinessException("User does not exist");
+//        }
+//
+//        User existingUser = userOptional.get();
+//        existingUser.setFirstName(userDto.firstName());
+//        existingUser.setLastName(userDto.lastName());
+//        existingUser.setUsername(userDto.username());
+//        existingUser.setPassword(userDto.password());
+//        existingUser.setContact(userDto.contact());
 
         if (userRepository.existsByUsernameAndIdNot(userDto.username(), userId)) {
             throw new BusinessException("Username already exist");
         }
 
-        User updatedUser = userRepository.save(user);
+        try {
+            userRepository.upsertUser(userId, LocalDateTime.now(), LocalDateTime.now(), userDto.contact(),
+                    userDto.firstName(), userDto.lastName(), userDto.password(), userDto.username());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return updatedUser.toUserDto();
+        return UserDto.builder()
+                .id(userId)
+                .firstName(userDto.firstName())
+                .lastName(userDto.lastName())
+                .username(userDto.username())
+                .password(userDto.password())
+                .contact(userDto.contact())
+                .build();
     }
 
     public UserDto fetchUserById(final String userId) throws BusinessException {

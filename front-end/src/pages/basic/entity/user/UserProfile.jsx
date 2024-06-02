@@ -8,19 +8,19 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useFormik } from "formik";
 import { number, object, string } from "yup";
-import useStyles from "../../../../util/hooks/useStyles";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useSuccessAlert } from "../../../../util/hooks/successAlert";
+import useStyles from "../../../../util/hooks/useStyles";
 import { useUser } from "../../../../util/hooks/userHook";
 
 export default function UserProfile({ handleCancel, handleProfileViewed }) {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
-  const [user, setUser] = useState(userData);
   const notificationPanel = useNotificationPanel();
+  const successAlertPanel = useSuccessAlert(handleProfileViewed);
   const classes = useStyles();
   const userHook = useUser();
 
@@ -37,7 +37,6 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
   });
 
   const handleSubmit = async (values, formikHelpers) => {
-    console.log(values);
     const updatedUserProfilePayload = {
       password: values.password,
       firstName: values.firstName,
@@ -54,7 +53,8 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
       notificationPanel.showPanel(updatedUserProfileResponse.error);
     } else {
       authUserContext.setStorageValue(updatedUserProfileResponse.data);
-      handleProfileViewed();
+      successAlertPanel.showPanel("Profile updated successfully");
+      // handleProfileViewed();
     }
   };
 
@@ -66,15 +66,19 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
 
   return (
     <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={1}>
-      <Toolbar sx={{ backgroundColor: "#1976d2", borderRadius: "20px" }}>
-        <Typography variant="h6" sx={{ color: "white" }}>
+      <Toolbar className={classes.toolbar}>
+        <Typography
+          variant="h6"
+          className={classes.toolBarTitle}
+          //  sx={{ color: "white" }}
+        >
           View / Edit Profile
         </Typography>
       </Toolbar>
       <notificationPanel.NotificationPanel />
       <form onSubmit={formik.handleSubmit}>
         <TextField
-          className={classes.root}
+          className={classes.formLabel}
           name="firstName"
           required
           fullWidth
@@ -95,7 +99,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
         />
 
         <TextField
-          className={classes.root}
+          className={classes.formLabel}
           required
           fullWidth
           id="lastName"
@@ -113,7 +117,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
           }
         />
         <TextField
-          className={classes.root}
+          className={classes.formLabel}
           required
           fullWidth
           id="username"
@@ -131,7 +135,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
           }
         />
         <TextField
-          className={classes.root}
+          className={classes.formLabel}
           required
           fullWidth
           name="password"
@@ -151,7 +155,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
         />
 
         <TextField
-          className={classes.root}
+          className={classes.formLabel}
           required
           fullWidth
           type="number"
@@ -192,6 +196,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
           </Button>
         </ButtonGroup>
       </form>
+      <successAlertPanel.SuccessPanel />
     </Stack>
   );
 }

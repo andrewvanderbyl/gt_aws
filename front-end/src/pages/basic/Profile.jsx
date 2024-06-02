@@ -6,6 +6,7 @@ import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
 import Home from "./entity/Home";
 import UserClubsList from "./entity/user/UserClubsList";
 import UserProfile from "./entity/user/UserProfile";
+import { useState } from "react";
 
 export default function Profile() {
   const authUserContext = useAuth();
@@ -14,6 +15,7 @@ export default function Profile() {
 
   const slidePanel = useSliderPanel();
   const slideClubPanel = useSliderPanel();
+  const [showClub, setShowClub] = useState(false);
 
   const handleViewProfileClick = (event) => {
     event.preventDefault();
@@ -22,6 +24,7 @@ export default function Profile() {
 
   const handleViewClubsClick = (event) => {
     event.preventDefault();
+    setShowClub(true);
     slideClubPanel.openPanel();
   };
 
@@ -31,6 +34,8 @@ export default function Profile() {
   };
 
   const handleJoinFormCancelClick = (event) => {
+    event.preventDefault();
+    setShowClub(false);
     slideClubPanel.closePanel();
   };
 
@@ -66,7 +71,10 @@ export default function Profile() {
       />
       <slideClubPanel.SliderPanel
         panelContent={
-          <UserClubsList handleCancel={handleJoinFormCancelClick} />
+          <UserClubsList
+            handleCancel={handleJoinFormCancelClick}
+            showClub={showClub}
+          />
         }
       />
     </>

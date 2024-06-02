@@ -8,15 +8,17 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
+import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
-import { useAuth } from "../../../../util/context/AuthUserContext";
+import useStyles from "../../../../util/hooks/useStyles";
 
-export default function UserClubsList({ handleCancel }) {
+export default function UserClubsList({ handleCancel, showClub }) {
   const dataGrid = useDataGrid();
   const clubHook = useClub();
   const authHook = useAuth();
   const loggedInUser = authHook.localStorageValue;
+  const classes = useStyles();
 
   const columns = [
     {
@@ -25,13 +27,13 @@ export default function UserClubsList({ handleCancel }) {
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
-      width: 200,
+      width: 190,
       flex: 1,
     },
     {
       field: "id",
       headerName: "ACTIONS",
-      width: 110,
+      width: 150,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -55,37 +57,27 @@ export default function UserClubsList({ handleCancel }) {
   ];
 
   useEffect(() => {
-    (async () => {
-      dataGrid.showLoader();
-      const newRows = await clubHook.fetchClubList({
-        page: dataGrid.getPageNumber(),
-        size: dataGrid.getPageSize(),
-      });
-      dataGrid.updatePageState(newRows);
-      dataGrid.closeLoader();
-    })();
+    if (showClub) {
+      (async () => {
+        dataGrid.showLoader();
+        const newRowsResponse = await clubHook.fetchClubList({
+          page: dataGrid.getPageNumber(),
+          size: dataGrid.getPageSize(),
+        });
+        dataGrid.updatePageState(newRowsResponse.data);
+        dataGrid.closeLoader();
+      })();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize()]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), showClub]);
 
   return (
-    <Stack
-      sx={{
-        mt: 2,
-        ml: 5,
-        mr: 5,
-        width: 420,
-        "& .MuiInputBase-input.Mui-disabled": {
-          WebkitTextFillColor: "black",
-        },
-      }}
-      spacing={5}
-    >
-      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          CLUB MEMBERSHIP
+    <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 430 }} spacing={5}>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h6" className={classes.toolBarTitle}>
+          Join A Club
         </Typography>
       </Toolbar>
-
       <Paper
         square={false}
         sx={{

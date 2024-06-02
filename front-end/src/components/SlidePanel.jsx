@@ -31,7 +31,9 @@ const SlidePanel = forwardRef((props, ref) => {
         <SwipeableDrawer
           anchor={"right"}
           open={openDialog}
-          onClose={toggleDrawer(false)}
+          onClose={() => {
+            return;
+          }}
           onOpen={toggleDrawer(true)}
         >
           {props.panelContent}

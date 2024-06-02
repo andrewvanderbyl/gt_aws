@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useLoader } from "./loaderHook";
+import useStyles from "./useStyles";
 
 export const useDataGrid = () => {
   const [pageState, setPageState] = useState({
@@ -12,6 +13,7 @@ export const useDataGrid = () => {
     pageSize: 8,
   });
   const loader = useLoader();
+  const classes = useStyles();
 
   const updatePageState = (newRows) => {
     setPageState((old) => ({
@@ -36,12 +38,7 @@ export const useDataGrid = () => {
     <>
       <loader.LoadingPanel />
       <DataGrid
-        sx={{
-          "& .super-app-theme--header": {
-            backgroundColor: "#1565c0",
-            color: "white",
-          },
-        }}
+        className={classes.dataGrid}
         rows={pageState.data}
         columns={props.columns}
         rowCount={pageState.total}

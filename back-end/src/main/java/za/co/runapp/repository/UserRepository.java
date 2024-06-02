@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import za.co.runapp.entity.Club;
 import za.co.runapp.entity.User;
 
+import java.time.LocalDateTime;
+
 public interface UserRepository extends JpaRepository<User, String> {
 
     User findByUsernameAndPassword(String username, String password);
@@ -19,4 +21,23 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByUsername(String username);
     boolean existsByUsernameAndIdNot(String username, String id);
+
+    @Transactional
+    @Modifying
+    @Query(value = """
+            INSERT INTO user
+            (id, date_created, date_updated, version, contact, first_name, last_name, password, username)
+            VALUES(?1, ?2, ?3, 1, ?4, ?5, ?6, ?7, ?8)
+            ON DUPLICATE KEY UPDATE
+            date_updated = ?3,
+            version = version + 1,
+            contact = ?4,
+            first_name = ?5,
+            last_name = ?6,
+            password = ?7,
+            username = ?8
+            """, nativeQuery = true)
+    void upsertUser(String id, LocalDateTime dateCreated, LocalDateTime dateUpdated, String contact,
+                    String firstName, String lastName, String password, String userName);
+
 }
