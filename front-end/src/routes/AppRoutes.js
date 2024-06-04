@@ -3,7 +3,6 @@ import AdminSecurity from "../pages/admin/security/AdminSecurity";
 import AdminClubs from "../pages/basic/AdminClubs";
 import AdminEvents from "../pages/basic/AdminEvents";
 import Asa from "../pages/basic/Asa";
-import Club from "../pages/basic/Club";
 import Events from "../pages/basic/Events";
 import Profile from "../pages/basic/Profile";
 import Results from "../pages/basic/Results";
@@ -25,11 +24,6 @@ export const AppRoutes = [
       key="Profile"
       path="profile"
       element={<ProtectedRouteGuard component={<Profile />} />}
-    />
-    <Route
-      key="Clubs"
-      path="clubs"
-      element={<ProtectedRouteGuard component={<Club />} />}
     />
     <Route
       key="Results"

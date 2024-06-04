@@ -67,11 +67,7 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
   return (
     <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={1}>
       <Toolbar className={classes.toolbar}>
-        <Typography
-          variant="h6"
-          className={classes.toolBarTitle}
-          //  sx={{ color: "white" }}
-        >
+        <Typography variant="h6" className={classes.toolBarTitle}>
           View / Edit Profile
         </Typography>
       </Toolbar>

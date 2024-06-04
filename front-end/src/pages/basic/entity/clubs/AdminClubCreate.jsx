@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -12,131 +13,193 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useFormik } from "formik";
+import { number, object, string } from "yup";
 import { useClub } from "../../../../util/hooks/clubHook";
+import { useLoader } from "../../../../util/hooks/loaderHook";
+import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useSuccessAlert } from "../../../../util/hooks/successAlert";
+import useStyles from "../../../../util/hooks/useStyles";
 
 export default function AdminClubCreate({ handleCancel, handleClubCreate }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contact, setContact] = useState("");
-  const [province, setProvince] = useState("Western Cape");
+  const initial = {
+    name: "",
+    email: "",
+    contact: "",
+    province: "Western Cape",
+    country: "South Africa",
+  };
+  const validationSchema = object({
+    name: string().required("Name is required"),
+    email: string().required("Email is required").email("Invalid email"),
+    contact: number().required("Contact is required"),
+    province: string().required("Province is required"),
+  });
 
+  const classes = useStyles();
+  const notificationPanel = useNotificationPanel();
+  const successAlertPanel = useSuccessAlert(handleClubCreate);
   const clubHook = useClub();
+  const loader = useLoader();
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-
+  const handleSubmit = async (values, formikHelpers) => {
     const clubData = {
-      name,
-      email,
-      contact,
-      province,
+      name: values.name,
+      email: values.email,
+      contact: values.contact,
+      province: values.province,
       country: "South Africa",
     };
 
-    await clubHook.createClub(clubData);
-    handleClubCreate();
-  }
+    loader.showLoader();
+    const createClubResponse = await clubHook.createClub(clubData);
+    loader.closeLoader();
+
+    if (createClubResponse.error) {
+      notificationPanel.showPanel(createClubResponse.error);
+    } else {
+      formikHelpers.resetForm();
+      successAlertPanel.showPanel(
+        `Club ${createClubResponse.data.name} created successfully`
+      );
+      // handleClubCreate();
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
-    <Stack sx={{ mt: 2, ml: 5, mr: 5, width: 420 }} spacing={5}>
-      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Create New Club
-        </Typography>
-      </Toolbar>
-      <TextField
-        required
-        id="name"
-        name="name"
-        label="Club Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        fullWidth
-        helperText="Name of your club"
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-      <TextField
-        required
-        id="contact"
-        name="contact"
-        label="Contact Number"
-        value={contact}
-        onChange={(e) => setContact(e.target.value)}
-        fullWidth
-        helperText="Contact Number (Landline/Cellular)"
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-      <TextField
-        required
-        id="email"
-        name="email"
-        label="Email"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        fullWidth
-        helperText="Email Address"
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-      <FormControl fullWidth>
-        <InputLabel key="province" id="province">
-          Province
-        </InputLabel>
-        <Select
-          value={province}
-          labelId="province"
-          label="Select province"
-          onChange={(e) => setProvince(e.target.value)}
-          displayEmpty
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          {[
-            "Eastern Cape",
-            "Free State",
-            "Gauteng",
-            "KwaZulu Natal",
-            "Limpopo",
-            "Mpumalanga",
-            "Northern Cape",
-            "North West",
-            "Western Cape",
-          ].map((key) => (
-            <MenuItem key={key} value={key}>
-              {key}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <ButtonGroup
-        sx={{
-          display: "flex",
-          boxShadow: "0",
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
-        }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Button startIcon={<CancelIcon />} onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button
-          type="Submit"
-          startIcon={<SaveIcon />}
-          sx={{ marginLeft: 5 }}
-          onClick={handleSubmit}
-        >
-          Save
-        </Button>
-      </ButtonGroup>
-    </Stack>
+    <>
+      <loader.LoadingPanel />
+      <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={3}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" className={classes.toolBarTitle}>
+            Create New Club
+          </Typography>
+        </Toolbar>
+        <notificationPanel.NotificationPanel />
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            className={classes.formLabel}
+            required
+            fullWidth
+            id="name"
+            name="name"
+            label="Club Name"
+            margin="normal"
+            type="text"
+            autoFocus
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={Boolean(formik.errors.name) && Boolean(formik.touched.name)}
+            helperText={Boolean(formik.touched.name) && formik.errors.name}
+          />
+          <TextField
+            className={classes.formLabel}
+            required
+            fullWidth
+            id="contact"
+            name="contact"
+            label="Contact Number"
+            margin="normal"
+            type="number"
+            value={formik.values.contact}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              Boolean(formik.errors.contact) && Boolean(formik.touched.contact)
+            }
+            helperText={
+              Boolean(formik.touched.contact) && formik.errors.contact
+            }
+          />
+          <TextField
+            className={classes.formLabel}
+            required
+            fullWidth
+            id="email"
+            name="email"
+            label="Email Address"
+            margin="normal"
+            type="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              Boolean(formik.errors.email) && Boolean(formik.touched.email)
+            }
+            helperText={Boolean(formik.touched.email) && formik.errors.email}
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel key="province" id="provinceLabel">
+              Province
+            </InputLabel>
+            <Select
+              value={formik.values.province}
+              id="province"
+              labelId="province"
+              label="Select province"
+              onChange={(e) => formik.setFieldValue("province", e.target.value)}
+              onBlur={formik.handleBlur}
+              displayEmpty
+              inputProps={{ "aria-label": "Without label" }}
+              // helperText={
+              //   Boolean(formik.touched.province) && formik.errors.province
+              // }
+            >
+              {[
+                "Eastern Cape",
+                "Free State",
+                "Gauteng",
+                "KwaZulu Natal",
+                "Limpopo",
+                "Mpumalanga",
+                "Northern Cape",
+                "North West",
+                "Western Cape",
+              ].map((key) => (
+                <MenuItem key={key} value={key}>
+                  {key}
+                </MenuItem>
+              ))}
+            </Select>
+            {formik.touched.province && (
+              <FormHelperText sx={{ color: "error.main" }}>
+                {formik.errors.province}
+              </FormHelperText>
+            )}
+          </FormControl>
+          <ButtonGroup
+            sx={{
+              display: "flex",
+              boxShadow: "0",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button startIcon={<CancelIcon />} onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              startIcon={<SaveIcon />}
+              sx={{ marginLeft: 5 }}
+              disabled={!formik.dirty || !formik.isValid}
+            >
+              Save
+            </Button>
+          </ButtonGroup>
+        </form>
+        <successAlertPanel.SuccessPanel />
+      </Stack>
+    </>
   );
 }

@@ -59,7 +59,7 @@ public class ClubService {
 
     public PageableDto<ClubDto> getClubs(PageableDto pageableDto) {
 
-        Page<Club> clubs = clubRepository.findAll(
+        Page<Club> clubs = clubRepository.findAllByOrderByDateUpdatedDesc(
                 PageRequest.of(pageableDto.getCurrentPageNumber(), pageableDto.getElementsPerPage()));
 
         List<ClubDto> clubDtoList = clubs.stream()
