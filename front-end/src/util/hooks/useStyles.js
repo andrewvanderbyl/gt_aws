@@ -16,9 +16,11 @@ const useStyles = makeStyles((theme) => ({
   },
   dataGrid: {
     "& .super-app-theme--header": {
-      backgroundColor: "#1976d2",
-      color: "white",
+      backgroundColor: "white",
+      color: "black",
       boxShadow: "0px 5px 5px",
+      fontSize: "13pt",
+      fontWeight: "bolder",
     },
   },
 }));

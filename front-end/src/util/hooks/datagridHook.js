@@ -1,7 +1,8 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useLoader } from "./loaderHook";
 import useStyles from "./useStyles";
+import { alpha } from "@mui/material";
 
 export const useDataGrid = () => {
   const [pageState, setPageState] = useState({
@@ -10,7 +11,7 @@ export const useDataGrid = () => {
   });
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 8,
+    pageSize: 10,
   });
   const loader = useLoader();
   const classes = useStyles();
@@ -39,13 +40,33 @@ export const useDataGrid = () => {
       <loader.LoadingPanel />
       <DataGrid
         className={classes.dataGrid}
+        sx={{
+          boxShadow: 5,
+          border: 3,
+          borderColor: "primary.dark",
+          [`& .${gridClasses.row}.even`]: {
+            backgroundColor: "#b3e5fc",
+            "&:hover": {
+              backgroundColor: "#e0e0e0",
+              // "@media (hover: none)": {
+              //   backgroundColor: "transparent",
+              // },
+            },
+          },
+          [`& .${gridClasses.row}.odd`]: {
+            backgroundColor: "white",
+            "&:hover": {
+              backgroundColor: "#e0e0e0",
+            },
+          },
+        }}
         rows={pageState.data}
         columns={props.columns}
         rowCount={pageState.total}
         disableRowSelectionOnClick
         paginationMode="server"
         paginationModel={paginationModel}
-        pageSizeOptions={[8]}
+        pageSizeOptions={[10]}
         keepNonExistentRowsSelected
         getRowId={(row) => row.id}
         onPaginationModelChange={setPaginationModel}
@@ -54,6 +75,9 @@ export const useDataGrid = () => {
           noRowsLabel: `${props.emptyText}`,
         }}
         rowHeight={43}
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+        }
       />
     </>
   );

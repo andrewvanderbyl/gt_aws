@@ -1,13 +1,70 @@
-import { Grid, Paper } from "@mui/material";
-import { useEffect } from "react";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  Paper,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+} from "@mui/material";
+import { useEffect, useState } from "react";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
+import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import ViewEvent from "../events/ViewEvent";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import AdminClubCreate from "./AdminClubCreate";
 
 export default function ClubList({ forceRefresh }) {
   const clubHook = useClub();
   const dataGrid = useDataGrid();
+  const sliderPanel = useSliderPanel();
+  const [event, setEvent] = useState({});
 
   const columns = [
+    {
+      field: "id",
+      width: 160,
+      headerName: "ACTIONS",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      // flex: 1,
+      renderCell: (params) => {
+        const handleClick = (event) => {
+          setEvent(params.row);
+          sliderPanel.openPanel();
+        };
+
+        return (
+          <ButtonGroup
+            // value={formats}
+            // onChange={handleFormat}
+            variant="contained"
+            color="primary"
+            sx={{ mt: 0.5 }}
+          >
+            <Button
+              onClick={handleClick}
+              // sx={{
+              //   backgroundColor: "primary",
+              // }}
+            >
+              <ModeEditIcon />
+            </Button>
+          </ButtonGroup>
+          // <Stack direction="row" spacing={2}>
+          //   <Button
+          //     variant="contained"
+          //     startIcon={<ModeEditIcon />}
+          //     onClick={handleClick}
+          //   />
+          // </Stack>
+        );
+      },
+    },
     {
       field: "name",
       headerName: "NAME",
@@ -44,16 +101,12 @@ export default function ClubList({ forceRefresh }) {
       headerClassName: "super-app-theme--header",
       flex: 1,
     },
-    {
-      field: "country",
-      headerName: "COUNTRY",
-      width: 130,
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      flex: 1,
-    },
   ];
+
+  const handleSlidePanelClose = (event) => {
+    event.preventDefault();
+    sliderPanel.closePanel();
+  };
 
   useEffect(() => {
     (async () => {
@@ -90,6 +143,11 @@ export default function ClubList({ forceRefresh }) {
           />
         </Paper>
       </Grid>
+      <sliderPanel.SliderPanel
+        panelContent={
+          <AdminClubCreate handleCancel={handleSlidePanelClose} event={event} />
+        }
+      />
     </>
   );
 }
