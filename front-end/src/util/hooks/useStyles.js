@@ -3,8 +3,8 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme) => ({
   formLabel: {
     "& .MuiFormLabel-root": {
-      color: "black",
-      fontWeight: "bold",
+      color: "redblack",
+      fontWeight: "normal",
     },
   },
   toolbar: {

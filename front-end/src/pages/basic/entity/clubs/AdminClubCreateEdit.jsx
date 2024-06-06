@@ -22,7 +22,7 @@ import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
 import { useEffect } from "react";
 
-export default function AdminClubCreate({
+export default function AdminClubCreateEdit({
   handleCancel,
   handleClubCreate,
   club,

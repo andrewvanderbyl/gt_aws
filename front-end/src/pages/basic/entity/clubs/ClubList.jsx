@@ -1,10 +1,10 @@
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import { Button, ButtonGroup, Grid, Paper } from "@mui/material";
+import { Button, ButtonGroup, Grid, Paper, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
-import AdminClubCreate from "./AdminClubCreate";
+import AdminClubCreateEdit from "./AdminClubCreateEdit";
 
 export default function ClubList({ forceRefresh }) {
   const clubHook = useClub();
@@ -34,16 +34,16 @@ export default function ClubList({ forceRefresh }) {
 
         return (
           <ButtonGroup
-            // value={formats}
-            // onChange={handleFormat}
             size="small"
             variant="contained"
             color="primary"
             sx={{ mt: 0.5 }}
           >
-            <Button onClick={handleClick}>
-              <ModeEditIcon />
-            </Button>
+            <Tooltip title="View/Edit Club" placement="right-start">
+              <Button onClick={handleClick}>
+                <ModeEditIcon />
+              </Button>
+            </Tooltip>
           </ButtonGroup>
         );
       },
@@ -133,7 +133,7 @@ export default function ClubList({ forceRefresh }) {
       </Grid>
       <sliderPanel.SliderPanel
         panelContent={
-          <AdminClubCreate
+          <AdminClubCreateEdit
             handleCancel={handleSlidePanelClose}
             handleClubCreate={handleClubEdited}
             club={viewClubData}

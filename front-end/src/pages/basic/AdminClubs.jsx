@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
 import ClubList from "../basic/entity/clubs/ClubList";
 import ContentPanel from "../layout/ContentPanel";
-import AdminClubCreate from "./entity/clubs/AdminClubCreate";
+import AdminClubCreateEdit from "./entity/clubs/AdminClubCreateEdit";
 
 export default function AdminClubs() {
   const [contentComponent, setContentComponent] = useState(<ClubList />);
@@ -49,7 +49,7 @@ export default function AdminClubs() {
       {/* {renderPanel ?? ( */}
       <slidePanel.SliderPanel
         panelContent={
-          <AdminClubCreate
+          <AdminClubCreateEdit
             handleCancel={handleCreateFormCancelClick}
             handleClubCreate={handleClubCreatedEvent}
             club={{}}

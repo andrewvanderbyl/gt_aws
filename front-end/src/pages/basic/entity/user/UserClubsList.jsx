@@ -5,6 +5,7 @@ import {
   Paper,
   Stack,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
@@ -12,6 +13,7 @@ import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import useStyles from "../../../../util/hooks/useStyles";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 export default function UserClubsList({ handleCancel, showClub }) {
   const dataGrid = useDataGrid();
@@ -22,18 +24,12 @@ export default function UserClubsList({ handleCancel, showClub }) {
 
   const columns = [
     {
-      field: "name",
-      headerName: "CLUB",
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      width: 190,
-      flex: 1,
-    },
-    {
       field: "id",
-      headerName: "ACTIONS",
-      width: 150,
+      headerName: "",
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
+      width: 60,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -46,13 +42,32 @@ export default function UserClubsList({ handleCancel, showClub }) {
         };
 
         return (
-          <Stack direction="row" spacing={2}>
-            <Button variant="contained" onClick={handleCreateChipEntryClick}>
-              Join
-            </Button>
-          </Stack>
+          <>
+            <ButtonGroup>
+              <Tooltip title="Click to join" placement="right-start">
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  sx={{ mt: 0.5 }}
+                  onClick={handleCreateChipEntryClick}
+                >
+                  <AddCircleIcon />
+                </Button>
+              </Tooltip>
+            </ButtonGroup>
+          </>
         );
       },
+    },
+    {
+      field: "name",
+      headerName: "CLUB",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      width: 190,
+      flex: 1,
     },
   ];
 
