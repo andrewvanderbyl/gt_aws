@@ -46,14 +46,17 @@ export default function AdminClubs() {
         ]}
         entityComponent={contentComponent}
       />
+      {/* {renderPanel ?? ( */}
       <slidePanel.SliderPanel
         panelContent={
           <AdminClubCreate
             handleCancel={handleCreateFormCancelClick}
             handleClubCreate={handleClubCreatedEvent}
+            club={{}}
           />
         }
       />
+      {/* )} */}
     </>
   );
 }

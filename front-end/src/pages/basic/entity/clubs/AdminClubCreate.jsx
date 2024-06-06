@@ -20,8 +20,13 @@ import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
+import { useEffect } from "react";
 
-export default function AdminClubCreate({ handleCancel, handleClubCreate }) {
+export default function AdminClubCreate({
+  handleCancel,
+  handleClubCreate,
+  club,
+}) {
   const initial = {
     name: "",
     email: "",
@@ -71,6 +76,17 @@ export default function AdminClubCreate({ handleCancel, handleClubCreate }) {
     validationSchema,
     onSubmit: handleSubmit,
   });
+
+  useEffect(() => {
+    if (club) {
+      formik.setValues({
+        name: club.name,
+        email: club.email,
+        contact: club.contact,
+        province: club.province,
+      });
+    }
+  }, [club]);
 
   return (
     <>

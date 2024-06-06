@@ -1,40 +1,34 @@
-import {
-  Button,
-  ButtonGroup,
-  Grid,
-  Paper,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import { Button, ButtonGroup, Grid, Paper } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import ViewEvent from "../events/ViewEvent";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AdminClubCreate from "./AdminClubCreate";
 
 export default function ClubList({ forceRefresh }) {
   const clubHook = useClub();
   const dataGrid = useDataGrid();
   const sliderPanel = useSliderPanel();
-  const [event, setEvent] = useState({});
+  const [viewClubData, setViewClubData] = useState({});
+  const [refresh, setRefresh] = useState(false);
 
   const columns = [
     {
       field: "id",
-      width: 160,
-      headerName: "ACTIONS",
+      disableColumnMenu: true,
+      width: 80,
+      headerName: "",
       headerAlign: "center",
       align: "center",
+      sortable: false,
+      filterable: false,
       headerClassName: "super-app-theme--header",
       disableClickEventBubbling: true,
       // flex: 1,
       renderCell: (params) => {
         const handleClick = (event) => {
-          setEvent(params.row);
+          setViewClubData(params.row);
           sliderPanel.openPanel();
         };
 
@@ -42,26 +36,15 @@ export default function ClubList({ forceRefresh }) {
           <ButtonGroup
             // value={formats}
             // onChange={handleFormat}
+            size="small"
             variant="contained"
             color="primary"
             sx={{ mt: 0.5 }}
           >
-            <Button
-              onClick={handleClick}
-              // sx={{
-              //   backgroundColor: "primary",
-              // }}
-            >
+            <Button onClick={handleClick}>
               <ModeEditIcon />
             </Button>
           </ButtonGroup>
-          // <Stack direction="row" spacing={2}>
-          //   <Button
-          //     variant="contained"
-          //     startIcon={<ModeEditIcon />}
-          //     onClick={handleClick}
-          //   />
-          // </Stack>
         );
       },
     },
@@ -108,6 +91,11 @@ export default function ClubList({ forceRefresh }) {
     sliderPanel.closePanel();
   };
 
+  const handleClubEdited = (event) => {
+    sliderPanel.closePanel();
+    setRefresh(Date.now());
+  };
+
   useEffect(() => {
     (async () => {
       dataGrid.showLoader();
@@ -120,7 +108,7 @@ export default function ClubList({ forceRefresh }) {
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh, refresh]);
 
   return (
     <>
@@ -145,7 +133,11 @@ export default function ClubList({ forceRefresh }) {
       </Grid>
       <sliderPanel.SliderPanel
         panelContent={
-          <AdminClubCreate handleCancel={handleSlidePanelClose} event={event} />
+          <AdminClubCreate
+            handleCancel={handleSlidePanelClose}
+            handleClubCreate={handleClubEdited}
+            club={viewClubData}
+          />
         }
       />
     </>
