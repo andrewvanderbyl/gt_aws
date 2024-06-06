@@ -47,6 +47,9 @@ export default function AdminClubCreateEdit({
   const clubHook = useClub();
   const loader = useLoader();
 
+  const clubLabel = club ? "View/Edit Club" : "Create New Club";
+  const buttonText = club ? "Update" : "Save";
+
   const handleSubmit = async (values, formikHelpers) => {
     const clubData = {
       name: values.name,
@@ -94,7 +97,7 @@ export default function AdminClubCreateEdit({
       <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={3}>
         <Toolbar className={classes.toolbar}>
           <Typography variant="h6" className={classes.toolBarTitle}>
-            Create New Club
+            {clubLabel}
           </Typography>
         </Toolbar>
         <notificationPanel.NotificationPanel />
@@ -210,7 +213,7 @@ export default function AdminClubCreateEdit({
               sx={{ marginLeft: 5 }}
               disabled={!formik.dirty || !formik.isValid}
             >
-              Save
+              {buttonText}
             </Button>
           </ButtonGroup>
         </form>

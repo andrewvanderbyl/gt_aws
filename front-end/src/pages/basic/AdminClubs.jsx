@@ -52,7 +52,6 @@ export default function AdminClubs() {
           <AdminClubCreateEdit
             handleCancel={handleCreateFormCancelClick}
             handleClubCreate={handleClubCreatedEvent}
-            club={{}}
           />
         }
       />
