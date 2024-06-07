@@ -14,8 +14,10 @@ import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @AllArgsConstructor
@@ -25,19 +27,17 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final UserRepository userRepository;
 
-    public ClubDto createClub(final ClubDto clubDto) {
+    public ClubDto createClub(final ClubDto clubDto) throws BusinessException {
 
-        Club club = Club.builder()
-                .name(clubDto.name())
-                .contact(clubDto.contact())
-                .email(clubDto.email())
-                .country(clubDto.country())
-                .province(clubDto.province())
-                .build();
+        if (clubRepository.existsByName(clubDto.name())) {
+            throw new BusinessException("Club name already exist");
+        }
 
-        Club persistedClub = clubRepository.saveAndFlush(club);
+        final String id = UUID.randomUUID().toString();
+        clubRepository.upsertClub(id, LocalDateTime.now(), LocalDateTime.now(),
+                clubDto.name(), clubDto.email(), clubDto.contact(), clubDto.province(), clubDto.country());
 
-        return persistedClub.toClubDto();
+        return new ClubDto(id, clubDto);
     }
 
     public ClubDto fetchClubById(final String clubId) throws BusinessException {
@@ -91,5 +91,17 @@ public class ClubService {
                 .currentPageNumber(users.getPageable().getPageNumber())
                 .totalPages(users.getTotalPages())
                 .build();
+    }
+
+    public ClubDto updateClub(ClubDto clubDto) throws BusinessException {
+
+        if (clubRepository.existsByNameAndIdNot(clubDto.name(), clubDto.id())) {
+            throw new BusinessException("Club name already exist");
+        }
+
+        clubRepository.upsertClub(clubDto.id(), LocalDateTime.now(), LocalDateTime.now(),
+                clubDto.name(), clubDto.email(), clubDto.contact(), clubDto.province(), clubDto.country());
+
+        return new ClubDto(clubDto.id(), clubDto);
     }
 }

@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import za.co.runapp.entity.Club;
 import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.PageableDto;
@@ -31,12 +33,21 @@ public class ClubController {
 
     @PostMapping
     public Mono<ResponseEntity> createClub(
-            @RequestBody final ClubDto clubDto) {
+            @RequestBody final ClubDto clubDto) throws BusinessException {
 
         log.info("Received {}", clubDto);
 
         ClubDto persistedClub = clubService.createClub(clubDto);
         return Mono.just(ResponseEntity.ok(persistedClub));
+    }
+
+    @PutMapping
+    public Mono<ResponseEntity> updateClub(@RequestBody final ClubDto clubDto) throws BusinessException {
+
+        log.info("Updating Club {}", clubDto);
+
+        ClubDto updatedClub = clubService.updateClub(clubDto);
+        return Mono.just(ResponseEntity.ok(updatedClub));
     }
 
     @PostMapping(value = "/list", consumes = {

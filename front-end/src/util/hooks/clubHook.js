@@ -5,6 +5,10 @@ export const useClub = () => {
     return await ClubService.createClub(props);
   };
 
+  const updateClub = async (props) => {
+    return await ClubService.updateClub(props);
+  };
+
   const fetchClubList = async (props) => {
     return await ClubService.fetchClubList(props).then((clubs) => clubs);
   };
@@ -25,6 +29,7 @@ export const useClub = () => {
 
   return {
     createClub,
+    updateClub,
     fetchUserClub,
     fetchClubList,
     fetchClubMembers,

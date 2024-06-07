@@ -9,4 +9,9 @@ public record ClubDto(String id,
                       String contact,
                       String province,
                       String country) {
+
+    public ClubDto(String id, ClubDto clubDto) {
+        this(id, clubDto.name(), clubDto.email(), clubDto.contact(), clubDto.province(),
+                clubDto.country());
+    }
 }

@@ -57,29 +57,13 @@ public class UserService {
 
     public UserDto updateUser(final String userId, final UserDto userDto) throws BusinessException {
 
-//        Optional<User> userOptional = userRepository.findById(userId);
-//        if (userOptional.isEmpty()) {
-//            throw new BusinessException("User does not exist");
-//        }
-//
-//        User existingUser = userOptional.get();
-//        existingUser.setFirstName(userDto.firstName());
-//        existingUser.setLastName(userDto.lastName());
-//        existingUser.setUsername(userDto.username());
-//        existingUser.setPassword(userDto.password());
-//        existingUser.setContact(userDto.contact());
-
         if (userRepository.existsByUsernameAndIdNot(userDto.username(), userId)) {
             throw new BusinessException("Username already exist");
         }
 
-        try {
-            userRepository.upsertUser(userId, LocalDateTime.now(), LocalDateTime.now(), userDto.contact(),
+        userRepository.upsertUser(userId, LocalDateTime.now(), LocalDateTime.now(), userDto.contact(),
                     userDto.firstName(), userDto.lastName(), userDto.password(), userDto.username());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        
         return UserDto.builder()
                 .id(userId)
                 .firstName(userDto.firstName())

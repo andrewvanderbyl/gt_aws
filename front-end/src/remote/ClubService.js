@@ -16,6 +16,22 @@ export default {
         return data;
       });
   },
+  updateClub: async (props) => {
+    const payload = {
+      id: props.id,
+      name: props.name,
+      email: props.email,
+      contact: props.contact,
+      province: props.province,
+      country: props.country,
+    };
+
+    return await api
+      .put(process.env.REACT_APP_CREATE_CLUB, payload)
+      .then((data) => {
+        return data;
+      });
+  },
   fetchClubList: async (props) => {
     return await api
       .post(process.env.REACT_APP_CLUB_LIST, props)

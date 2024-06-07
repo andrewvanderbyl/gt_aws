@@ -14,13 +14,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 import { number, object, string } from "yup";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
-import { useEffect } from "react";
 
 export default function AdminClubCreateEdit({
   handleCancel,
@@ -51,6 +51,7 @@ export default function AdminClubCreateEdit({
   const buttonText = club ? "Update" : "Save";
 
   const handleSubmit = async (values, formikHelpers) => {
+    notificationPanel.closePanel();
     const clubData = {
       name: values.name,
       email: values.email,
@@ -60,17 +61,23 @@ export default function AdminClubCreateEdit({
     };
 
     loader.showLoader();
-    const createClubResponse = await clubHook.createClub(clubData);
+    var createClubResponse;
+    if (club) {
+      clubData.id = club.id;
+      createClubResponse = await clubHook.updateClub(clubData);
+    } else {
+      createClubResponse = await clubHook.createClub(clubData);
+    }
     loader.closeLoader();
 
     if (createClubResponse.error) {
       notificationPanel.showPanel(createClubResponse.error);
     } else {
       formikHelpers.resetForm();
-      successAlertPanel.showPanel(
-        `Club ${createClubResponse.data.name} created successfully`
-      );
-      // handleClubCreate();
+      const msgText = club
+        ? `Club ${createClubResponse.data.name} updated successfully`
+        : `Club ${createClubResponse.data.name} created successfully`;
+      successAlertPanel.showPanel(msgText);
     }
   };
 
@@ -81,6 +88,7 @@ export default function AdminClubCreateEdit({
   });
 
   useEffect(() => {
+    notificationPanel.closePanel();
     if (club) {
       formik.setValues({
         name: club.name,
@@ -167,9 +175,6 @@ export default function AdminClubCreateEdit({
               onBlur={formik.handleBlur}
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
-              // helperText={
-              //   Boolean(formik.touched.province) && formik.errors.province
-              // }
             >
               {[
                 "Eastern Cape",
