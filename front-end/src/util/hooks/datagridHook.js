@@ -19,8 +19,8 @@ export const useDataGrid = () => {
   const updatePageState = (newRows) => {
     setPageState((old) => ({
       ...old,
-      data: newRows.data,
-      total: newRows.count,
+      data: newRows.data ?? [],
+      total: newRows.count ?? 0,
     }));
   };
 

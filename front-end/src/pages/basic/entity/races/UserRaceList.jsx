@@ -1,21 +1,14 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
+import { Grid, Paper } from "@mui/material";
+import { useEffect } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
-import { useLoader } from "../../../../util/hooks/loaderHook";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useResult } from "../../../../util/hooks/resultsHook";
 
 export default function UserRaceList() {
-  const [pageState, setPageState] = useState({
-    total: 0,
-    data: [],
-    isLoading: false,
-  });
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 8,
-  });
-  const loader = useLoader();
+  const authHook = useAuth();
+  const loggedInUser = authHook.localStorageValue;
+  const raceHook = useResult();
+  const dataGrid = useDataGrid();
 
   const columns = [
     {
@@ -61,72 +54,42 @@ export default function UserRaceList() {
     },
   ];
 
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
-
-  const raceHook = useResult();
   useEffect(() => {
     (async () => {
-      loader.showLoader();
-      setPageState((old) => ({ ...old, isLoading: true }));
+      dataGrid.showLoader();
 
-      const newRows = await raceHook.fetchRacesList(
+      const raceResponse = await raceHook.fetchRacesList(
         {
-          page: paginationModel.page,
-          size: paginationModel.pageSize,
+          page: dataGrid.getPageNumber(),
+          size: dataGrid.getPageSize(),
         },
         loggedInUser.id
       );
-      setPageState((old) => ({
-        ...old,
-        isLoading: false,
-        data: newRows.data,
-        total: newRows.count,
-      }));
-      loader.closeLoader();
+      console.log(raceResponse);
+      dataGrid.updatePageState(raceResponse.data);
+      dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize()]);
 
   return (
     <>
-      <loader.LoadingPanel />
-
-      <Grid item xs={12} sx={{ mt: 2 }}>
+      <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
         <Paper
-          elevation={10}
+          elevation={3}
           square={false}
           sx={{
             p: 2,
             display: "flex",
             flexDirection: "column",
             height: "83vh",
-            borderRadius: "20px",
           }}
         >
-          <DataGrid
-            sx={{
-              "& .super-app-theme--header": {
-                backgroundColor: "#1C4E80",
-                color: "white",
-              },
-            }}
-            rows={pageState.data}
+          <dataGrid.DataGridPanel
             columns={columns}
-            rowCount={pageState.total}
-            disableRowSelectionOnClick
-            paginationMode="server"
-            paginationModel={paginationModel}
-            pageSizeOptions={[8]}
-            keepNonExistentRowsSelected
-            getRowId={(row) => row.raceId}
-            onPaginationModelChange={setPaginationModel}
-            pagination
-            localeText={{
-              noRowsLabel:
-                "You haven't participated in any race(s) yet. Get active",
-            }}
-            rowHeight={43}
+            emptyText={
+              "You haven't participated in any race(s) yet. Get active"
+            }
           />
         </Paper>
       </Grid>
