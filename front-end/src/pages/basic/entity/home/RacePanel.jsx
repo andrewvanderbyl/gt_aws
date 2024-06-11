@@ -38,7 +38,7 @@ export default function RacePanel() {
   }, []);
 
   function conditionalRender() {
-    if (races.length === 0) {
+    if (races.data.length === 0) {
       return (
         <React.Fragment key={1}>
           <ListItem alignItems="flex-start" key={1}>

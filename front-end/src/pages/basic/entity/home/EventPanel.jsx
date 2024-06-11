@@ -37,7 +37,7 @@ export default function EventPanel() {
   }, []);
 
   function conditionalRender() {
-    if (events.length === 0) {
+    if (events.data.length === 0) {
       return (
         <ListItem alignItems="flex-start">
           <ListItemAvatar>
