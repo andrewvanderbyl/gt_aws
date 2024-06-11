@@ -146,7 +146,11 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       </Grid>
       <sliderPanel.SliderPanel
         panelContent={
-          <ViewEvent handleCancel={handleSlidePanelClose} event={event} />
+          <ViewEvent
+            handleCancel={handleSlidePanelClose}
+            event={event}
+            showSubscribe={true}
+          />
         }
       />
     </>

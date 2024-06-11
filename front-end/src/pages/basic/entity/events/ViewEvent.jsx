@@ -17,7 +17,7 @@ import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import useStyles from "../../../../util/hooks/useStyles";
 
-export default function ViewEvent({ handleCancel, event }) {
+export default function ViewEvent({ handleCancel, event, showSubscribe }) {
   const classes = useStyles();
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
@@ -88,13 +88,15 @@ export default function ViewEvent({ handleCancel, event }) {
           <Button startIcon={<CancelIcon />} onClick={handleCancel}>
             Close
           </Button>
-          <Button
-            sx={{ marginLeft: 5 }}
-            startIcon={<AssignmentTurnedInIcon />}
-            onClick={handleSubscribeClick}
-          >
-            Subscribe
-          </Button>
+          {showSubscribe ? (
+            <Button
+              sx={{ marginLeft: 5 }}
+              startIcon={<AssignmentTurnedInIcon />}
+              onClick={handleSubscribeClick}
+            >
+              Subscribe
+            </Button>
+          ) : null}
         </ButtonGroup>
       </Stack>
     </>
