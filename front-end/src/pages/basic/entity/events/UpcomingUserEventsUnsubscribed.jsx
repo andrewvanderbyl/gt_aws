@@ -1,6 +1,14 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
@@ -19,6 +27,49 @@ export default function UpcomingUserEventsUnsubscribed(props) {
 
   const columns = [
     {
+      field: "id",
+      disableColumnMenu: true,
+      width: 80,
+      headerName: "",
+      headerAlign: "center",
+      align: "center",
+      sortable: false,
+      filterable: false,
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        const handleClick = (event) => {
+          setEvent(params.row);
+          sliderPanel.openPanel();
+        };
+
+        const handleSubscribeClick = async (event) => {
+          await eventHook.subscribeUserToEvent(params.row.id, userData.id);
+          setRefresh(new Date());
+        };
+
+        return (
+          <ButtonGroup
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 0.5 }}
+          >
+            <Tooltip title="View Event and Subscribe" placement="right-start">
+              <Button onClick={handleClick}>
+                <AssignmentIcon />
+              </Button>
+            </Tooltip>
+            {/* <Button
+              variant="outlined"
+              startIcon={<AssignmentTurnedInIcon />}
+              onClick={handleSubscribeClick}
+            ></Button> */}
+          </ButtonGroup>
+        );
+      },
+    },
+    {
       field: "name",
       headerName: "NAME",
       headerAlign: "center",
@@ -33,45 +84,13 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       align: "center",
       headerClassName: "super-app-theme--header",
       flex: 1,
-    },
-    {
-      field: "id",
-      width: 300,
-      headerName: "ACTIONS",
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      disableClickEventBubbling: true,
-      // flex: 1,
       renderCell: (params) => {
-        const handleClick = (event) => {
-          setEvent(params.row);
-          sliderPanel.openPanel();
-        };
+        const d = new Date(Date.parse(params.row.date));
 
-        const handleSubscribeClick = async (event) => {
-          await eventHook.subscribeUserToEvent(params.row.id, userData.id);
-          setRefresh(new Date());
-        };
-
-        return (
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<AssignmentIcon />}
-              onClick={handleClick}
-            >
-              View
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<AssignmentTurnedInIcon />}
-              onClick={handleSubscribeClick}
-            >
-              Subscribe
-            </Button>
-          </Stack>
-        );
+        return d.toLocaleString("en-ZA", {
+          dateStyle: "full",
+          timeStyle: "short",
+        });
       },
     },
   ];
@@ -87,7 +106,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
         },
         props.userId
       );
-      dataGrid.updatePageState(newRows);
+      dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

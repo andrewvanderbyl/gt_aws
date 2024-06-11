@@ -1,21 +1,65 @@
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Grid,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
 
-export default function FutureEventList({ forceRefresh }) {
+export default function AdminEventList({
+  forceRefresh,
+  eventDataType,
+  headerText,
+}) {
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
   const dataGrid = useDataGrid();
 
   const columns = [
     {
+      field: "id",
+      disableColumnMenu: true,
+      width: 80,
+      headerName: "",
+      headerAlign: "center",
+      align: "center",
+      sortable: false,
+      filterable: false,
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        const handleClick = (event) => {
+          setEvent(params.row);
+          sliderPanel.openPanel();
+        };
+
+        return (
+          <ButtonGroup
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 0.5 }}
+          >
+            <Tooltip title="View/Edit Event" placement="right-start">
+              <Button onClick={handleClick}>
+                <ModeEditIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        );
+      },
+    },
+    {
       field: "name",
       headerName: "NAME",
-      // width: 250,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -24,38 +68,17 @@ export default function FutureEventList({ forceRefresh }) {
     {
       field: "date",
       headerName: "DATE",
-      // width: 185,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
       flex: 1,
-    },
-    {
-      field: "id",
-      width: 300,
-      headerName: "ACTIONS",
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      disableClickEventBubbling: true,
-      // flex: 1,
       renderCell: (params) => {
-        const handleClick = (event) => {
-          setEvent(params.row);
-          sliderPanel.openPanel();
-        };
+        const d = new Date(Date.parse(params.row.date));
 
-        return (
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<AssignmentIcon />}
-              onClick={handleClick}
-            >
-              View
-            </Button>
-          </Stack>
-        );
+        return d.toLocaleString("en-ZA", {
+          dateStyle: "full",
+          timeStyle: "short",
+        });
       },
     },
   ];
@@ -66,15 +89,20 @@ export default function FutureEventList({ forceRefresh }) {
       dataGrid.showLoader();
 
       const newRows = await eventHook.fetchEventList({
-        eventType: "future",
+        eventType: eventDataType,
         page: dataGrid.getPageNumber(),
         size: dataGrid.getPageSize(),
       });
-      dataGrid.updatePageState(newRows);
+      dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh]);
+  }, [
+    dataGrid.getPageNumber(),
+    dataGrid.getPageSize(),
+    forceRefresh,
+    eventDataType,
+  ]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -83,7 +111,7 @@ export default function FutureEventList({ forceRefresh }) {
 
   return (
     <>
-      <Grid item xs={12} sx={{ mt: 2 }}>
+      <Grid item xs={12} sx={{ mt: 2, mb: 2 }}>
         <Paper
           elevation={3}
           square={false}
@@ -94,7 +122,7 @@ export default function FutureEventList({ forceRefresh }) {
             height: "83vh",
           }}
         >
-          <Typography variant="h6">FUTURE EVENTS:</Typography>
+          <Typography variant="h6">{headerText} :</Typography>
           <Divider
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />

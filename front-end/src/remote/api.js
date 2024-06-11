@@ -42,11 +42,16 @@ export const api = {
     return await axios
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
-        return response.data;
+        return {
+          status: 200,
+          data: response.data,
+        };
       })
       .catch((error) => {
-        console.log(error);
+        return {
+          status: error.response.status,
+          error: error.response.data,
+        };
       });
   },
   put: async (endpoint, body, userId = null) => {

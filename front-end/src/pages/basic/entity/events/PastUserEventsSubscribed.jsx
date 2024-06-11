@@ -1,5 +1,14 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { Button, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Grid,
+  Paper,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
@@ -12,6 +21,39 @@ export default function PastUserEventsSubscribed(props) {
   const datagrid = useDataGrid();
 
   const columns = [
+    {
+      field: "id",
+      disableColumnMenu: true,
+      width: 80,
+      headerName: "",
+      headerAlign: "center",
+      align: "center",
+      sortable: false,
+      filterable: false,
+      headerClassName: "super-app-theme--header",
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        const handleClick = (event) => {
+          setEvent(params.row);
+          sliderPanel.openPanel();
+        };
+
+        return (
+          <ButtonGroup
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 0.5 }}
+          >
+            <Tooltip title="View Event" placement="right-start">
+              <Button onClick={handleClick}>
+                <AssignmentIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+        );
+      },
+    },
     {
       field: "name",
       headerName: "NAME",
@@ -27,33 +69,13 @@ export default function PastUserEventsSubscribed(props) {
       align: "center",
       headerClassName: "super-app-theme--header",
       flex: 1,
-    },
-    {
-      field: "id",
-      width: 300,
-      headerName: "ACTIONS",
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      disableClickEventBubbling: true,
-      // flex: 1,
       renderCell: (params) => {
-        const handleClick = (event) => {
-          setEvent(params.row);
-          sliderPanel.openPanel();
-        };
+        const d = new Date(Date.parse(params.row.date));
 
-        return (
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<AssignmentIcon />}
-              onClick={handleClick}
-            >
-              View
-            </Button>
-          </Stack>
-        );
+        return d.toLocaleString("en-ZA", {
+          dateStyle: "full",
+          timeStyle: "short",
+        });
       },
     },
   ];
@@ -72,7 +94,7 @@ export default function PastUserEventsSubscribed(props) {
         },
         props.userId
       );
-      datagrid.updatePageState(newRows);
+      datagrid.updatePageState(newRows.data);
       datagrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

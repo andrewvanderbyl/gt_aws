@@ -61,7 +61,7 @@ export default function EventPanel() {
         </ListItem>
       );
     }
-    const eventPanels = events.map((event) => {
+    const eventPanels = events.data.map((event) => {
       return (
         <React.Fragment key={event.id}>
           <ListItem alignItems="flex-start" key={event.id}>

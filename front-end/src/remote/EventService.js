@@ -20,9 +20,7 @@ export default {
         process.env.REACT_APP_EVENT_LIST + "/" + props.eventType,
         props
       )
-      .then((data) => {
-        return data;
-      });
+      .then((data) => data);
   },
   fetchUserEvents: async (type, props, userId) => {
     return await api

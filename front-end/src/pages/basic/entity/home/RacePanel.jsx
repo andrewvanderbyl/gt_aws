@@ -64,7 +64,7 @@ export default function RacePanel() {
         </React.Fragment>
       );
     }
-    const eventPanels = races.map((race) => {
+    const eventPanels = races.data.map((race) => {
       const raceName = `${race.name} (${race.details})`;
       const detail = `Position: ${race.position}, Timing: ${race.timing}`;
       return (

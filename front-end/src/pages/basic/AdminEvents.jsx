@@ -4,18 +4,23 @@ import { useState } from "react";
 import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
 import ContentPanel from "../layout/ContentPanel";
 import AdminEventCreate from "./entity/events/AdminEventCreate";
-import FutureEventList from "./entity/events/FutureEventList";
-import PastEventList from "./entity/events/PastEventList";
+import AdminEventList from "./entity/events/AdminEventList";
 
 export default function AdminEvents() {
-  const [contentComponent, setContentComponent] = useState(<FutureEventList />);
+  const [contentComponent, setContentComponent] = useState(
+    <AdminEventList eventDataType={"future"} headerText={"Future Events"} />
+  );
   const slidePanel = useSliderPanel();
 
   const handleViewFutureEventsClick = (event) => {
-    setContentComponent(<FutureEventList />);
+    setContentComponent(
+      <AdminEventList eventDataType={"future"} headerText={"Future Events"} />
+    );
   };
   const handleViewPastEventsClick = (event) => {
-    setContentComponent(<PastEventList />);
+    setContentComponent(
+      <AdminEventList eventDataType={"past"} headerText={"Past Events"} />
+    );
   };
   const handleViewCreateEventClick = (event) => {
     event.preventDefault();
@@ -29,7 +34,13 @@ export default function AdminEvents() {
 
   const handleEventCreatedEvent = () => {
     slidePanel.closePanel();
-    setContentComponent(<FutureEventList forceRefresh={new Date()} />);
+    setContentComponent(
+      <AdminEventList
+        eventDataType={"future"}
+        headerText={"Future Events"}
+        forceRefresh={new Date()}
+      />
+    );
   };
 
   return (
