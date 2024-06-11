@@ -20,7 +20,7 @@ export default function RacePanel() {
   const userData = authUserContext.localStorageValue;
   const raceHook = useResult();
 
-  const [races, setRaces] = useState([]);
+  const [races, setRaces] = useState({ data: [] });
 
   useEffect(() => {
     (async () => {

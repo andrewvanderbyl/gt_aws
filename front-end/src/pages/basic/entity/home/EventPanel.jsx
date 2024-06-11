@@ -18,7 +18,7 @@ export default function EventPanel() {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const eventHook = useEvent();
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState({ data: [] });
 
   useEffect(() => {
     (async () => {
