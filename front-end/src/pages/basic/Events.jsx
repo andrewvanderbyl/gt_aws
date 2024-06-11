@@ -33,7 +33,7 @@ export default function Events() {
       entityHeaderText="Events"
       entityButtonPanel={[
         {
-          text: "Upcoming",
+          text: "New",
           icon: <ViewListIcon />,
           clickHandler: handleViewUnsubscribedUpcomingUserEventsClick,
         },

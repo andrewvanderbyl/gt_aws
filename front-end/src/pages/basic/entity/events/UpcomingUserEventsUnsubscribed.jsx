@@ -131,7 +131,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
             borderRadius: "20px",
           }}
         >
-          <Typography variant="h6">UPCOMING EVENTS:</Typography>
+          <Typography variant="h6">NEW EVENTS:</Typography>
           <Divider
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
