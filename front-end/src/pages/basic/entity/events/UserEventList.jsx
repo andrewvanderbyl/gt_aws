@@ -5,25 +5,43 @@ import {
   Divider,
   Grid,
   Paper,
-  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
 
-export default function UpcomingUserEventsUnsubscribed(props) {
-  const [refresh, setRefresh] = useState();
+export default function UserEventList(props) {
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
-  const eventHook = useEvent();
   const dataGrid = useDataGrid();
+
+  const eventType = props.eventType;
+  var gridTitle;
+  var emptyText;
+  var buttonToolTip;
+  switch (eventType) {
+    case "SUBSCRIBED":
+      gridTitle = "Subscribed Events";
+      buttonToolTip = "View Event";
+      emptyText =
+        "No upcoming subscribed event(s) currently exist. Please subscribe to  'New' event to participate.";
+      break;
+    case "PAST":
+      gridTitle = "Past Events";
+      buttonToolTip = "View Event";
+      emptyText = "No past subscribed event(s) exist.";
+      break;
+    case "UPCOMING":
+      gridTitle = "New Events";
+      buttonToolTip = "View Event and Subscribe";
+      emptyText =
+        "No new upcoming event(s) currently exist. Please check again later for new event(s)";
+      break;
+  }
 
   const columns = [
     {
@@ -43,11 +61,6 @@ export default function UpcomingUserEventsUnsubscribed(props) {
           sliderPanel.openPanel();
         };
 
-        const handleSubscribeClick = async (event) => {
-          await eventHook.subscribeUserToEvent(params.row.id, userData.id);
-          setRefresh(new Date());
-        };
-
         return (
           <ButtonGroup
             size="small"
@@ -55,16 +68,11 @@ export default function UpcomingUserEventsUnsubscribed(props) {
             color="primary"
             sx={{ mt: 0.5 }}
           >
-            <Tooltip title="View Event and Subscribe" placement="right-start">
+            <Tooltip title={buttonToolTip} placement="right-start">
               <Button onClick={handleClick}>
                 <AssignmentIcon />
               </Button>
             </Tooltip>
-            {/* <Button
-              variant="outlined"
-              startIcon={<AssignmentTurnedInIcon />}
-              onClick={handleSubscribeClick}
-            ></Button> */}
           </ButtonGroup>
         );
       },
@@ -94,13 +102,15 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       },
     },
   ];
+  const eventHook = useEvent();
 
   useEffect(() => {
     (async () => {
       dataGrid.showLoader();
       const newRows = await eventHook.fetchUserEvents(
-        "UPCOMING",
+        props.eventType,
         {
+          eventType: "future",
           page: dataGrid.getPageNumber(),
           size: dataGrid.getPageSize(),
         },
@@ -110,7 +120,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), refresh]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), props.eventType]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
@@ -131,17 +141,12 @@ export default function UpcomingUserEventsUnsubscribed(props) {
             borderRadius: "20px",
           }}
         >
-          <Typography variant="h6">NEW EVENTS:</Typography>
+          <Typography variant="h6">{gridTitle}</Typography>
           <Divider
             sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
           />
 
-          <dataGrid.DataGridPanel
-            columns={columns}
-            emptyText={
-              "No new upcoming event(s) currently exist. Please check again later for new event(s)"
-            }
-          />
+          <dataGrid.DataGridPanel columns={columns} emptyText={emptyText} />
         </Paper>
       </Grid>
       <sliderPanel.SliderPanel
@@ -149,7 +154,7 @@ export default function UpcomingUserEventsUnsubscribed(props) {
           <ViewEvent
             handleCancel={handleSlidePanelClose}
             event={event}
-            showSubscribe={true}
+            showSubscribe={props.eventType === "UPCOMING"}
           />
         }
       />

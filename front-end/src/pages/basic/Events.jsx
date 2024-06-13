@@ -1,31 +1,33 @@
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useState } from "react";
-import ContentPanel from "../layout/ContentPanel";
-import PastUserEventsSubscribed from "./entity/events/PastUserEventsSubscribed";
-import UpcomingUserEventsSubscribed from "./entity/events/UpcomingUserEventsSubscribed";
-import UpcomingUserEventsUnsubscribed from "./entity/events/UpcomingUserEventsUnsubscribed";
 import { useAuth } from "../../util/context/AuthUserContext";
+import ContentPanel from "../layout/ContentPanel";
+import UserEventList from "./entity/events/UserEventList";
 
 export default function Events() {
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
 
   const [contentComponent, setContentComponent] = useState(
-    <UpcomingUserEventsUnsubscribed userId={userData.id} />
+    <UserEventList userId={userData.id} eventType={"UPCOMING"} />
   );
 
   const handleViewUnsubscribedUpcomingUserEventsClick = (event) => {
     setContentComponent(
-      <UpcomingUserEventsUnsubscribed userId={userData.id} />
+      <UserEventList userId={userData.id} eventType={"UPCOMING"} />
     );
   };
 
   const handleViewSubscribedUpcomingUserEventsClick = (event) => {
-    setContentComponent(<UpcomingUserEventsSubscribed userId={userData.id} />);
+    setContentComponent(
+      <UserEventList userId={userData.id} eventType={"SUBSCRIBED"} />
+    );
   };
 
   const handleViewSubscribedPastUserEventsClick = (event) => {
-    setContentComponent(<PastUserEventsSubscribed userId={userData.id} />);
+    setContentComponent(
+      <UserEventList userId={userData.id} eventType={"PAST"} />
+    );
   };
 
   return (
