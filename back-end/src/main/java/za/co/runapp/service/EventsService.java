@@ -107,7 +107,7 @@ public class EventsService {
             case UPCOMING ->
                     userEventRepository.findUnsubscribedUpcomingEventsForUser(user, LocalDateTime.now(), pageRequest);
             case SUBSCRIBED ->
-                    userEventRepository.findSubscribedUpcomingEventsForUser(user, LocalDateTime.now(), pageRequest);
+                    userEventRepository.findSubscribedUpcomingEventsForUser(user, pageRequest);
             case PAST ->
                     userEventRepository.findPastSubscribedEventsForUser(user, LocalDateTime.now(), pageRequest);
         };

@@ -35,12 +35,11 @@ public interface UserEventRepository extends JpaRepository<UserEvent, String> {
 
     @Query("""
         SELECT new za.co.runapp.rest.dto.EventDto(ue.event.id, ue.event.name, ue.event.detail, ue.event.date)
-        from UserEvent ue 
+        from UserEvent ue
         where ue.user = :user
-        and ue.event.date >= :date
         ORDER BY ue.event.date DESC
     """)
-    Page<EventDto> findSubscribedUpcomingEventsForUser(User user, LocalDateTime date, Pageable pageable);
+    Page<EventDto> findSubscribedUpcomingEventsForUser(User user, Pageable pageable);
 
     @Query("""
         SELECT new za.co.runapp.rest.dto.EventDto(ue.event.id, ue.event.name, ue.event.detail, ue.event.date)

@@ -24,12 +24,6 @@ export default function Events() {
     );
   };
 
-  const handleViewSubscribedPastUserEventsClick = (event) => {
-    setContentComponent(
-      <UserEventList userId={userData.id} eventType={"PAST"} />
-    );
-  };
-
   return (
     <ContentPanel
       entityHeaderText="Events"
@@ -43,11 +37,6 @@ export default function Events() {
           text: "Subscribed",
           icon: <ViewListIcon />,
           clickHandler: handleViewSubscribedUpcomingUserEventsClick,
-        },
-        {
-          text: "Past",
-          icon: <ViewListIcon />,
-          clickHandler: handleViewSubscribedPastUserEventsClick,
         },
       ]}
       entityComponent={contentComponent}

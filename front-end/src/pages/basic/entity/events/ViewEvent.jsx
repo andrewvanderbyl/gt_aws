@@ -16,19 +16,32 @@ import dayjs from "dayjs";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import useStyles from "../../../../util/hooks/useStyles";
+import { useLoader } from "../../../../util/hooks/loaderHook";
+import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 
-export default function ViewEvent({ handleCancel, event, showSubscribe }) {
+export default function ViewEvent({
+  handleCancel,
+  event,
+  showSubscribe,
+  handleEventSubscribed,
+}) {
   const classes = useStyles();
   const authUserContext = useAuth();
   const userData = authUserContext.localStorageValue;
   const eventHook = useEvent();
+  const loader = useLoader();
+  const successAlertPanel = useSuccessAlert(handleEventSubscribed);
 
   const handleSubscribeClick = async (e) => {
+    loader.showLoader();
     await eventHook.subscribeUserToEvent(event.id, userData.id);
+    loader.closeLoader();
+    successAlertPanel.showPanel("Subscribed successfully to event");
   };
 
   return (
     <>
+      <loader.LoadingPanel />
       <Stack
         sx={{
           mt: 2,
@@ -98,6 +111,7 @@ export default function ViewEvent({ handleCancel, event, showSubscribe }) {
             </Button>
           ) : null}
         </ButtonGroup>
+        <successAlertPanel.SuccessPanel />
       </Stack>
     </>
   );

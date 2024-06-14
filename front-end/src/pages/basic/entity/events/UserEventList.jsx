@@ -1,10 +1,13 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 import {
   Button,
   ButtonGroup,
   Divider,
   Grid,
   Paper,
+  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -18,6 +21,7 @@ export default function UserEventList(props) {
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
   const dataGrid = useDataGrid();
+  const [refresh, setRefresh] = useState(false);
 
   const eventType = props.eventType;
   var gridTitle;
@@ -29,11 +33,6 @@ export default function UserEventList(props) {
       buttonToolTip = "View Event";
       emptyText =
         "No upcoming subscribed event(s) currently exist. Please subscribe to  'New' event to participate.";
-      break;
-    case "PAST":
-      gridTitle = "Past Events";
-      buttonToolTip = "View Event";
-      emptyText = "No past subscribed event(s) exist.";
       break;
     case "UPCOMING":
       gridTitle = "New Events";
@@ -81,24 +80,61 @@ export default function UserEventList(props) {
       field: "name",
       headerName: "NAME",
       headerAlign: "center",
-      align: "center",
+      align: "left",
       headerClassName: "super-app-theme--header",
       flex: 1,
+      renderCell: (params) => {
+        const d = new Date(Date.parse(params.row.date));
+
+        const eventDate = d.toLocaleString("en-ZA", {
+          dateStyle: "full",
+          timeStyle: "short",
+        });
+
+        return `${params.row.name} (${eventDate})`;
+      },
     },
     {
-      field: "date",
-      headerName: "DATE",
+      field: "status",
+      headerName: "STATUS",
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
       flex: 1,
       renderCell: (params) => {
         const d = new Date(Date.parse(params.row.date));
+        const secondDate = new Date();
 
-        return d.toLocaleString("en-ZA", {
-          dateStyle: "full",
-          timeStyle: "short",
-        });
+        const start = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+        const end = Date.UTC(
+          secondDate.getFullYear(),
+          secondDate.getMonth(),
+          secondDate.getDate()
+        );
+
+        // so it's safe to divide by 24 hours
+        const daysDiff = (start - end) / (1000 * 60 * 60 * 24);
+        if (daysDiff < 0) {
+          return (
+            <Stack direction="row" alignItems="center" gap={1}>
+              <HourglassBottomIcon
+                sx={{ fontSize: 35, marginTop: 0.5 }}
+                color="error"
+              />
+              <Typography variant="h7">Expired</Typography>
+            </Stack>
+          );
+        } else {
+          return (
+            <Stack direction="row" alignItems="center" gap={1}>
+              <HourglassTopIcon
+                sx={{ fontSize: 35, marginTop: 0.5 }}
+                color="success"
+              />
+              <Typography variant="h7">Starring in {daysDiff} days</Typography>
+            </Stack>
+          );
+        }
       },
     },
   ];
@@ -120,11 +156,23 @@ export default function UserEventList(props) {
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), props.eventType]);
+  }, [
+    dataGrid.getPageNumber(),
+    dataGrid.getPageSize(),
+    props.eventType,
+    refresh,
+  ]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
     sliderPanel.closePanel();
+  };
+
+  const handleEventSubscribed = () => {
+    if (eventType === "UPCOMING") {
+      sliderPanel.closePanel();
+      setRefresh(Date.now());
+    }
   };
 
   return (
@@ -155,6 +203,7 @@ export default function UserEventList(props) {
             handleCancel={handleSlidePanelClose}
             event={event}
             showSubscribe={props.eventType === "UPCOMING"}
+            handleEventSubscribed={handleEventSubscribed}
           />
         }
       />
