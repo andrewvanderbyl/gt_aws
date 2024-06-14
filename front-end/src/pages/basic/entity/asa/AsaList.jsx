@@ -1,6 +1,13 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MemoryIcon from "@mui/icons-material/Memory";
-import { Button, Grid, Paper, Stack } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Grid,
+  Paper,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
@@ -20,17 +27,12 @@ export default function AsaList({ forceRefresh }) {
   const loggedInUser = authHook.localStorageValue;
   const columns = [
     {
-      field: "asa",
-      headerName: "NUMBER",
-      headerAlign: "center",
-      align: "center",
-      headerClassName: "super-app-theme--header",
-      flex: 1,
-    },
-    {
       field: "id",
       headerName: "ACTIONS",
-      width: 300,
+      width: 120,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -50,24 +52,52 @@ export default function AsaList({ forceRefresh }) {
         };
 
         return (
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<AssignmentIcon />}
-              onClick={handleClick}
-            >
-              View
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<MemoryIcon />}
-              onClick={handleCreateChipEntryClick}
-            >
-              Chip Entry
-            </Button>
-          </Stack>
+          <ButtonGroup
+            size="small"
+            variant="contained"
+            color="primary"
+            sx={{ mt: 1, mb: 1 }}
+          >
+            <Tooltip title={"View ASA"} placement="right-start">
+              <Button onClick={handleClick}>
+                <AssignmentIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title={"Chip Entry"} placement="right-start">
+              <Button
+                onClick={handleCreateChipEntryClick}
+                sx={{ marginLeft: 1 }}
+              >
+                <MemoryIcon />
+              </Button>
+            </Tooltip>
+          </ButtonGroup>
+          // <Stack direction="row" spacing={2}>
+          //   <Button
+          //     variant="outlined"
+          //     startIcon={<AssignmentIcon />}
+          //     onClick={handleClick}
+          //   >
+          //     View
+          //   </Button>
+          //   <Button
+          //     variant="outlined"
+          //     startIcon={<MemoryIcon />}
+          //     onClick={handleCreateChipEntryClick}
+          //   >
+          //     Chip Entry
+          //   </Button>
+          // </Stack>
         );
       },
+    },
+    {
+      field: "asa",
+      headerName: "NUMBER",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
     },
   ];
 
@@ -82,7 +112,7 @@ export default function AsaList({ forceRefresh }) {
         },
         loggedInUser.id
       );
-      dataGrid.updatePageState(newRows);
+      dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

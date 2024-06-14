@@ -46,8 +46,8 @@ export default function UserEventList(props) {
     {
       field: "id",
       disableColumnMenu: true,
-      width: 80,
-      headerName: "",
+      width: 110,
+      headerName: "ACTIONS",
       headerAlign: "center",
       align: "center",
       sortable: false,
