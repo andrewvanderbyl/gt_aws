@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
+import ViewEvent from "../events/ViewEvent";
 
 export default function EventPanel() {
   const authUserContext = useAuth();
@@ -61,7 +62,16 @@ export default function EventPanel() {
         </ListItem>
       );
     }
+    const handleClick = (event) => {
+      window.alert("I clicked");
+    };
     const eventPanels = events.data.map((event) => {
+      const d = new Date(Date.parse(event.date));
+
+      const eventDate = d.toLocaleString("en-ZA", {
+        dateStyle: "full",
+        timeStyle: "short",
+      });
       return (
         <React.Fragment key={event.id}>
           <ListItem alignItems="flex-start" key={event.id}>
@@ -75,10 +85,10 @@ export default function EventPanel() {
                   <Typography
                     sx={{ display: "inline" }}
                     component="span"
-                    variant="body2"
+                    variant="body1"
                     color="text.primary"
                   >
-                    {event.date}
+                    {eventDate}
                   </Typography>
                   `: {event.detail.slice(0, 30)} ...`
                 </React.Fragment>

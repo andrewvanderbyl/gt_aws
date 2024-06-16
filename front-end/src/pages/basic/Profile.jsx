@@ -1,5 +1,6 @@
 import PeopleIcon from "@mui/icons-material/People";
 import ContentPanel from "../layout/ContentPanel";
+import BusinessIcon from "@mui/icons-material/Business";
 
 import { useAuth } from "../../util/context/AuthUserContext";
 import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
@@ -54,8 +55,8 @@ export default function Profile() {
             clickHandler: handleViewProfileClick,
           },
           {
-            text: "Clubs",
-            icon: <PeopleIcon />,
+            text: "Club",
+            icon: <BusinessIcon />,
             clickHandler: handleViewClubsClick,
           },
         ]}

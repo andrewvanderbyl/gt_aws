@@ -1,6 +1,5 @@
 import { Paper, Stack } from "@mui/material";
 import { useAuth } from "../../../util/context/AuthUserContext";
-import ClubPanel from "./home/ClubPanel";
 import EventPanel from "./home/EventPanel";
 import RacePanel from "./home/RacePanel";
 
@@ -23,9 +22,6 @@ export default function Home() {
         sx={{
           width: "100%",
           height: "82vh",
-          // "& .MuiInputBase-input.Mui-disabled": {
-          //   WebkitTextFillColor: "black",
-          // },
         }}
       >
         <EventPanel />
@@ -36,9 +32,6 @@ export default function Home() {
         sx={{
           width: "100%",
           height: "82vh",
-          // "& .MuiInputBase-input.Mui-disabled": {
-          //   WebkitTextFillColor: "black",
-          // },
         }}
       >
         <RacePanel />
