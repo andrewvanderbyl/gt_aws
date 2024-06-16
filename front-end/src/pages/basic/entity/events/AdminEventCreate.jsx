@@ -71,8 +71,6 @@ export default function AdminEventCreate({
         `Event ${createEventResponse.data.name} created successfully`
       );
     }
-
-    //    handleEventCreate();
   }
 
   const formik = useFormik({

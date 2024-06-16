@@ -4,5 +4,6 @@ import lombok.Builder;
 
 @Builder
 public record AsaDto(String id,
-                     String asa) {
+                     String asa,
+                     Long numTags) {
 }

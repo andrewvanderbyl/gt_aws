@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import za.co.runapp.entity.Asa;
 import za.co.runapp.entity.Tag;
 import za.co.runapp.entity.User;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.repository.AsaRepository;
 import za.co.runapp.repository.TagRepository;
 import za.co.runapp.repository.UserRepository;
@@ -26,20 +27,29 @@ public class RegistrationService {
     private final AsaRepository asaRepository;
     private final UserRepository userRepository;
 
-    public AsaDto createAsaForUser(AsaDto asaDto, String userId) {
+    public AsaDto createAsaForUser(AsaDto asaDto, String userId) throws BusinessException {
 
         User user = userRepository.getReferenceById(userId);
         Asa toSave = Asa.builder().asa(asaDto.asa()).user(user).build();
+
+        if (asaRepository.existsByAsaAndUser(asaDto.asa(), user)) {
+            throw new BusinessException("ASA already exist");
+        }
 
         Asa persistedAsa = asaRepository.saveAndFlush(toSave);
 
         return persistedAsa.toAsaDto();
     }
 
-    public TagDto createTagForUser(TagDto tagDto, String asaId, String userId) {
+    public TagDto createTagForUser(TagDto tagDto, String asaId, String userId) throws BusinessException {
 
         Asa asa = asaRepository.getReferenceById(asaId);
         Tag toSave = Tag.builder().tag(tagDto.tag()).asa(asa).build();
+
+        if (tagRepository.existsByTagAndAsa(tagDto.tag(), asa)) {
+            throw new BusinessException("Timing Chip already exist");
+        }
+
 
         Tag persistedTag = tagRepository.saveAndFlush(toSave);
         return persistedTag.toTagDto();

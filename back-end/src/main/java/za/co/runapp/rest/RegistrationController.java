@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.TagDto;
@@ -31,7 +32,7 @@ public class RegistrationController {
     @PostMapping("/asa")
     public Mono<ResponseEntity<AsaDto>> createAsa(
             @RequestBody final AsaDto asaDto,
-            @RequestHeader("userId") final String userId) {
+            @RequestHeader("userId") final String userId) throws BusinessException {
 
         AsaDto saved = registrationService.createAsaForUser(asaDto, userId);
         return Mono.just(ResponseEntity.ok(saved));
@@ -41,7 +42,7 @@ public class RegistrationController {
     public Mono<ResponseEntity<TagDto>> createTag(
             @RequestBody final TagDto tagDto,
             @PathVariable("asaId") final String asaId,
-            @RequestHeader("userId") final String userId) {
+            @RequestHeader("userId") final String userId) throws BusinessException {
 
         TagDto saved = registrationService.createTagForUser(tagDto, asaId, userId);
         return Mono.just(ResponseEntity.ok(saved));

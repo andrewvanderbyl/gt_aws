@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import za.co.runapp.entity.Asa;
 import za.co.runapp.entity.Tag;
 import za.co.runapp.entity.User;
 import za.co.runapp.rest.dto.TagDto;
@@ -13,11 +14,12 @@ import za.co.runapp.rest.dto.UserTagDto;
 public interface TagRepository extends JpaRepository<Tag, String> {
 
     @Query("""
-        SELECT new za.co.runapp.rest.dto.TagDto(t.id, t.tag) 
+        SELECT new za.co.runapp.rest.dto.TagDto(t.id, t.tag)
         FROM Tag AS t 
         JOIN t.asa AS a 
         WHERE a.id = :asaId
         AND a.user.id = :userId 
+        ORDER BY t.dateUpdated DESC
     """)
     Page<TagDto> findTagsByAsa(String asaId, String userId, Pageable pageable);
 
@@ -27,4 +29,6 @@ public interface TagRepository extends JpaRepository<Tag, String> {
         WHERE t.asa.user = :user 
     """)
     Page<UserTagDto> findTagsByUser(User user, Pageable pageable);
+
+    boolean existsByTagAndAsa(String tag, Asa asa);
 }

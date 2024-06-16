@@ -11,8 +11,10 @@ import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEffect } from "react";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useAuth } from "../../../../util/context/AuthUserContext";
+import useStyles from "../../../../util/hooks/useStyles";
 
 export default function ViewAsa({ handleCancel, asa }) {
+  const classes = useStyles();
   const dataGrid = useDataGrid();
   const asaHook = useAsa();
   const authUserContext = useAuth();
@@ -40,7 +42,7 @@ export default function ViewAsa({ handleCancel, asa }) {
           asa["id"],
           userData.id
         );
-        dataGrid.updatePageState(newRows);
+        dataGrid.updatePageState(newRows.data);
         dataGrid.closeLoader();
       })();
     }
@@ -48,20 +50,9 @@ export default function ViewAsa({ handleCancel, asa }) {
   }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), asa]);
 
   return (
-    <Stack
-      sx={{
-        mt: 2,
-        ml: 5,
-        mr: 5,
-        width: 420,
-        "& .MuiInputBase-input.Mui-disabled": {
-          WebkitTextFillColor: "black",
-        },
-      }}
-      spacing={5}
-    >
-      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
-        <Typography variant="h6" sx={{ color: "white" }}>
+    <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={3}>
+      <Toolbar className={classes.toolbar}>
+        <Typography variant="h6" className={classes.toolBarTitle}>
           {asa["asa"]}
         </Typography>
       </Toolbar>

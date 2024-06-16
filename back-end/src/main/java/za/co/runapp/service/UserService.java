@@ -11,7 +11,6 @@ import za.co.runapp.entity.User;
 import za.co.runapp.exception.BusinessException;
 import za.co.runapp.repository.AsaRepository;
 import za.co.runapp.repository.ClubRepository;
-import za.co.runapp.repository.RaceRepository;
 import za.co.runapp.repository.UserRaceRepository;
 import za.co.runapp.repository.UserRepository;
 import za.co.runapp.rest.dto.AsaDto;
@@ -32,7 +31,6 @@ public class UserService {
     private final ClubRepository clubRepository;
 
     private final UserRepository userRepository;
-    private final RaceRepository raceRepository;
     private final UserRaceRepository userRaceRepository;
 
     @Transactional
@@ -63,7 +61,7 @@ public class UserService {
 
         userRepository.upsertUser(userId, LocalDateTime.now(), LocalDateTime.now(), userDto.contact(),
                     userDto.firstName(), userDto.lastName(), userDto.password(), userDto.username());
-        
+
         return UserDto.builder()
                 .id(userId)
                 .firstName(userDto.firstName())
@@ -118,12 +116,12 @@ public class UserService {
     public PageableDto<AsaDto> getAsaForUser(String userId, int page, int size) {
         User user = userRepository.getReferenceById(userId);
 
-        Page<Asa> asa = asaRepository.findByUser(user, PageRequest.of(page, size));
+        Page<AsaDto> asa = asaRepository.findByUserOrderByDateUpdatedDesc(user, PageRequest.of(page, size));
 
-        List<AsaDto> list = asa.getContent().stream().map(Asa::toAsaDto).toList();
+//        List<AsaDto> list = asa.getContent().stream().map(Asa::toAsaDto).toList();
 
         return PageableDto.<AsaDto>builder()
-                .data(list)
+                .data(asa.getContent())
                 .totalElements(asa.getTotalElements())
                 .elementsPerPage(asa.getPageable().getPageSize())
                 .currentPageNumber(asa.getPageable().getPageNumber())

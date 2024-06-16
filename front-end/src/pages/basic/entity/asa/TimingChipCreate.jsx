@@ -12,81 +12,112 @@ import { useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
+import useStyles from "../../../../util/hooks/useStyles";
+import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useSuccessAlert } from "../../../../util/hooks/successAlert";
+import { object, string } from "yup";
+import { useFormik } from "formik";
 
 export default function TimingChipCreate({ asa, handleCancel, handleCreated }) {
   const [tag, setTag] = useState("");
+  const classes = useStyles();
+  const notificationPanel = useNotificationPanel();
+  const successAlertPanel = useSuccessAlert(handleCreated);
   const loader = useLoader();
 
   const asaHook = useAsa();
   const authHook = useAuth();
   const loggedInUser = authHook.localStorageValue;
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  const initial = {
+    tag: "",
+  };
+  const validationSchema = object({
+    tag: string().required("Timing chip is required"),
+  });
+
+  async function handleSubmit(values, formikHelpers) {
+    notificationPanel.closePanel();
 
     loader.showLoader();
-    await asaHook.createTimingForAsa({ tag }, asa["id"], loggedInUser.id);
+    const createdTimingChipResponse = await asaHook.createTimingForAsa(
+      { tag: values.tag },
+      asa["id"],
+      loggedInUser.id
+    );
     loader.closeLoader();
-    handleCreated();
+
+    if (createdTimingChipResponse.error) {
+      notificationPanel.showPanel(createdTimingChipResponse.error);
+    } else {
+      formikHelpers.resetForm();
+      successAlertPanel.showPanel(
+        `Tag ${createdTimingChipResponse.data.tag} created successfully for ASA ${asa.asa}`
+      );
+    }
   }
 
+  const formik = useFormik({
+    initialValues: initial,
+    validationSchema,
+    onSubmit: handleSubmit,
+  });
+
   return (
-    <Stack sx={{ mt: 2, ml: 5, mr: 5, width: 420 }} spacing={5}>
+    <>
       <loader.LoadingPanel />
+      <Stack sx={{ mt: 2, ml: 3, mr: 3, width: 420 }} spacing={3}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" className={classes.toolBarTitle}>
+            Create New Chip Entry
+          </Typography>
+        </Toolbar>
+        <notificationPanel.NotificationPanel />
+        <Typography variant="h7">{`ASA Number :  ${asa.asa}`}</Typography>
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            className={classes.formLabel}
+            required
+            fullWidth
+            id="tag"
+            name="tag"
+            label="Timing Chip"
+            margin="normal"
+            type="text"
+            autoFocus
+            value={formik.values.tag}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={Boolean(formik.errors.tag) && Boolean(formik.touched.tag)}
+            helperText={Boolean(formik.touched.tag) && formik.errors.tag}
+          />
 
-      <Toolbar sx={{ backgroundColor: "#1C4E80" }}>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Create New Chip Entry
-        </Typography>
-      </Toolbar>
-      <TextField
-        disabled
-        id="asa"
-        name="asa"
-        value={asa.asa}
-        fullWidth
-        helperText="Asa Number"
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-      <TextField
-        required
-        id="tag"
-        name="tag"
-        label="Chip"
-        value={tag}
-        onChange={(e) => setTag(e.target.value)}
-        fullWidth
-        helperText="Timing Chip"
-        FormHelperTextProps={{
-          style: { fontWeight: "bold", fontSize: "10pt" },
-        }}
-      />
-
-      <ButtonGroup
-        sx={{
-          display: "flex",
-          boxShadow: "0",
-          flexDirection: "row",
-          justifyContent: "center",
-          marginTop: 10,
-        }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Button startIcon={<CancelIcon />} onClick={handleCancel}>
-          Cancel
-        </Button>
-        <Button
-          type="Submit"
-          startIcon={<SaveIcon />}
-          sx={{ marginLeft: 5 }}
-          onClick={handleSubmit}
-        >
-          Save
-        </Button>
-      </ButtonGroup>
-    </Stack>
+          <ButtonGroup
+            sx={{
+              display: "flex",
+              boxShadow: "0",
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button startIcon={<CancelIcon />} onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button
+              type="Submit"
+              startIcon={<SaveIcon />}
+              sx={{ marginLeft: 5 }}
+              disabled={!formik.dirty || !formik.isValid}
+            >
+              Save
+            </Button>
+          </ButtonGroup>
+        </form>
+        <successAlertPanel.SuccessPanel />
+      </Stack>
+    </>
   );
 }

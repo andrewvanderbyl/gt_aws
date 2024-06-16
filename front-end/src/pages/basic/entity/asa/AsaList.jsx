@@ -22,6 +22,8 @@ export default function AsaList({ forceRefresh }) {
   const dataGrid = useDataGrid();
   const sliderPanel = useSliderPanel();
 
+  const [refresh, setRefresh] = useState(false);
+
   const asaHook = useAsa();
   const authHook = useAuth();
   const loggedInUser = authHook.localStorageValue;
@@ -63,7 +65,7 @@ export default function AsaList({ forceRefresh }) {
                 <AssignmentIcon />
               </Button>
             </Tooltip>
-            <Tooltip title={"Chip Entry"} placement="right-start">
+            <Tooltip title={"Create Chip Entry"} placement="right-start">
               <Button
                 onClick={handleCreateChipEntryClick}
                 sx={{ marginLeft: 1 }}
@@ -72,28 +74,20 @@ export default function AsaList({ forceRefresh }) {
               </Button>
             </Tooltip>
           </ButtonGroup>
-          // <Stack direction="row" spacing={2}>
-          //   <Button
-          //     variant="outlined"
-          //     startIcon={<AssignmentIcon />}
-          //     onClick={handleClick}
-          //   >
-          //     View
-          //   </Button>
-          //   <Button
-          //     variant="outlined"
-          //     startIcon={<MemoryIcon />}
-          //     onClick={handleCreateChipEntryClick}
-          //   >
-          //     Chip Entry
-          //   </Button>
-          // </Stack>
         );
       },
     },
     {
       field: "asa",
       headerName: "NUMBER",
+      headerAlign: "center",
+      align: "center",
+      headerClassName: "super-app-theme--header",
+      flex: 1,
+    },
+    {
+      field: "numTags",
+      headerName: "TIMING CHIPS",
       headerAlign: "center",
       align: "center",
       headerClassName: "super-app-theme--header",
@@ -116,11 +110,12 @@ export default function AsaList({ forceRefresh }) {
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh]);
+  }, [dataGrid.getPageNumber(), dataGrid.getPageSize(), forceRefresh, refresh]);
 
   const handleSlidePanelClose = (event) => {
     event.preventDefault();
     sliderPanel.closePanel();
+    setRefresh(Date.now());
   };
 
   const handleCreateChipFormCancelClick = (event) => {
@@ -130,6 +125,7 @@ export default function AsaList({ forceRefresh }) {
 
   const handleCreateChipCreatedEvent = () => {
     sliderPanel.closePanel();
+    setRefresh(Date.now());
   };
 
   return (
