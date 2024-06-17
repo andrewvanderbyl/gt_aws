@@ -1,10 +1,9 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import {
   Button,
   ButtonGroup,
-  Divider,
   Grid,
   Paper,
   Stack,
@@ -78,7 +77,7 @@ export default function UserEventList(props) {
     },
     {
       field: "name",
-      headerName: "NAME",
+      headerName: gridTitle,
       headerAlign: "center",
       align: "left",
       headerClassName: "super-app-theme--header",
@@ -189,11 +188,6 @@ export default function UserEventList(props) {
             borderRadius: "20px",
           }}
         >
-          <Typography variant="h6">{gridTitle}</Typography>
-          <Divider
-            sx={{ mt: 2, mb: 2, borderColor: "black", borderWidth: 2 }}
-          />
-
           <dataGrid.DataGridPanel columns={columns} emptyText={emptyText} />
         </Paper>
       </Grid>

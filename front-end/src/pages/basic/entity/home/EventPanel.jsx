@@ -13,7 +13,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
-import ViewEvent from "../events/ViewEvent";
 
 export default function EventPanel() {
   const authUserContext = useAuth();
@@ -62,9 +61,7 @@ export default function EventPanel() {
         </ListItem>
       );
     }
-    const handleClick = (event) => {
-      window.alert("I clicked");
-    };
+
     const eventPanels = events.data.map((event) => {
       const d = new Date(Date.parse(event.date));
 

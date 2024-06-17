@@ -1,5 +1,6 @@
 import { api } from "./api";
 
+// eslint-disable-next-line
 export default {
   createEvent: async (props) => {
     const payload = {

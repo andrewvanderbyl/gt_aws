@@ -2,7 +2,6 @@ import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { useState } from "react";
 import { useLoader } from "./loaderHook";
 import useStyles from "./useStyles";
-import { alpha } from "@mui/material";
 
 export const useDataGrid = () => {
   const [pageState, setPageState] = useState({
