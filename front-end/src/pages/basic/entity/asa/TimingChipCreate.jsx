@@ -8,26 +8,24 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useFormik } from "formik";
+import { object, string } from "yup";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
-import useStyles from "../../../../util/hooks/useStyles";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
-import { object, string } from "yup";
-import { useFormik } from "formik";
+import useStyles from "../../../../util/hooks/useStyles";
 
 export default function TimingChipCreate({ asa, handleCancel, handleCreated }) {
-  const [tag, setTag] = useState("");
+  // const [tag, setTag] = useState("");
   const classes = useStyles();
   const notificationPanel = useNotificationPanel();
   const successAlertPanel = useSuccessAlert(handleCreated);
   const loader = useLoader();
 
   const asaHook = useAsa();
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
+  const sessionStorage = useSessionStorage();
 
   const initial = {
     tag: "",
@@ -43,7 +41,7 @@ export default function TimingChipCreate({ asa, handleCancel, handleCreated }) {
     const createdTimingChipResponse = await asaHook.createTimingForAsa(
       { tag: values.tag },
       asa["id"],
-      loggedInUser.id
+      sessionStorage.sessionStorageValue
     );
     loader.closeLoader();
 

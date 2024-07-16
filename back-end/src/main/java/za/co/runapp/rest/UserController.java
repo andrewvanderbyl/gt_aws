@@ -3,6 +3,8 @@ package za.co.runapp.rest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +20,11 @@ import za.co.runapp.exception.BusinessException;
 import za.co.runapp.rest.dto.AsaDto;
 import za.co.runapp.rest.dto.ClubDto;
 import za.co.runapp.rest.dto.EventDto;
+import za.co.runapp.rest.dto.LoginResponse;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.rest.dto.UserDto;
 import za.co.runapp.rest.dto.UserRaceDto;
 import za.co.runapp.rest.dto.UserTagDto;
-import za.co.runapp.service.ClubService;
 import za.co.runapp.service.EventsService;
 import za.co.runapp.service.RegistrationService;
 import za.co.runapp.service.UserService;
@@ -36,7 +38,6 @@ public class UserController {
 
     private final UserService userService;
     private final EventsService eventsService;
-    private final ClubService clubService;
     private final RegistrationService registrationService;
 
     @PostMapping
@@ -46,8 +47,8 @@ public class UserController {
 
         log.info("Received {}", userDto);
 
-        UserDto user = userService.createUser(userDto);
-        return Mono.just(ResponseEntity.ok(user));
+        String jwtToken = userService.createUser(userDto);
+        return Mono.just(ResponseEntity.ok(new LoginResponse(jwtToken)));
     }
 
     @PutMapping
@@ -84,32 +85,35 @@ public class UserController {
     }
 
     @GetMapping("/clubs")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<ClubDto>>> getClubsForUser(
             @RequestParam("page") final int page,
             @RequestParam("size") final int size,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
-        PageableDto<ClubDto> clubs = userService.getClubsForUser(userId, page, size);
+        PageableDto<ClubDto> clubs = userService.getClubsForUser((String) authentication.getPrincipal(), page, size);
         return Mono.just(ResponseEntity.ok(clubs));
     }
 
     @GetMapping("/races")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<UserRaceDto>>> getRacesForUser(
             @RequestParam("page") final int page,
             @RequestParam("size") final int size,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
-        PageableDto<UserRaceDto> userRaces = userService.getRacesForUser(userId, page, size);
+        PageableDto<UserRaceDto> userRaces = userService.getRacesForUser((String) authentication.getPrincipal(), page, size);
         return Mono.just(ResponseEntity.ok(userRaces));
     }
 
     @GetMapping("/asas")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<AsaDto>>> getAsaForUser(
             @RequestParam("page") final int page,
             @RequestParam("size") final int size,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
-        PageableDto<AsaDto> userAsas = userService.getAsaForUser(userId, page, size);
+        PageableDto<AsaDto> userAsas = userService.getAsaForUser((String) authentication.getPrincipal(), page, size);
         return Mono.just(ResponseEntity.ok(userAsas));
     }
 

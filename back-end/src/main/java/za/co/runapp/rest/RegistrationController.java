@@ -3,6 +3,8 @@ package za.co.runapp.rest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,32 +32,35 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping("/asa")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<AsaDto>> createAsa(
             @RequestBody final AsaDto asaDto,
-            @RequestHeader("userId") final String userId) throws BusinessException {
+            final Authentication authentication) throws BusinessException {
 
-        AsaDto saved = registrationService.createAsaForUser(asaDto, userId);
+        AsaDto saved = registrationService.createAsaForUser(asaDto, (String) authentication.getPrincipal());
         return Mono.just(ResponseEntity.ok(saved));
     }
 
     @PostMapping("/asa/{asaId}/tags")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<TagDto>> createTag(
             @RequestBody final TagDto tagDto,
             @PathVariable("asaId") final String asaId,
-            @RequestHeader("userId") final String userId) throws BusinessException {
+            final Authentication authentication) throws BusinessException {
 
-        TagDto saved = registrationService.createTagForUser(tagDto, asaId, userId);
+        TagDto saved = registrationService.createTagForUser(tagDto, asaId, (String) authentication.getPrincipal());
         return Mono.just(ResponseEntity.ok(saved));
     }
 
     @GetMapping("/asa/{asaId}/tags")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<TagDto>>> getTagsForAsa(
             @RequestParam("page") final int page,
             @RequestParam("size") final int size,
             @PathVariable("asaId") final String asaId,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) throws BusinessException {
 
-        PageableDto<TagDto> tags = registrationService.fetchTagsForAsa(asaId, userId, page, size);
+        PageableDto<TagDto> tags = registrationService.fetchTagsForAsa(asaId, (String) authentication.getPrincipal(), page, size);
         return Mono.just(ResponseEntity.ok(tags));
     }
 

@@ -55,4 +55,6 @@ public interface ClubRepository extends JpaRepository<Club, String> {
                     String email, String contact, String province, String country);
 
     boolean existsByName(String name);
+
+    //boolean existsByNameAndUsers(String name, User user);
 }

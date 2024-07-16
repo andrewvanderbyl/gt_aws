@@ -5,7 +5,8 @@ import RacePanel from "./home/RacePanel";
 
 export default function Home() {
   const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  //const userData = authUserContext.localStorageValue;
+  const userData = {};
 
   return (
     <Stack

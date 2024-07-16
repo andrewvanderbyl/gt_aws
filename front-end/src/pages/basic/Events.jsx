@@ -1,27 +1,19 @@
 import ViewListIcon from "@mui/icons-material/ViewList";
 import { useState } from "react";
-import { useAuth } from "../../util/context/AuthUserContext";
 import ContentPanel from "../layout/ContentPanel";
 import UserEventList from "./entity/events/UserEventList";
 
 export default function Events() {
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
-
   const [contentComponent, setContentComponent] = useState(
-    <UserEventList userId={userData.id} eventType={"UPCOMING"} />
+    <UserEventList eventType={"UPCOMING"} />
   );
 
   const handleViewUnsubscribedUpcomingUserEventsClick = (event) => {
-    setContentComponent(
-      <UserEventList userId={userData.id} eventType={"UPCOMING"} />
-    );
+    setContentComponent(<UserEventList eventType={"UPCOMING"} />);
   };
 
   const handleViewSubscribedUpcomingUserEventsClick = (event) => {
-    setContentComponent(
-      <UserEventList userId={userData.id} eventType={"SUBSCRIBED"} />
-    );
+    setContentComponent(<UserEventList eventType={"SUBSCRIBED"} />);
   };
 
   return (
@@ -29,7 +21,7 @@ export default function Events() {
       entityHeaderText="Events"
       entityButtonPanel={[
         {
-          text: "New",
+          text: "Upcoming",
           icon: <ViewListIcon />,
           clickHandler: handleViewUnsubscribedUpcomingUserEventsClick,
         },

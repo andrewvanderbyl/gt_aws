@@ -2,9 +2,9 @@ package za.co.runapp.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +19,10 @@ import za.co.runapp.rest.dto.EventFilterType;
 import za.co.runapp.rest.dto.PageableDto;
 import za.co.runapp.service.EventsService;
 
-import java.util.List;
-
 @Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/events")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class EventsController {
 
     private final EventsService eventsService;
@@ -48,22 +45,27 @@ public class EventsController {
     }
 
     @PostMapping("/{eventId}/register")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity> registerEventForUser(
             @PathVariable("eventId") final String eventId,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
-        eventsService.registerUser(eventId, userId);
+        eventsService.registerUser(eventId, (String) authentication.getPrincipal());
         return Mono.just(ResponseEntity.ok().build());
     }
 
     @GetMapping("/users/{type}")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<EventDto>>> getEvents(
             @PathVariable("type") final EventFilterType eventType,
             @RequestParam("page") final int page,
             @RequestParam("size") final int size,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
-        PageableDto<EventDto> events = eventsService.getEventsForUser(eventType, userId, page, size);
+        PageableDto<EventDto> events = eventsService.getEventsForUser(eventType,
+                (String) authentication.getPrincipal(),
+                page,
+                size);
         return Mono.just(ResponseEntity.ok(events));
     }
 }

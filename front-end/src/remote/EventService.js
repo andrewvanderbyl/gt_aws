@@ -23,22 +23,22 @@ export default {
       )
       .then((data) => data);
   },
-  fetchUserEvents: async (type, props, userId) => {
+  fetchUserEvents: async (type, props, token) => {
     return await api
       .getPaginated(
         process.env.REACT_APP_USER_EVENTS + "/" + type,
         props,
-        userId
+        token
       )
       .then((data) => {
         return data;
       });
   },
-  subscribeUserToEvent: async (eventId, userId) => {
+  subscribeUserToEvent: async (eventId, token) => {
     let uri = process.env.REACT_APP_USER_EVENTS_SUBSCRIBE.replace(
       "{eventId}",
       eventId
     );
-    await api.postWithoutBody(uri, userId);
+    await api.postWithoutBody(uri, token);
   },
 };

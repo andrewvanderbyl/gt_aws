@@ -12,3 +12,7 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: 'update'
+
+app:
+  jwt:
+    sign-key: mgs3AO0gExS8GLLwdOR74R1f8fwyBaGSsFjJ8GShwBEWA591LPy5fxAlHYox4wmV4x4N09lnw7VrVRIfwOe/JQ==

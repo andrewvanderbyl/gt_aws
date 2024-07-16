@@ -15,18 +15,17 @@ import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import TimingChipCreate from "./TimingChipCreate";
 import ViewAsa from "./ViewAsa";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function AsaList({ forceRefresh }) {
   const [asa, setAsa] = useState({});
   const [showAsaView, setShowAsaView] = useState(true);
   const dataGrid = useDataGrid();
   const sliderPanel = useSliderPanel();
-
+  const sessionStorage = useSessionStorage();
   const [refresh, setRefresh] = useState(false);
 
   const asaHook = useAsa();
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
   const columns = [
     {
       field: "id",
@@ -104,7 +103,7 @@ export default function AsaList({ forceRefresh }) {
           page: dataGrid.getPageNumber(),
           size: dataGrid.getPageSize(),
         },
-        loggedInUser.id
+        sessionStorage.sessionStorageValue
       );
       dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();

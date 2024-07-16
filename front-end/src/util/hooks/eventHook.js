@@ -11,14 +11,14 @@ export const useEvent = () => {
     return await EventService.fetchEventList(props).then((events) => events);
   };
 
-  const fetchUserEvents = async (type, props, userId) => {
-    return await EventService.fetchUserEvents(type, props, userId).then(
+  const fetchUserEvents = async (type, props, token) => {
+    return await EventService.fetchUserEvents(type, props, token).then(
       (events) => events
     );
   };
 
-  const subscribeUserToEvent = async (eventId, userId) => {
-    await EventService.subscribeUserToEvent(eventId, userId);
+  const subscribeUserToEvent = async (eventId, token) => {
+    await EventService.subscribeUserToEvent(eventId, token);
   };
 
   return { createEvent, fetchEventList, fetchUserEvents, subscribeUserToEvent };

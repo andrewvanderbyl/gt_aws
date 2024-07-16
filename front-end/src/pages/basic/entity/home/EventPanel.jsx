@@ -11,12 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function EventPanel() {
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  const sessionStorage = useSessionStorage();
   const eventHook = useEvent();
   const [events, setEvents] = useState({ data: [] });
 
@@ -28,7 +27,7 @@ export default function EventPanel() {
           page: 0,
           size: 5,
         },
-        userData.id
+        sessionStorage.sessionStorageValue
       );
 
       setEvents(newRows.data);

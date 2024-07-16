@@ -36,7 +36,7 @@ const SlidePanel = forwardRef((props, ref) => {
           }}
           onOpen={toggleDrawer(true)}
         >
-          {props.panelContent}
+          {openDialog && props.panelContent}
         </SwipeableDrawer>
       </Fragment>
     </div>

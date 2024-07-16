@@ -7,18 +7,17 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEffect } from "react";
 import { useAsa } from "../../../../util/hooks/asaHook";
-import { useAuth } from "../../../../util/context/AuthUserContext";
+import { useDataGrid } from "../../../../util/hooks/datagridHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import useStyles from "../../../../util/hooks/useStyles";
 
 export default function ViewAsa({ handleCancel, asa }) {
   const classes = useStyles();
   const dataGrid = useDataGrid();
   const asaHook = useAsa();
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  const sessionStorage = useSessionStorage();
   const columns = [
     {
       field: "tag",
@@ -40,7 +39,7 @@ export default function ViewAsa({ handleCancel, asa }) {
             size: dataGrid.getPageSize(),
           },
           asa["id"],
-          userData.id
+          sessionStorage.sessionStorageValue
         );
         dataGrid.updatePageState(newRows.data);
         dataGrid.closeLoader();

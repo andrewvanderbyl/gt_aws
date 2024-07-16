@@ -12,10 +12,11 @@ import za.co.runapp.entity.Club;
 import za.co.runapp.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
 
-    User findByUsernameAndPassword(String username, String password);
+    User findByFirstNameAndLastName(String firstName, String lastName);
 
     Page<User> findByClubs(Club club, Pageable pageable);
 
@@ -40,4 +41,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     void upsertUser(String id, LocalDateTime dateCreated, LocalDateTime dateUpdated, String contact,
                     String firstName, String lastName, String password, String userName);
 
+    User findByIdAndUsername(String id, String username);
+
+    Optional<User> findByUsername(String username);
 }

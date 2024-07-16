@@ -13,11 +13,11 @@ import { DateTimePicker, renderTimeViewClock } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useEvent } from "../../../../util/hooks/eventHook";
-import useStyles from "../../../../util/hooks/useStyles";
 import { useLoader } from "../../../../util/hooks/loaderHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
+import useStyles from "../../../../util/hooks/useStyles";
 
 export default function ViewEvent({
   handleCancel,
@@ -26,15 +26,17 @@ export default function ViewEvent({
   handleEventSubscribed,
 }) {
   const classes = useStyles();
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  const sessionStorage = useSessionStorage();
   const eventHook = useEvent();
   const loader = useLoader();
   const successAlertPanel = useSuccessAlert(handleEventSubscribed);
 
   const handleSubscribeClick = async (e) => {
     loader.showLoader();
-    await eventHook.subscribeUserToEvent(event.id, userData.id);
+    await eventHook.subscribeUserToEvent(
+      event.id,
+      sessionStorage.sessionStorageValue
+    );
     loader.closeLoader();
     successAlertPanel.showPanel("Subscribed successfully to event");
   };

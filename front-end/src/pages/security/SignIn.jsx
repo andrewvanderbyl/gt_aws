@@ -11,13 +11,13 @@ import { useNavigate } from "react-router";
 import { object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
 import { useNotificationPanel } from "../../util/hooks/notificationPanelHook";
+import { useSessionStorage } from "../../util/hooks/sessionStorageHook";
 import { useUser } from "../../util/hooks/userHook";
-import { useAuth } from "../../util/context/AuthUserContext";
 
 const SignIn = () => {
   let navigate = useNavigate();
   const notificationPanel = useNotificationPanel();
-  const authHook = useAuth();
+  const storageHook = useSessionStorage(null);
 
   const userHook = useUser();
   const initial = {
@@ -38,10 +38,10 @@ const SignIn = () => {
       password: values.password,
     });
 
-    if (response.error) {
-      notificationPanel.showPanel(response.error);
+    if (response.status !== 200) {
+      notificationPanel.showPanel("Invalid credentials");
     } else {
-      authHook.setStorageValue(response.data);
+      storageHook.setStorageValue(response.data.token);
       navigate("/");
     }
   };

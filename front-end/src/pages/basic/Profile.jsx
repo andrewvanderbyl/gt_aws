@@ -11,7 +11,8 @@ import { useState } from "react";
 
 export default function Profile() {
   const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  const userData = {};
+  //const userData = authUserContext.localStorageValue;
   const name = `${userData.firstName} ${userData.lastName}`;
 
   const slidePanel = useSliderPanel();

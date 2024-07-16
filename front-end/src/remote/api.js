@@ -3,13 +3,13 @@ import axios from "axios";
 const baseUrl = process.env.REACT_APP_API_ENDPOINT;
 
 export const api = {
-  get: async (endpoint, userId = null) => {
+  get: async (endpoint, token = null) => {
     let headers = {
       "Content-Type": "application/json",
     };
 
-    if (userId) {
-      headers["userId"] = userId;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const config = {
@@ -20,13 +20,13 @@ export const api = {
 
     return await axios.request(config).then((res) => res.data);
   },
-  getPaginated: async (endpoint, queryParams, userId = null) => {
+  getPaginated: async (endpoint, queryParams, token = null) => {
     let headers = {
       "Content-Type": "application/json",
     };
 
-    if (userId) {
-      headers["userId"] = userId;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     let config = {
@@ -54,13 +54,13 @@ export const api = {
         };
       });
   },
-  put: async (endpoint, body, userId = null) => {
+  put: async (endpoint, body, token = null) => {
     let headers = {
       "Content-Type": "application/json",
     };
 
-    if (userId) {
-      headers["userId"] = userId;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const config = {
@@ -85,13 +85,14 @@ export const api = {
         };
       });
   },
-  post: async (endpoint, body, userId = null) => {
+  post: async (endpoint, body, token = null) => {
     let headers = {
       "Content-Type": "application/json",
+      Accept: "application/json",
     };
 
-    if (userId) {
-      headers["userId"] = userId;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const config = {
@@ -112,17 +113,17 @@ export const api = {
       .catch((error) => {
         return {
           status: error.response.status,
-          error: error.response.data,
+          error: error.response.data.error,
         };
       });
   },
-  postWithoutBody: async (endpoint, userId = null) => {
+  postWithoutBody: async (endpoint, token = null) => {
     let headers = {
       "Content-Type": "application/json",
     };
 
-    if (userId) {
-      headers["userId"] = userId;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
     const config = {

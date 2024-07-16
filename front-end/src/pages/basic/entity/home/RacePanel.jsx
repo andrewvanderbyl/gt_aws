@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import { amber } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useResult } from "../../../../util/hooks/resultsHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function RacePanel() {
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+  const sessionStorage = useSessionStorage();
   const raceHook = useResult();
 
   const [races, setRaces] = useState({ data: [] });
@@ -29,7 +28,7 @@ export default function RacePanel() {
           page: 0,
           size: 5,
         },
-        userData.id
+        sessionStorage.sessionStorageValue
       );
 
       setRaces(newRows.data);

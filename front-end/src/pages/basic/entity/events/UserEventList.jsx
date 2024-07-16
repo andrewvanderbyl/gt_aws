@@ -15,12 +15,14 @@ import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useEvent } from "../../../../util/hooks/eventHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import ViewEvent from "./ViewEvent";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function UserEventList(props) {
   const [event, setEvent] = useState({});
   const sliderPanel = useSliderPanel();
   const dataGrid = useDataGrid();
   const [refresh, setRefresh] = useState(false);
+  const sessionStorage = useSessionStorage();
 
   const eventType = props.eventType;
   var gridTitle;
@@ -90,7 +92,7 @@ export default function UserEventList(props) {
           timeStyle: "short",
         });
 
-        return `${params.row.name} (${eventDate})`;
+        return `${params.row.name} on ${eventDate}`;
       },
     },
     {
@@ -149,7 +151,7 @@ export default function UserEventList(props) {
           page: dataGrid.getPageNumber(),
           size: dataGrid.getPageSize(),
         },
-        props.userId
+        sessionStorage.sessionStorageValue
       );
       dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();

@@ -13,4 +13,6 @@ public interface EventRepository extends JpaRepository<Event, String> {
 
     Page<Event> findByDateLessThan(LocalDateTime now, Pageable pageable);
 
+    boolean existsByName(String name);
+
 }

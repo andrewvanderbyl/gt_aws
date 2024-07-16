@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../../util/context/AuthUserContext";
+import { useSessionStorage } from "../../util/hooks/sessionStorageHook";
 
 export default function UnProtectedRouteGuard({ component }) {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
-  const authUserContext = useAuth();
+  const sessionStorage = useSessionStorage();
 
   useEffect(() => {
     checkUser();
   }, [component]);
 
-  const checkUser = async () => {
-    if (!authUserContext.localStorageValue) {
-      authUserContext.removeStorageValue();
-    } else {
+  const checkUser = () => {
+    //Check if token already exist then navigate home
+    if (sessionStorage.getUserRole()) {
       navigate("/");
+    } else {
+      sessionStorage.removeStorageValue();
     }
 
     setStatus(true);

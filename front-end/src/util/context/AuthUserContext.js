@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { useLocalStorage } from "../hooks/localStorageHook";
+import { useSessionStorage } from "../hooks/sessionStorageHook";
 
 const AuthUserContext = createContext();
 
@@ -8,11 +8,11 @@ export function useAuth() {
 }
 
 export function AuthUserContextProvider({ children }) {
-  const [localStorageValue, setStorageValue, removeStorageValue] =
-    useLocalStorage("user", null);
+  const [sessionStorageValue, setStorageValue, removeStorageValue] =
+    useSessionStorage(null);
 
   const value = {
-    localStorageValue,
+    sessionStorageValue,
     setStorageValue,
     removeStorageValue,
   };

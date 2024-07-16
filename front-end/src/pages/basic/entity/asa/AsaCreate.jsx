@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { object, string } from "yup";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
 
@@ -24,9 +24,7 @@ export default function AsaCreate({ handleCancel, handleAsaCreated }) {
   const loader = useLoader();
 
   const asaHook = useAsa();
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
-
+  const sessionStorage = useSessionStorage();
   const initial = {
     asa: "",
   };
@@ -40,7 +38,7 @@ export default function AsaCreate({ handleCancel, handleAsaCreated }) {
     loader.showLoader();
     const createdAsaResponse = await asaHook.createAsa(
       { asa: values.asa },
-      loggedInUser.id
+      sessionStorage.sessionStorageValue
     );
     loader.closeLoader();
 

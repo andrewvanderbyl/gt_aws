@@ -1,35 +1,35 @@
 import { api } from "./api";
 
 export default {
-  fetchUserAsas: async (props, userId) => {
+  fetchUserAsas: async (props, token) => {
     return await api
-      .getPaginated(process.env.REACT_APP_USER_ASAS, props, userId)
+      .getPaginated(process.env.REACT_APP_USER_ASAS, props, token)
       .then((data) => {
         return data;
       });
   },
 
-  createAsa: async (props, userId) => {
+  createAsa: async (props, token) => {
     const payload = {
       asa: props.asa,
     };
 
     return await api
-      .post(process.env.REACT_APP_ASA_CREATE_FOR_USER, payload, userId)
+      .post(process.env.REACT_APP_ASA_CREATE_FOR_USER, payload, token)
       .then((data) => {
         return data;
       });
   },
 
-  fetchTimingListForAsa: async (props, asaId, userId) => {
+  fetchTimingListForAsa: async (props, asaId, token) => {
     let uri = process.env.REACT_APP_ASA_TIMING_CHIPS.replace("{asaId}", asaId);
 
-    return await api.getPaginated(uri, props, userId).then((data) => {
+    return await api.getPaginated(uri, props, token).then((data) => {
       return data;
     });
   },
 
-  createTimingForAsa: async (props, asaId, userId) => {
+  createTimingForAsa: async (props, asaId, token) => {
     let uri = process.env.REACT_APP_ASA_CREATE_TIMING_CHIP.replace(
       "{asaId}",
       asaId
@@ -39,7 +39,7 @@ export default {
       tag: props.tag,
     };
 
-    return await api.post(uri, payload, userId).then((data) => {
+    return await api.post(uri, payload, token).then((data) => {
       return data;
     });
   },
