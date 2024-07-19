@@ -22,7 +22,6 @@ export default function UserEventList(props) {
   const sliderPanel = useSliderPanel();
   const dataGrid = useDataGrid();
   const [refresh, setRefresh] = useState(false);
-  const sessionStorage = useSessionStorage();
 
   const eventType = props.eventType;
   var gridTitle;
@@ -144,15 +143,11 @@ export default function UserEventList(props) {
   useEffect(() => {
     (async () => {
       dataGrid.showLoader();
-      const newRows = await eventHook.fetchUserEvents(
-        props.eventType,
-        {
-          eventType: "future",
-          page: dataGrid.getPageNumber(),
-          size: dataGrid.getPageSize(),
-        },
-        sessionStorage.sessionStorageValue
-      );
+      const newRows = await eventHook.fetchUserEvents(props.eventType, {
+        eventType: "future",
+        page: dataGrid.getPageNumber(),
+        size: dataGrid.getPageSize(),
+      });
       dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();
     })();

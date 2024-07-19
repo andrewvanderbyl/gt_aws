@@ -13,7 +13,6 @@ import { object, string } from "yup";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
 
@@ -25,7 +24,6 @@ export default function TimingChipCreate({ asa, handleCancel, handleCreated }) {
   const loader = useLoader();
 
   const asaHook = useAsa();
-  const sessionStorage = useSessionStorage();
 
   const initial = {
     tag: "",
@@ -40,8 +38,7 @@ export default function TimingChipCreate({ asa, handleCancel, handleCreated }) {
     loader.showLoader();
     const createdTimingChipResponse = await asaHook.createTimingForAsa(
       { tag: values.tag },
-      asa["id"],
-      sessionStorage.sessionStorageValue
+      asa["id"]
     );
     loader.closeLoader();
 

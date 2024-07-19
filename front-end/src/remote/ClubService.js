@@ -1,7 +1,7 @@
 import { api } from "./api";
 
 export default {
-  createClub: async (props) => {
+  createClub: async (props, token) => {
     const payload = {
       name: props.name,
       email: props.email,
@@ -11,12 +11,12 @@ export default {
     };
 
     return await api
-      .post(process.env.REACT_APP_CREATE_CLUB, payload)
+      .post(process.env.REACT_APP_CREATE_CLUB, payload, token)
       .then((data) => {
         return data;
       });
   },
-  updateClub: async (props) => {
+  updateClub: async (props, token) => {
     const payload = {
       id: props.id,
       name: props.name,
@@ -27,19 +27,19 @@ export default {
     };
 
     return await api
-      .put(process.env.REACT_APP_CREATE_CLUB, payload)
+      .put(process.env.REACT_APP_CREATE_CLUB, payload, token)
       .then((data) => {
         return data;
       });
   },
-  fetchClubList: async (props) => {
+  fetchClubList: async (props, token) => {
     return await api
-      .post(process.env.REACT_APP_CLUB_LIST, props)
+      .post(process.env.REACT_APP_CLUB_LIST, props, token)
       .then((data) => data);
   },
-  fetchUserClub: async (userId, props) => {
+  fetchUserClub: async (props, token) => {
     return await api
-      .getPaginated(process.env.REACT_APP_USER_CLUB, props, userId)
+      .getPaginated(process.env.REACT_APP_USER_CLUB, props, token)
       .then((data) => data);
   },
   fetchClubMembers: async (clubId, props, userId) => {
@@ -47,9 +47,9 @@ export default {
 
     return await api.getPaginated(uri, props, userId).then((data) => data);
   },
-  joinClub: async (clubId, userId) => {
+  joinClub: async (clubId, token) => {
     let uri = process.env.REACT_APP_CLUB_JOIN.replace("{clubId}", clubId);
 
-    await api.postWithoutBody(uri, userId);
+    await api.postWithoutBody(uri, token);
   },
 };

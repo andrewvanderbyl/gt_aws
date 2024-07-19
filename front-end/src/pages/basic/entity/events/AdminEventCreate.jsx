@@ -63,7 +63,7 @@ export default function AdminEventCreate({
     const createEventResponse = await eventHook.createEvent(eventData);
     loader.closeLoader();
 
-    if (createEventResponse.error) {
+    if (createEventResponse.status !== 200) {
       notificationPanel.showPanel(createEventResponse.error);
     } else {
       formikHelpers.resetForm();

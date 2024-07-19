@@ -1,12 +1,9 @@
 import { Grid, Paper } from "@mui/material";
 import { useEffect } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
 import { useResult } from "../../../../util/hooks/resultsHook";
 
 export default function UserRaceList() {
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
   const raceHook = useResult();
   const dataGrid = useDataGrid();
 
@@ -58,14 +55,10 @@ export default function UserRaceList() {
     (async () => {
       dataGrid.showLoader();
 
-      const raceResponse = await raceHook.fetchRacesList(
-        {
-          page: dataGrid.getPageNumber(),
-          size: dataGrid.getPageSize(),
-        },
-        loggedInUser.id
-      );
-      console.log(raceResponse);
+      const raceResponse = await raceHook.fetchRacesList({
+        page: dataGrid.getPageNumber(),
+        size: dataGrid.getPageSize(),
+      });
       dataGrid.updatePageState(raceResponse.data);
       dataGrid.closeLoader();
     })();

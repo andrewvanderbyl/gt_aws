@@ -2,7 +2,7 @@ import { api } from "./api";
 
 // eslint-disable-next-line
 export default {
-  createEvent: async (props) => {
+  createEvent: async (props, token) => {
     const payload = {
       name: props.name,
       detail: props.detail,
@@ -10,16 +10,17 @@ export default {
     };
 
     return await api
-      .post(process.env.REACT_APP_CREATE_EVENT, payload)
+      .post(process.env.REACT_APP_CREATE_EVENT, payload, token)
       .then((data) => {
         return data;
       });
   },
-  fetchEventList: async (props) => {
+  fetchEventList: async (props, token) => {
     return await api
       .getPaginated(
         process.env.REACT_APP_EVENT_LIST + "/" + props.eventType,
-        props
+        props,
+        token
       )
       .then((data) => data);
   },

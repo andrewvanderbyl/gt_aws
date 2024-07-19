@@ -28,6 +28,7 @@ public class EventsController {
     private final EventsService eventsService;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity<EventDto>> createEvent(@RequestBody final EventDto eventDto) {
 
         EventDto persistedEventDto = eventsService.createEvent(eventDto);
@@ -35,6 +36,7 @@ public class EventsController {
     }
 
     @GetMapping("{type}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity<PageableDto<EventDto>>> getEvents(
             @PathVariable("type") final String eventType,
             @RequestParam("page") final int page,

@@ -13,23 +13,18 @@ import {
 import { amber } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
 import { useResult } from "../../../../util/hooks/resultsHook";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function RacePanel() {
-  const sessionStorage = useSessionStorage();
   const raceHook = useResult();
 
   const [races, setRaces] = useState({ data: [] });
 
   useEffect(() => {
     (async () => {
-      const newRows = await raceHook.fetchRacesList(
-        {
-          page: 0,
-          size: 5,
-        },
-        sessionStorage.sessionStorageValue
-      );
+      const newRows = await raceHook.fetchRacesList({
+        page: 0,
+        size: 5,
+      });
 
       setRaces(newRows.data);
     })();

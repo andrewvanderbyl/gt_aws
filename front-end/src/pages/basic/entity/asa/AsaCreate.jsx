@@ -13,7 +13,6 @@ import { object, string } from "yup";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
 
@@ -24,7 +23,6 @@ export default function AsaCreate({ handleCancel, handleAsaCreated }) {
   const loader = useLoader();
 
   const asaHook = useAsa();
-  const sessionStorage = useSessionStorage();
   const initial = {
     asa: "",
   };
@@ -36,10 +34,7 @@ export default function AsaCreate({ handleCancel, handleAsaCreated }) {
     notificationPanel.closePanel();
 
     loader.showLoader();
-    const createdAsaResponse = await asaHook.createAsa(
-      { asa: values.asa },
-      sessionStorage.sessionStorageValue
-    );
+    const createdAsaResponse = await asaHook.createAsa({ asa: values.asa });
     loader.closeLoader();
 
     if (createdAsaResponse.error) {

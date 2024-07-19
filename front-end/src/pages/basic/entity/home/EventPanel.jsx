@@ -12,23 +12,17 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useEvent } from "../../../../util/hooks/eventHook";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function EventPanel() {
-  const sessionStorage = useSessionStorage();
   const eventHook = useEvent();
   const [events, setEvents] = useState({ data: [] });
 
   useEffect(() => {
     (async () => {
-      const newRows = await eventHook.fetchUserEvents(
-        "UPCOMING",
-        {
-          page: 0,
-          size: 5,
-        },
-        sessionStorage.sessionStorageValue
-      );
+      const newRows = await eventHook.fetchUserEvents("UPCOMING", {
+        page: 0,
+        size: 5,
+      });
 
       setEvents(newRows.data);
     })();

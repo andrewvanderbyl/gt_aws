@@ -1,20 +1,35 @@
 import ClubService from "../../remote/ClubService";
+import { useSessionStorage } from "./sessionStorageHook";
 
 export const useClub = () => {
+  const sessionStorage = useSessionStorage();
+
   const createClub = async (props) => {
-    return await ClubService.createClub(props);
+    return await ClubService.createClub(
+      props,
+      sessionStorage.sessionStorageValue
+    );
   };
 
   const updateClub = async (props) => {
-    return await ClubService.updateClub(props);
+    return await ClubService.updateClub(
+      props,
+      sessionStorage.sessionStorageValue
+    );
   };
 
   const fetchClubList = async (props) => {
-    return await ClubService.fetchClubList(props).then((clubs) => clubs);
+    return await ClubService.fetchClubList(
+      props,
+      sessionStorage.sessionStorageValue
+    ).then((clubs) => clubs);
   };
 
-  const fetchUserClub = async (userId, props) => {
-    return await ClubService.fetchUserClub(userId, props).then((data) => data);
+  const fetchUserClub = async (props) => {
+    return await ClubService.fetchUserClub(
+      props,
+      sessionStorage.sessionStorageValue
+    ).then((data) => data);
   };
 
   const fetchClubMembers = async (clubId, props, userId) => {
@@ -23,8 +38,8 @@ export const useClub = () => {
     );
   };
 
-  const joinClub = async (clubId, userId) => {
-    await ClubService.joinClub(clubId, userId);
+  const joinClub = async (clubId) => {
+    await ClubService.joinClub(clubId, sessionStorage.sessionStorageValue);
   };
 
   return {

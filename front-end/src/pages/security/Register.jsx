@@ -11,17 +11,17 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import { number, object, string } from "yup";
 import logo from "../../assets/AppLogo.jpg";
-import { useAuth } from "../../util/context/AuthUserContext";
-import { useUser } from "../../util/hooks/userHook";
 import { useNotificationPanel } from "../../util/hooks/notificationPanelHook";
+import { useSessionStorage } from "../../util/hooks/sessionStorageHook";
+import { useUser } from "../../util/hooks/userHook";
 
 const defaultTheme = createTheme();
 
 export default function Register() {
   let navigate = useNavigate();
-  const notificationPanel = useNotificationPanel();
-  const authUserContext = useAuth();
   const userHook = useUser();
+  const sessionStorage = useSessionStorage();
+  const notificationPanel = useNotificationPanel();
   const initial = {
     firstName: "",
     lastName: "",
@@ -50,10 +50,10 @@ export default function Register() {
     };
 
     const createdUserResponse = await userHook.register(createUserPayload);
-    if (createdUserResponse.error) {
+    if (createdUserResponse.status !== 200) {
       notificationPanel.showPanel(createdUserResponse.error);
     } else {
-      authUserContext.setStorageValue(createdUserResponse.data);
+      sessionStorage.setStorageValue(createdUserResponse.data.token);
       navigate("/");
     }
   };

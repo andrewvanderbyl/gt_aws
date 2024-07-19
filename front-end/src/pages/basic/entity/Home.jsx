@@ -1,13 +1,8 @@
 import { Paper, Stack } from "@mui/material";
-import { useAuth } from "../../../util/context/AuthUserContext";
 import EventPanel from "./home/EventPanel";
 import RacePanel from "./home/RacePanel";
 
 export default function Home() {
-  const authUserContext = useAuth();
-  //const userData = authUserContext.localStorageValue;
-  const userData = {};
-
   return (
     <Stack
       direction={"row"}

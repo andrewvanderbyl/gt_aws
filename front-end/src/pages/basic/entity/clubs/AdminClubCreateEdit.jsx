@@ -70,7 +70,7 @@ export default function AdminClubCreateEdit({
     }
     loader.closeLoader();
 
-    if (createClubResponse.error) {
+    if (createClubResponse.status !== 200) {
       notificationPanel.showPanel(createClubResponse.error);
     } else {
       formikHelpers.resetForm();

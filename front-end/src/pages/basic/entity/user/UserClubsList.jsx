@@ -10,20 +10,17 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useClub } from "../../../../util/hooks/clubHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
-import useStyles from "../../../../util/hooks/useStyles";
 import { useLoader } from "../../../../util/hooks/loaderHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
+import useStyles from "../../../../util/hooks/useStyles";
 
 export default function UserClubsList({ handleCancel, showClub }) {
   const dataGrid = useDataGrid();
   const successAlertPanel = useSuccessAlert(handleCancel);
   const clubHook = useClub();
   const loader = useLoader();
-  const authHook = useAuth();
-  const loggedInUser = authHook.localStorageValue;
   const classes = useStyles();
   const [club, setClub] = useState({});
 
@@ -41,9 +38,9 @@ export default function UserClubsList({ handleCancel, showClub }) {
       disableClickEventBubbling: true,
       // flex: 1,
       renderCell: (params) => {
-        const handleCreateChipEntryClick = async (event) => {
+        const handleJoinClubClick = async (event) => {
           loader.showLoader();
-          await clubHook.joinClub(params.row.id, loggedInUser.id);
+          await clubHook.joinClub(params.row.id);
           loader.closeLoader();
           successAlertPanel.showPanel("Joined club successfully");
         };
@@ -57,7 +54,7 @@ export default function UserClubsList({ handleCancel, showClub }) {
                   size="small"
                   color="primary"
                   sx={{ mt: 0.5 }}
-                  onClick={handleCreateChipEntryClick}
+                  onClick={handleJoinClubClick}
                 >
                   <AddCircleIcon />
                 </Button>
@@ -81,7 +78,7 @@ export default function UserClubsList({ handleCancel, showClub }) {
   useEffect(() => {
     if (showClub) {
       (async () => {
-        const userClubResponse = await clubHook.fetchUserClub(loggedInUser.id, {
+        const userClubResponse = await clubHook.fetchUserClub({
           page: 0,
           size: 1,
         });

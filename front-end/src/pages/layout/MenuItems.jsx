@@ -17,10 +17,13 @@ import { useNavigate } from "react-router";
 import MenuItem from "../../components/MenuItem";
 import { useUser } from "../../util/hooks/userHook";
 import { amber } from "@mui/material/colors";
+import { useSessionStorage } from "../../util/hooks/sessionStorageHook";
 
 export default function ListItems() {
   let navigate = useNavigate();
   const userHook = useUser();
+  const sessionStorage = useSessionStorage();
+  const showAdminMenu = sessionStorage.getUserRole().includes("ADMIN");
 
   const handleLogout = () => {
     userHook.logout();
@@ -56,41 +59,46 @@ export default function ListItems() {
         <ListItemText primary="Logout" />
       </ListItemButton>
 
-      <Divider
-        sx={{ color: "white", backgroundColor: "white", marginTop: "25px" }}
-      />
+      {showAdminMenu ? (
+        <>
+          <Divider
+            sx={{ color: "white", backgroundColor: "white", marginTop: "25px" }}
+          />
+          <ListSubheader
+            component="div"
+            // inset
+            sx={
+              {
+                // backgroundColor: "#1C4E80",
+                // color: "white",
+                // border: 2,
+                // borderColor: "black",
+              }
+            }
+          >
+            Administration
+          </ListSubheader>
+          <Divider sx={{ color: "white", backgroundColor: "white" }} />
 
-      <ListSubheader
-        component="div"
-        // inset
-        sx={
-          {
-            // backgroundColor: "#1C4E80",
-            // color: "white",
-            // border: 2,
-            // borderColor: "black",
-          }
-        }
-      >
-        Administration
-      </ListSubheader>
-      <Divider sx={{ color: "white", backgroundColor: "white" }} />
-
-      <MenuItem
-        menuText={"Clubs"}
-        menuIcon={<BusinessIcon sx={{ fontSize: 35 }} color="disabled" />}
-        menuClickNav={"/admin/clubs"}
-      />
-      <MenuItem
-        menuText={"Events"}
-        menuIcon={<EventAvailableIcon sx={{ fontSize: 35 }} color="success" />}
-        menuClickNav={"/admin/events"}
-      />
-      <MenuItem
+          <MenuItem
+            menuText={"Clubs"}
+            menuIcon={<BusinessIcon sx={{ fontSize: 35 }} color="disabled" />}
+            menuClickNav={"/admin/clubs"}
+          />
+          <MenuItem
+            menuText={"Events"}
+            menuIcon={
+              <EventAvailableIcon sx={{ fontSize: 35 }} color="success" />
+            }
+            menuClickNav={"/admin/events"}
+          />
+          {/* <MenuItem
         menuText={"Security"}
         menuIcon={<VpnKeyIcon sx={{ fontSize: 35 }} color="error" />}
         menuClickNav={"/admin/security"}
-      />
+      /> */}
+        </>
+      ) : null}
     </React.Fragment>
   );
 }

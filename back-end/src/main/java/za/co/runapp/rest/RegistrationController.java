@@ -26,7 +26,6 @@ import za.co.runapp.service.RegistrationService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/registration")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class RegistrationController {
 
     private final RegistrationService registrationService;

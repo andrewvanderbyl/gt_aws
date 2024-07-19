@@ -32,7 +32,6 @@ import za.co.runapp.service.UserService;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/users")
 public class UserController {
 

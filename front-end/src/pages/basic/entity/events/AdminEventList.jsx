@@ -93,7 +93,9 @@ export default function AdminEventList({
         page: dataGrid.getPageNumber(),
         size: dataGrid.getPageSize(),
       });
-      dataGrid.updatePageState(newRows.data);
+      if (newRows.status === 200) {
+        dataGrid.updatePageState(newRows.data);
+      }
       dataGrid.closeLoader();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

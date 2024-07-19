@@ -9,10 +9,6 @@ export default function AdminClubs() {
   const [contentComponent, setContentComponent] = useState(<ClubList />);
   const slidePanel = useSliderPanel();
 
-  // const handleViewClubsClick = (event) => {
-  //   event.preventDefault();
-  //   setContentComponent(<ClubList />);
-  // };
   const handleViewCreateClubClick = (event) => {
     event.preventDefault();
     slidePanel.openPanel();
@@ -33,11 +29,6 @@ export default function AdminClubs() {
       <ContentPanel
         entityHeaderText="Clubs"
         entityButtonPanel={[
-          // {
-          //   text: "List",
-          //   icon: <ViewListIcon />,
-          //   clickHandler: handleViewClubsClick,
-          // },
           {
             text: "Create",
             icon: <AddBoxIcon />,
@@ -46,7 +37,6 @@ export default function AdminClubs() {
         ]}
         entityComponent={contentComponent}
       />
-      {/* {renderPanel ?? ( */}
       <slidePanel.SliderPanel
         panelContent={
           <AdminClubCreateEdit
@@ -55,7 +45,6 @@ export default function AdminClubs() {
           />
         }
       />
-      {/* )} */}
     </>
   );
 }

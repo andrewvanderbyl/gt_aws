@@ -10,14 +10,12 @@ import {
 import { useEffect } from "react";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import useStyles from "../../../../util/hooks/useStyles";
 
 export default function ViewAsa({ handleCancel, asa }) {
   const classes = useStyles();
   const dataGrid = useDataGrid();
   const asaHook = useAsa();
-  const sessionStorage = useSessionStorage();
   const columns = [
     {
       field: "tag",
@@ -38,8 +36,7 @@ export default function ViewAsa({ handleCancel, asa }) {
             page: dataGrid.getPageNumber(),
             size: dataGrid.getPageSize(),
           },
-          asa["id"],
-          sessionStorage.sessionStorageValue
+          asa["id"]
         );
         dataGrid.updatePageState(newRows.data);
         dataGrid.closeLoader();

@@ -1,28 +1,19 @@
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import MemoryIcon from "@mui/icons-material/Memory";
-import {
-  Button,
-  ButtonGroup,
-  Grid,
-  Paper,
-  Stack,
-  Tooltip,
-} from "@mui/material";
+import { Button, ButtonGroup, Grid, Paper, Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useAsa } from "../../../../util/hooks/asaHook";
 import { useDataGrid } from "../../../../util/hooks/datagridHook";
+import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 import { useSliderPanel } from "../../../../util/hooks/sliderPanelHook";
 import TimingChipCreate from "./TimingChipCreate";
 import ViewAsa from "./ViewAsa";
-import { useSessionStorage } from "../../../../util/hooks/sessionStorageHook";
 
 export default function AsaList({ forceRefresh }) {
   const [asa, setAsa] = useState({});
   const [showAsaView, setShowAsaView] = useState(true);
   const dataGrid = useDataGrid();
   const sliderPanel = useSliderPanel();
-  const sessionStorage = useSessionStorage();
   const [refresh, setRefresh] = useState(false);
 
   const asaHook = useAsa();
@@ -98,13 +89,10 @@ export default function AsaList({ forceRefresh }) {
     (async () => {
       dataGrid.showLoader();
 
-      const newRows = await asaHook.fetchAsaList(
-        {
-          page: dataGrid.getPageNumber(),
-          size: dataGrid.getPageSize(),
-        },
-        sessionStorage.sessionStorageValue
-      );
+      const newRows = await asaHook.fetchAsaList({
+        page: dataGrid.getPageNumber(),
+        size: dataGrid.getPageSize(),
+      });
       dataGrid.updatePageState(newRows.data);
       dataGrid.closeLoader();
     })();

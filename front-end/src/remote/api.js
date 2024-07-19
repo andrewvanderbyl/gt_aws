@@ -81,7 +81,7 @@ export const api = {
       .catch((error) => {
         return {
           status: error.response.status,
-          error: error.response.data,
+          error: error.response.data.error ?? error.response.data,
         };
       });
   },
@@ -113,7 +113,7 @@ export const api = {
       .catch((error) => {
         return {
           status: error.response.status,
-          error: error.response.data.error,
+          error: error.response.data.error ?? error.response.data,
         };
       });
   },

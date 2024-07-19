@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,22 +28,22 @@ import za.co.runapp.service.ClubService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/clubs")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ClubController {
 
     private final ClubService clubService;
 
     @PostMapping
-    public Mono<ResponseEntity> createClub(
-            @RequestBody final ClubDto clubDto) throws BusinessException {
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Mono<ResponseEntity> createClub(@RequestBody final ClubDto clubDto) throws BusinessException {
 
-        log.info("Received {}", clubDto);
+        log.info("Creating club {}", clubDto);
 
         ClubDto persistedClub = clubService.createClub(clubDto);
         return Mono.just(ResponseEntity.ok(persistedClub));
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ResponseEntity> updateClub(@RequestBody final ClubDto clubDto) throws BusinessException {
 
         log.info("Updating Club {}", clubDto);
@@ -50,19 +52,16 @@ public class ClubController {
         return Mono.just(ResponseEntity.ok(updatedClub));
     }
 
-    @PostMapping(value = "/list", consumes = {
-            MediaType.APPLICATION_JSON_VALUE
-    })
-    public Mono<ResponseEntity<PageableDto<ClubDto>>> getClubs(
-            @RequestBody final PageableDto pageableDto) {
+    @PostMapping(value = "/list")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    public Mono<ResponseEntity<PageableDto<ClubDto>>> getClubs(@RequestBody final PageableDto pageableDto) {
 
         PageableDto<ClubDto> clubPageable = clubService.getClubs(pageableDto);
         return Mono.just(ResponseEntity.ok(clubPageable));
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<ClubDto>> getClub(
-            @PathVariable("id") final String clubId) {
+    public Mono<ResponseEntity<ClubDto>> getClub(@PathVariable("id") final String clubId) {
 
         log.info("Received {}", clubId);
 
@@ -75,12 +74,13 @@ public class ClubController {
     }
 
     @PostMapping("/{id}/users")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity> associateUserWithClub(
             @PathVariable("id") final String clubId,
-            @RequestHeader("userId") final String userId) {
+            final Authentication authentication) {
 
         try {
-            clubService.storeUserForClub(clubId, userId);
+            clubService.storeUserForClub(clubId, (String) authentication.getPrincipal());
             return Mono.just(ResponseEntity.ok().build());
         } catch (BusinessException cnfe) {
             return Mono.just(ResponseEntity.badRequest().build());

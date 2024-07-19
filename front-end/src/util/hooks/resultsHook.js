@@ -1,10 +1,14 @@
 import ResultService from "../../remote/ResultService";
+import { useSessionStorage } from "./sessionStorageHook";
 
 export const useResult = () => {
-  const fetchRacesList = async (props, token) => {
-    return await ResultService.fetchUserRaces(props, token).then(
-      (events) => events
-    );
+  const sessionStorage = useSessionStorage();
+
+  const fetchRacesList = async (props) => {
+    return await ResultService.fetchUserRaces(
+      props,
+      sessionStorage.sessionStorageValue
+    ).then((events) => events);
   };
 
   return { fetchRacesList };

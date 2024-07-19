@@ -1,16 +1,16 @@
-import UserService from "../../remote/UserService";
 import SecurityService from "../../remote/SecurityService";
-import { useAuth as useAuthContext } from "../context/AuthUserContext";
+import UserService from "../../remote/UserService";
+import { useSessionStorage } from "./sessionStorageHook";
 
 export const useUser = () => {
-  const authUserContext = useAuthContext();
+  const sessionStorage = useSessionStorage();
 
   const login = async (username, password) => {
     return await SecurityService.signIn(username, password);
   };
 
   const logout = () => {
-    authUserContext.removeStorageValue();
+    sessionStorage.removeStorageValue();
   };
 
   const register = async (createUserPayload) => {
