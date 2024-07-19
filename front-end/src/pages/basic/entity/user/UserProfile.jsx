@@ -10,21 +10,23 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { number, object, string } from "yup";
-import { useAuth } from "../../../../util/context/AuthUserContext";
 import { useNotificationPanel } from "../../../../util/hooks/notificationPanelHook";
 import { useSuccessAlert } from "../../../../util/hooks/successAlert";
 import useStyles from "../../../../util/hooks/useStyles";
 import { useUser } from "../../../../util/hooks/userHook";
 
-export default function UserProfile({ handleCancel, handleProfileViewed }) {
-  const authUserContext = useAuth();
-  const userData = authUserContext.localStorageValue;
+export default function UserProfile({
+  handleCancel,
+  handleProfileViewed,
+  user,
+}) {
   const notificationPanel = useNotificationPanel();
   const successAlertPanel = useSuccessAlert(handleProfileViewed);
   const classes = useStyles();
   const userHook = useUser();
 
-  const initial = userData;
+  const initial = user;
+  initial.password = "{enc}*****";
   const validationSchema = object({
     firstName: string().required("First Name is required"),
     lastName: string().required("Last Name is required"),
@@ -46,15 +48,12 @@ export default function UserProfile({ handleCancel, handleProfileViewed }) {
     };
 
     const updatedUserProfileResponse = await userHook.update(
-      updatedUserProfilePayload,
-      userData.id
+      updatedUserProfilePayload
     );
     if (updatedUserProfileResponse.error) {
       notificationPanel.showPanel(updatedUserProfileResponse.error);
     } else {
-      authUserContext.setStorageValue(updatedUserProfileResponse.data);
       successAlertPanel.showPanel("Profile updated successfully");
-      // handleProfileViewed();
     }
   };
 

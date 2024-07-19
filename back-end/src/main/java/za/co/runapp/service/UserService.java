@@ -66,8 +66,14 @@ public class UserService {
             throw new BusinessException("Username already exist");
         }
 
+        Optional<User> userOpt = userRepository.findById(userId);
+        User user = userOpt.get();
+        String password = user.getPassword();
+        if (!userDto.password().equals("{enc}*****")) {
+            password = passwordEncoder.encode(userDto.password());
+        }
         userRepository.upsertUser(userId, LocalDateTime.now(), LocalDateTime.now(), userDto.contact(),
-                    userDto.firstName(), userDto.lastName(), userDto.password(), userDto.username());
+                    userDto.firstName(), userDto.lastName(), password, userDto.username());
 
         return UserDto.builder()
                 .id(userId)

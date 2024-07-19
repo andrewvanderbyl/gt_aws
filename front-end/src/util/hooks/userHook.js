@@ -17,9 +17,16 @@ export const useUser = () => {
     return await UserService.registerUser(createUserPayload);
   };
 
-  const update = async (updateUserPayload, userId) => {
-    return await UserService.updateUser(updateUserPayload, userId);
+  const update = async (updateUserPayload) => {
+    return await UserService.updateUser(
+      updateUserPayload,
+      sessionStorage.sessionStorageValue
+    );
   };
 
-  return { login, logout, register, update };
+  const getUser = async () => {
+    return await UserService.getUser(sessionStorage.sessionStorageValue);
+  };
+
+  return { login, logout, register, update, getUser };
 };

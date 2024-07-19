@@ -11,4 +11,9 @@ export default {
       .put(process.env.REACT_APP_CREATE_USER, updateUserPayload, userId)
       .then((data) => data);
   },
+  getUser: async (token) => {
+    return await api
+      .get(process.env.REACT_APP_GET_USER, token)
+      .then((data) => data);
+  },
 };

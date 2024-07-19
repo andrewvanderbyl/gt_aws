@@ -51,23 +51,23 @@ public class UserController {
     }
 
     @PutMapping
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public Mono<ResponseEntity> updateUserProfile(
             @RequestBody final UserDto userDto,
-            @RequestHeader("userId") final String userId) throws BusinessException {
+            Authentication authentication) throws BusinessException {
         log.info("Updating profile {}", userDto);
 
-        UserDto user = userService.updateUser(userId, userDto);
+        UserDto user = userService.updateUser((String) authentication.getPrincipal(), userDto);
         return Mono.just(ResponseEntity.ok(user));
     }
 
-    @GetMapping("/{id}")
-    public Mono<ResponseEntity<UserDto>> getUserById(
-            @PathVariable("id") final String userId
-    ) {
-        log.info("Received {}", userId);
+    @GetMapping
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+    public Mono<ResponseEntity<UserDto>> getUserById(final Authentication authentication) {
+        log.info("Received {}", authentication.getPrincipal());
 
         try {
-            UserDto userDto = userService.fetchUserById(userId);
+            UserDto userDto = userService.fetchUserById((String) authentication.getPrincipal());
             return Mono.just(ResponseEntity.ok(userDto));
         } catch (BusinessException e) {
             log.error("Error obtaining user", e);

@@ -1,23 +1,34 @@
+import BusinessIcon from "@mui/icons-material/Business";
 import PeopleIcon from "@mui/icons-material/People";
 import ContentPanel from "../layout/ContentPanel";
-import BusinessIcon from "@mui/icons-material/Business";
 
-import { useAuth } from "../../util/context/AuthUserContext";
+import { useEffect, useState } from "react";
+import { useLoader } from "../../util/hooks/loaderHook";
 import { useSliderPanel } from "../../util/hooks/sliderPanelHook";
+import { useUser } from "../../util/hooks/userHook";
 import Home from "./entity/Home";
 import UserClubsList from "./entity/user/UserClubsList";
 import UserProfile from "./entity/user/UserProfile";
-import { useState } from "react";
 
 export default function Profile() {
-  const authUserContext = useAuth();
-  const userData = {};
-  //const userData = authUserContext.localStorageValue;
-  const name = `${userData.firstName} ${userData.lastName}`;
-
   const slidePanel = useSliderPanel();
   const slideClubPanel = useSliderPanel();
   const [showClub, setShowClub] = useState(false);
+  const [refresh, setRefresh] = useState();
+  const [user, setUser] = useState({ firstName: "", lastName: "" });
+  const loader = useLoader();
+  const userHook = useUser();
+
+  useEffect(() => {
+    (async () => {
+      loader.showLoader();
+      const getUserResponse = await userHook.getUser();
+
+      loader.closeLoader();
+      setUser(getUserResponse);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refresh]);
 
   const handleViewProfileClick = (event) => {
     event.preventDefault();
@@ -42,12 +53,14 @@ export default function Profile() {
 
   const handleProfileViewedEvent = () => {
     slidePanel.closePanel();
+    setRefresh(new Date());
   };
 
   return (
     <>
+      <loader.LoadingPanel />
       <ContentPanel
-        entityHeaderText={name}
+        entityHeaderText={`${user.firstName} ${user.lastName}`}
         entityButtonPanel={[
           {
             text: "Profile",
@@ -67,6 +80,7 @@ export default function Profile() {
           <UserProfile
             handleCancel={handleCreateFormCancelClick}
             handleProfileViewed={handleProfileViewedEvent}
+            user={user}
           />
         }
       />
