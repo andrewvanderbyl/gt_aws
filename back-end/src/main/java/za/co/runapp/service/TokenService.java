@@ -46,10 +46,6 @@ public class TokenService {
                 .before(Date.from(Instant.now()));
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
     public String extractUserId(String token) {
         return extractClaim(token, claims -> claims.get("userId", String.class));
     }
@@ -58,10 +54,9 @@ public class TokenService {
         return extractClaim(token, claims -> claims.get("roles", List.class));
     }
 
-    public boolean validateToken(final String token, final String username) {
+    public boolean validateToken(final String token) {
         final String userId = extractClaim(token, claims -> claims.get("userId", String.class));
-        final User user = userRepository.findByIdAndUsername(userId, username);
-        return user != null && !isTokenExpired(token);
+        return userRepository.existsById(userId) && !isTokenExpired(token);
     }
 
     private <T> T extractClaim(String jwt, Function<Claims, T> claimResolver) {

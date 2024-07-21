@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Page<User> findByClubs(Club club, Pageable pageable);
 
+    boolean existsById(String id);
+
     boolean existsByUsername(String username);
     boolean existsByUsernameAndIdNot(String username, String id);
 

@@ -25,15 +25,14 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {
         final String token = (String) authentication.getCredentials();
-        String username = tokenService.extractUsername(token);
-        if (tokenService.validateToken(token, username)) {
+        if (tokenService.validateToken(token)) {
             List<String> roles = tokenService.extractRoles(token);
             List<SimpleGrantedAuthority> authorities = roles.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
             String userId = tokenService.extractUserId(token);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userId,
-                    username,
+                    userId,
                     authorities);
             //SecurityContextHolder.getContext().setAuthentication(auth);
             return Mono.just(auth);
