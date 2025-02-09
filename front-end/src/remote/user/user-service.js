@@ -14,7 +14,7 @@ export const useGetUserById = (userId) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    let uri = process.env.REACT_APP_GET_USER_BY_ID.replace("{userId}", userId);
+    let uri = import.meta.env.VITE_GET_USER_BY_ID.replace("{userId}", userId);
     setIsLoading(true);
     api.get(uri).then((data) => {
       setUserData(data);

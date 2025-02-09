@@ -2,7 +2,7 @@ import { api } from "./api";
 
 export default {
   signIn: async (props) => {
-    let uri = process.env.REACT_APP_SIGN_IN;
+    let uri = import.meta.env.VITE_SIGN_IN;
 
     const payload = {
       username: props.username,

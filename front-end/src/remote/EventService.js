@@ -10,7 +10,7 @@ export default {
     };
 
     return await api
-      .post(process.env.REACT_APP_CREATE_EVENT, payload, token)
+      .post(import.meta.env.VITE_CREATE_EVENT, payload, token)
       .then((data) => {
         return data;
       });
@@ -18,7 +18,7 @@ export default {
   fetchEventList: async (props, token) => {
     return await api
       .getPaginated(
-        process.env.REACT_APP_EVENT_LIST + "/" + props.eventType,
+        import.meta.env.VITE_EVENT_LIST + "/" + props.eventType,
         props,
         token
       )
@@ -27,7 +27,7 @@ export default {
   fetchUserEvents: async (type, props, token) => {
     return await api
       .getPaginated(
-        process.env.REACT_APP_USER_EVENTS + "/" + type,
+        import.meta.env.VITE_USER_EVENTS + "/" + type,
         props,
         token
       )
@@ -36,7 +36,7 @@ export default {
       });
   },
   subscribeUserToEvent: async (eventId, token) => {
-    let uri = process.env.REACT_APP_USER_EVENTS_SUBSCRIBE.replace(
+    let uri = import.meta.env.VITE_USER_EVENTS_SUBSCRIBE.replace(
       "{eventId}",
       eventId
     );

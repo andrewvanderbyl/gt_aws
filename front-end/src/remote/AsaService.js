@@ -3,7 +3,7 @@ import { api } from "./api";
 export default {
   fetchUserAsas: async (props, token) => {
     return await api
-      .getPaginated(process.env.REACT_APP_USER_ASAS, props, token)
+      .getPaginated(import.meta.env.VITE_USER_ASAS, props, token)
       .then((data) => {
         return data;
       });
@@ -15,14 +15,14 @@ export default {
     };
 
     return await api
-      .post(process.env.REACT_APP_ASA_CREATE_FOR_USER, payload, token)
+      .post(import.meta.env.VITE_ASA_CREATE_FOR_USER, payload, token)
       .then((data) => {
         return data;
       });
   },
 
   fetchTimingListForAsa: async (props, asaId, token) => {
-    let uri = process.env.REACT_APP_ASA_TIMING_CHIPS.replace("{asaId}", asaId);
+    let uri = import.meta.env.VITE_ASA_TIMING_CHIPS.replace("{asaId}", asaId);
 
     return await api.getPaginated(uri, props, token).then((data) => {
       return data;
@@ -30,7 +30,7 @@ export default {
   },
 
   createTimingForAsa: async (props, asaId, token) => {
-    let uri = process.env.REACT_APP_ASA_CREATE_TIMING_CHIP.replace(
+    let uri = import.meta.env.VITE_ASA_CREATE_TIMING_CHIP.replace(
       "{asaId}",
       asaId
     );

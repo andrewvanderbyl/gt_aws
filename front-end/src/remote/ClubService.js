@@ -11,7 +11,7 @@ export default {
     };
 
     return await api
-      .post(process.env.REACT_APP_CREATE_CLUB, payload, token)
+      .post(import.meta.env.VITE_CREATE_CLUB, payload, token)
       .then((data) => {
         return data;
       });
@@ -27,28 +27,28 @@ export default {
     };
 
     return await api
-      .put(process.env.REACT_APP_CREATE_CLUB, payload, token)
+      .put(import.meta.env.VITE_CREATE_CLUB, payload, token)
       .then((data) => {
         return data;
       });
   },
   fetchClubList: async (props, token) => {
     return await api
-      .post(process.env.REACT_APP_CLUB_LIST, props, token)
+      .post(import.meta.env.VITE_CLUB_LIST, props, token)
       .then((data) => data);
   },
   fetchUserClub: async (props, token) => {
     return await api
-      .getPaginated(process.env.REACT_APP_USER_CLUB, props, token)
+      .getPaginated(import.meta.env.VITE_USER_CLUB, props, token)
       .then((data) => data);
   },
   fetchClubMembers: async (clubId, props, userId) => {
-    let uri = process.env.REACT_APP_CLUB_MEMBERS.replace("{clubId}", clubId);
+    let uri = import.meta.env.VITE_CLUB_MEMBERS.replace("{clubId}", clubId);
 
     return await api.getPaginated(uri, props, userId).then((data) => data);
   },
   joinClub: async (clubId, token) => {
-    let uri = process.env.REACT_APP_CLUB_JOIN.replace("{clubId}", clubId);
+    let uri = import.meta.env.VITE_CLUB_JOIN.replace("{clubId}", clubId);
 
     await api.postWithoutBody(uri, token);
   },

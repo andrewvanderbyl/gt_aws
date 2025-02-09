@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useSessionStorage } from "../../util/hooks/sessionStorageHook";
 
-export default function ProtectedRouteGuard({ component }) {
+export default function UnProtectedRouteGuard({ component }) {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   const sessionStorage = useSessionStorage();
@@ -12,11 +13,14 @@ export default function ProtectedRouteGuard({ component }) {
   }, [component]);
 
   const checkUser = () => {
-    if (!sessionStorage.getUserRole()) {
-      navigate("/login");
+    //Check if token already exist then navigate home
+    if (sessionStorage.getUserRole()) {
+      navigate("/");
+    } else {
+      sessionStorage.removeStorageValue();
     }
+
     setStatus(true);
-    return;
   };
 
   if (status) {

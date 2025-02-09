@@ -11,7 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import { amber } from "@mui/material/colors";
-import React, { useEffect, useState } from "react";
+import * as React from "react";
+import { useEffect, useState } from "react";
 import { useResult } from "../../../../util/hooks/resultsHook";
 
 export default function RacePanel() {

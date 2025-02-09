@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = process.env.REACT_APP_API_ENDPOINT;
+const baseUrl = import.meta.env.VITE_API_ENDPOINT;
 
 export const api = {
   get: async (endpoint, token = null) => {

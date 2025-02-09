@@ -1,17 +1,20 @@
 import { Route } from "react-router";
+import { lazy } from 'react';
 import AdminSecurity from "../pages/admin/security/AdminSecurity";
-import AdminClubs from "../pages/basic/AdminClubs";
-import AdminEvents from "../pages/basic/AdminEvents";
-import Asa from "../pages/basic/Asa";
-import Events from "../pages/basic/Events";
-import Profile from "../pages/basic/Profile";
-import Results from "../pages/basic/Results";
-import Tags from "../pages/basic/Tags";
-import Dashboard from "../pages/layout/Dashboard";
-import Register from "../pages/security/Register";
 import SignIn from "../pages/security/SignIn";
 import ProtectedRouteGuard from "./security/ProtectedRouteGuard";
 import UnProtectedRouteGuard from "./security/UnProtectedRouteGuard";
+
+// dynamic imports for chunking
+const Dashboard = lazy(() =>  import("../pages/layout/Dashboard"));
+const Register = lazy(() =>  import("../pages/security/Register"));
+const Profile = lazy(() => import("../pages/basic/Profile"));
+const Results = lazy(() =>  import("../pages/basic/Results"));
+const Events = lazy(() => import("../pages/basic/Events"));
+const Asa = lazy(() =>  import("../pages/basic/Asa"));
+const Tags = lazy(() =>  import("../pages/basic/Tags"));
+const AdminClubs = lazy(() =>  import("../pages/basic/AdminClubs"));
+const AdminEvents = lazy(() =>  import("../pages/basic/AdminEvents"));
 
 export const AppRoutes = [
   // Protected Routes
